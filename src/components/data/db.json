@@ -1,0 +1,144 @@
+{
+    "technical_teacher": [
+        {
+            "id": "00001",
+            "name": "PHP",
+            "teacher": {
+                "id": "11112",
+                "name": "Nguyen Van A",
+                "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg"
+            }
+        },
+        {
+            "id": "00002",
+            "name": "Java",
+            "teacher": {
+                "id": "11113",
+                "name": "Le Van B",
+                "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg"
+            }
+        },
+        {
+            "id": "00003",
+            "name": "JavaScript",
+            "teacher": {
+                "id": "11114",
+                "name": "Tran Van C",
+                "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg"
+            }
+        }
+    ],
+    "teacher": [
+        {
+            "id": "11112",
+            "name": "Nguyen Van A",
+            "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg"
+        },
+        {
+            "id": "11113",
+            "name": "Le Van B",
+            "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg"
+        },
+        {
+            "id": "11114",
+            "name": "Tran Van C",
+            "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg"
+        },
+        {
+            "id": "11115",
+            "name": "Nguyen Van D",
+            "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg"
+        }
+    ],
+    "calendar": [
+        {
+            "id": "22221",
+            "time_start": "8:00",
+            "time_end": "8:10"
+        },
+        {
+            "id": "22222",
+            "time_start": "8:10",
+            "time_end": "8:20"
+        },
+        {
+            "id": "22223",
+            "time_start": "8:20",
+            "time_end": "8:30"
+        }
+    ],
+    "users": [
+        {
+            "id": "44441",
+            "full_name": "Trần Tiểu Vi",
+            "age": "20",
+            "isDelete": "false",
+            "created_by": "aa",
+            "created_date": "2024-09-20",
+            "modified_date": "2024-10-20",
+            "modified_by": "bb"
+        },
+        {
+            "id": "44442",
+            "full_name": "Lương Văn Đạt",
+            "age": "21",
+            "isDelete": "false",
+            "created_by": "aa",
+            "created_date": "2024-09-22",
+            "modified_date": "2024-11-20",
+            "modified_by": "vv"
+        }
+    ],
+    "teacher_calendar": [
+        {
+            "teacher": {
+                "id": "11112",
+                "name": "Nguyen Van A",
+                "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg"
+            },
+            "calendar": {
+                "id": "22221",
+                "time_start": "8:00",
+                "time_end": "8:10"
+            },
+            "date_appointment": "2024-09-15",
+            "status": "Đã thành công",
+            "users": {
+                "id": "44441",
+                "full_name": "Trần Tiểu Vi",
+                "age": "20",
+                "isDelete": "false",
+                "created_by": "aa",
+                "created_date": "2024-09-20",
+                "modified_date": "2024-10-20",
+                "modified_by": "bb"
+            },
+            "note": "hỗ trợ lần đầu"
+        },
+        {
+            "teacher": {
+                "id": "11113",
+                "name": "Le Van B",
+                "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg"
+            },
+            "calendar": {
+                "id": "22223",
+                "time_start": "8:20",
+                "time_end": "8:30"
+            },
+            "date_appointment": "2024-09-19",
+            "status": "Đã thành công",
+            "users": {
+                "id": "44442",
+                "full_name": "Lương Văn Đạt",
+                "age": "21",
+                "isDelete": "false",
+                "created_by": "aa",
+                "created_date": "2024-09-22",
+                "modified_date": "2024-11-20",
+                "modified_by": "vv"
+            },
+            "note": "hỗ trợ tiếp phần tính kế thừa hôm trước"
+        }
+    ]
+}
