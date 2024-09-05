@@ -1,0 +1,318 @@
+{
+    "khoahoc": [
+        {
+            "id": 1,
+            "tenKhoaHoc": "Lập trình Java cơ bản",
+            "moTa": "Khóa học giới thiệu các khái niệm cơ bản trong lập trình Java.",
+            "thoiGian": "3 tháng"
+        },
+        {
+            "id": 2,
+            "tenKhoaHoc": "Angular từ cơ bản đến nâng cao",
+            "moTa": "Học Angular từ cơ bản đến các kỹ thuật nâng cao.",
+            "thoiGian": "2 tháng"
+        },
+        {
+            "id": 3,
+            "tenKhoaHoc": "Python cho người mới bắt đầu",
+            "moTa": "Khóa học giới thiệu về ngôn ngữ lập trình Python.",
+            "thoiGian": "2 tháng"
+        },
+        {
+            "id": 4,
+            "tenKhoaHoc": "ReactJS từ cơ bản đến nâng cao",
+            "moTa": "Khóa học ReactJS với các kỹ thuật nâng cao.",
+            "thoiGian": "3 tháng"
+        },
+        {
+            "id": 5,
+            "tenKhoaHoc": "Cấu trúc dữ liệu và giải thuật",
+            "moTa": "Khóa học chuyên sâu về cấu trúc dữ liệu và giải thuật.",
+            "thoiGian": "4 tháng"
+        },
+        {
+            "id": 6,
+            "tenKhoaHoc": "Lập trình web với PHP",
+            "moTa": "Khóa học dành cho người mới bắt đầu học PHP.",
+            "thoiGian": "2 tháng"
+        },
+        {
+            "id": 7,
+            "tenKhoaHoc": "NodeJS và Express",
+            "moTa": "Khóa học giới thiệu về backend với NodeJS và Express.",
+            "thoiGian": "3 tháng"
+        },
+        {
+            "id": 8,
+            "tenKhoaHoc": "SQL và cơ sở dữ liệu",
+            "moTa": "Khóa học về SQL và quản lý cơ sở dữ liệu.",
+            "thoiGian": "2 tháng"
+        },
+        {
+            "id": 9,
+            "tenKhoaHoc": "Docker cho lập trình viên",
+            "moTa": "Khóa học về Docker và containerization.",
+            "thoiGian": "1 tháng"
+        },
+        {
+            "id": 10,
+            "tenKhoaHoc": "Git và quản lý phiên bản",
+            "moTa": "Khóa học về Git và GitHub cho lập trình viên.",
+            "thoiGian": "1 tháng"
+        }
+    ],
+    "baiTap": [
+        {
+            "id": 1,
+            "tenBaiTap": "Bài tập đa hình trong Java OOP",
+            "moTa": "Luyện tập về lập trình hướng đối tượng trong Java.",
+            "idKhoaHoc": 1
+        },
+        {
+            "id": 2,
+            "tenBaiTap": "Bài tập kế thừa trong Java OOP",
+            "moTa": "Luyện tập về lập trình hướng đối tượng trong Java.",
+            "idKhoaHoc": 1
+        },
+        {
+            "id": 3,
+            "tenBaiTap": "Bài tập đóng gói trong Java OOP",
+            "moTa": "Luyện tập về lập trình hướng đối tượng trong Java.",
+            "idKhoaHoc": 1
+        },
+        {
+            "id": 4,
+            "tenBaiTap": "Bài tập trừu tượng Java OOP",
+            "moTa": "Luyện tập về lập trình hướng đối tượng trong Java.",
+            "idKhoaHoc": 1
+        },
+        {
+            "id": 5,
+            "tenBaiTap": "Bài tập Angular Component",
+            "moTa": "Tạo và quản lý các component trong Angular.",
+            "idKhoaHoc": 2
+        },
+        {
+            "id": 6,
+            "tenBaiTap": "Bài tập Python cơ bản",
+            "moTa": "Bài tập dành cho người mới bắt đầu với Python.",
+            "idKhoaHoc": 3
+        },
+        {
+            "id": 7,
+            "tenBaiTap": "Bài tập ReactJS Hooks",
+            "moTa": "Thực hành về Hooks trong ReactJS.",
+            "idKhoaHoc": 4
+        },
+        {
+            "id": 8,
+            "tenBaiTap": "Bài tập về Stack và Queue",
+            "moTa": "Luyện tập về các cấu trúc dữ liệu Stack và Queue.",
+            "idKhoaHoc": 5
+        },
+        {
+            "id": 9,
+            "tenBaiTap": "Bài tập PHP cơ bản",
+            "moTa": "Bài tập PHP cho người mới bắt đầu.",
+            "idKhoaHoc": 6
+        },
+        {
+            "id": 10,
+            "tenBaiTap": "Bài tập NodeJS API",
+            "moTa": "Xây dựng API với NodeJS.",
+            "idKhoaHoc": 7
+        },
+        {
+            "id": 11,
+            "tenBaiTap": "Bài tập SQL nâng cao",
+            "moTa": "Bài tập về SQL và các truy vấn phức tạp.",
+            "idKhoaHoc": 8
+        },
+        {
+            "id": 12,
+            "tenBaiTap": "Bài tập Docker container",
+            "moTa": "Thực hành tạo và quản lý container với Docker.",
+            "idKhoaHoc": 9
+        },
+        {
+            "id": 13,
+            "tenBaiTap": "Bài tập quản lý Git repo",
+            "moTa": "Thực hành quản lý Git repository.",
+            "idKhoaHoc": 10
+        }
+    ],
+    "hocVien": [
+        {
+            "id": 1,
+            "hoTen": "Nguyễn Văn A",
+            "email": "nguyenvana@gmail.com",
+            "idKhoaHoc": 1
+        },
+        {
+            "id": 2,
+            "hoTen": "Trần Thị B",
+            "email": "tranthib@gmail.com",
+            "idKhoaHoc": 2
+        },
+        {
+            "id": 3,
+            "hoTen": "Lê Văn C",
+            "email": "levanc@gmail.com",
+            "idKhoaHoc": 3
+        },
+        {
+            "id": 4,
+            "hoTen": "Phạm Thị D",
+            "email": "phamthid@gmail.com",
+            "idKhoaHoc": 2
+        },
+        {
+            "id": 5,
+            "hoTen": "Hoàng Văn E",
+            "email": "hoangvane@gmail.com",
+            "idKhoaHoc": 3
+        },
+        {
+            "id": 6,
+            "hoTen": "Đỗ Thị F",
+            "email": "dothif@gmail.com",
+            "idKhoaHoc": 4
+        },
+        {
+            "id": 7,
+            "hoTen": "Ngô Văn G",
+            "email": "ngovang@gmail.com",
+            "idKhoaHoc": 5
+        },
+        {
+            "id": 8,
+            "hoTen": "Bùi Thị H",
+            "email": "buithih@gmail.com",
+            "idKhoaHoc": 5
+        },
+        {
+            "id": 9,
+            "hoTen": "Vũ Văn I",
+            "email": "vuvani@gmail.com",
+            "idKhoaHoc": 8
+        },
+        {
+            "id": 10,
+            "hoTen": "Đinh Thị K",
+            "email": "dinhthik@gmail.com",
+            "idKhoaHoc": 10
+        }
+    ],
+    "khoaHocDetail": [
+        {
+            "id": 1,
+            "idKhoaHoc"  :1,
+            "idHocVien" :1,
+            "ngayBatDau" :"02-02-2002"
+        },
+        {
+            "id": 2,
+            "idKhoaHoc"  :1,
+            "idHocVien" :2,
+            "ngayBatDau" :"02-02-2002"
+        },
+        {
+            "id": 1,
+            "idKhoaHoc"  :1,
+            "idHocVien" :1,
+            "ngayBatDau" :"02-02-2002"
+        },
+        {
+            "id": 3,
+            "idKhoaHoc"  :1,
+            "idHocVien" :5,
+            "ngayBatDau" :"02-02-2002"
+        },{
+            "id": 4,
+            "idKhoaHoc"  :1,
+            "idHocVien" :6,
+            "ngayBatDau" :"02-02-2002"
+        }, {
+            "id": 5,
+            "idKhoaHoc"  :4,
+            "idHocVien" :1,
+            "ngayBatDau" :"02-02-2002"
+        },
+        {
+            "id": 6,
+            "idKhoaHoc"  :2,
+            "idHocVien" :2,
+            "ngayBatDau" :"02-02-2002"
+        },
+        {
+            "id": 7,
+            "idKhoaHoc"  :2,
+            "idHocVien" :1,
+            "ngayBatDau" :"02-02-2002"
+        },
+        {
+            "id": 8,
+            "idKhoaHoc"  :2,
+            "idHocVien" :5,
+            "ngayBatDau" :"02-02-2002"
+        },{
+            "id": 9,
+            "idKhoaHoc"  :2,
+            "idHocVien" :6,
+            "ngayBatDau" :"02-02-2002"
+        }
+    ],
+    "baiTapDetail": [
+        {
+            "id" :1,
+            "idHocVien":1,
+            "idBaiTap":1,
+            "pass":true,
+            "linkGitHub":"githubAbc.com",
+            "thoiGianNop":"05-08-2024",
+            "deadline" : "09-08-2024",
+            "AIComment" :""
+
+        },{
+            "id" :2,
+            "idHocVien":2,
+            "idBaiTap":1,
+            "pass":false,
+            "linkGitHub":"githubAbc.com",
+            "thoiGianNop":"05-08-2024",
+            "deadline" : "09-08-2024",
+            "AIComment" :"sửa abcdef vị trí xyz"
+
+        },{
+            "id" :3,
+            "idHocVien":3,
+            "idBaiTap":1,
+            "pass":false,
+            "linkGitHub":"githubA324bc.com",
+            "thoiGianNop":"05-08-2024",
+            "deadline" : "09-08-2024",
+            "AIComment" :"sửa abcdef vị trí xyz"
+
+        },{
+            "id" :4,
+            "idHocVien":1,
+            "idBaiTap":2,
+            "pass":false,
+            "linkGitHub":"githubAbc.com",
+            "thoiGianNop":"05-09-2024",
+            "deadline" : "09-09-2024",
+            "AIComment" :"sửa abcdef vị trí xyz"
+
+        },{
+            "id" :5,
+            "idHocVien":2,
+            "idBaiTap":2,
+            "pass":false,
+            "linkGitHub":"githubAbc.com",
+            "thoiGianNop":"05-09-2024",
+            "deadline" : "09-09-2024",
+            "AIComment" :"sửa abcdef vị trí xyz"
+
+        }
+    ]
+}
