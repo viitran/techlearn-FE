@@ -1,0 +1,17 @@
+{
+	"users": [{
+		"id": "1584177315024",
+		"email": "tr@gmail.com",
+		"password": "123456",
+		"token": "1584177315024",
+		"name": "Tech",
+        "role": "gvT"
+	}, {
+		"id": "1584177319076",
+		"email": "anh@gmail.com",
+		"password": "123456",
+		"token": "1584177319076",
+		"name": "Tran",
+        "role": "hvT"
+	}]
+}

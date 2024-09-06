@@ -61,6 +61,7 @@
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import Modal from '../Modal/Modal.vue';
+import { useStore } from 'vuex';
 
 const list = ref([]);
 const seletedObject = ref(null);
@@ -71,9 +72,13 @@ const totalPage = ref(0);
 const pageSize = ref(2);
 const pagesToShow = ref([]);
 
+// create store
+const store = useStore();
+
 onMounted(() => {
   myModal.value = new bootstrap.Modal(document.getElementById("exampleModal"));
-  fetchStudents();
+  // fetchStudents();
+  takeUser();
 });
 
 const fetchStudents = async (page = 1) => {
@@ -90,6 +95,17 @@ const fetchStudents = async (page = 1) => {
     updatePagesToShow();
   } catch (error) {
     console.error('Error fetching students:', error);
+  }
+};
+
+//temp data user and push role to store
+const takeUser = async () => {
+  try {
+    const response = await axios.get(`http://localhost:3000/users`);
+    const resRole = response.data[1].role;
+    store.dispatch('setUserRole', resRole);
+  } catch (error) {
+    console.error('Error: ', error);
   }
 };
 
