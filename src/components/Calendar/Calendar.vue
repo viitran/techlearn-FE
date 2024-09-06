@@ -6,7 +6,7 @@
           <b>{{ arg.timeText }}</b>
           <i>{{ arg.event.title }}</i>
           <br />
-          <i>{{ arg.event.note}}</i>
+          <i>{{ arg.event.extendedProps.note }}</i>
         </template>
       </FullCalendar>
     </div>
@@ -14,9 +14,14 @@
   <ModalUpdate
   :titles="titles"
   :notes="notes"
-  @confirmUpdate="confirms"
-  @close="closeModal"
+  :allDay="allDay"
+  :isDelete="isDelete"
+  @confirmUpdate="confirmUpdate"
+  @close="closeModalUpdate"
+  @checkAllDay="checkAllDay"
 />
+
+
 
 </template>
 
@@ -30,60 +35,98 @@ import { onMounted, ref } from "vue";
 import axios from "axios";
 
 const initialEvents = ref([]);
-const myModal = ref(null);
+const modalUpdate = ref(null);
+const modalDelete = ref(null);
 const titles = ref("");
+const allDay = ref(false);
 const notes = ref("");
+const isDelete = ref(false);
 const selectedInfos = ref();
+const selectedEvent = ref();
 
-const confirms = async (title, note) => {
+
+const confirmUpdate = async (title, note) => {
   titles.value = title;
   notes.value = note;
+
   const calendarApi = selectedInfos.value.view.calendar;
-
   calendarApi.unselect();
-
-  if (titles.value) {
-    const newEvent = {
-        title: titles.value,
-        start: selectedInfos.value.startStr,
-        end: selectedInfos.value.endStr,
-        allDay: selectedInfos.value.allDay,
-        note: notes.value,
-    }
-    const res = await axios.post("http://localhost:3000/initialEvents", newEvent);
-
-    const saveEvent = res.data
-    calendarApi.addEvent({
-        id: saveEvent.id,
-        title: saveEvent.title,
-        start: saveEvent.start,
-        end: saveEvent.end,
-        allDay: saveEvent.allDay,
-        note: saveEvent.note,
-    });
-    await getInitialEvents();
+  let newEvent ;
+  if (titles.value && allDay.value ) {
+    newEvent = {
+      title: titles.value,
+      start: selectedInfos.value.startStr.replace(/T.*$/,''),
+      end: selectedInfos.value.endStr.replace(/T.*$/,''),
+      allDay: allDay.value,
+      note: notes.value,
   }
-  closeModal();
+} else if (titles.value && allDay.value === false ) {
+  newEvent = {
+      title: titles.value,
+      start: selectedInfos.value.startStr,
+      end: selectedInfos.value.endStr,
+      allDay: allDay.value,
+      note: notes.value,
+  }
+}
+
+const res = await axios.post("http://localhost:3000/initialEvents", newEvent);
+const saveEvent = res.data;
+
+calendarApi.addEvent({
+    id: saveEvent.id,
+    title: saveEvent.title,
+    start: saveEvent.start,
+    end: saveEvent.end,
+    allDay: saveEvent.allDay,
+    note: saveEvent.note,
+});
+
+await getInitialEvents();
+
+  titles.value = "";
+  notes.value = "";
+  allDay.value = false
+  closeModalUpdate();
 };
 
-const closeModal = () => {
-    myModal.value.hide();
+const closeModalUpdate = () => {
+  titles.value = "";
+  notes.value = "";
+  allDay.value = true
+  modalUpdate.value.hide();
+}
+
+const closeModalDelete = () => {
+  modalDelete.value.hide()
 }
 
 const handleSelected = (selectedInfo) => {
-
-  myModal.value.show();
   selectedInfos.value = selectedInfo;
+  isDelete.value = false;
+  modalUpdate.value.show();
 };
 
+const confirmDelete = async (data) => {
+  data.event.remove();
+  await axios.delete(`http://localhost:3000/initialEvents/${data.event._def.publicId}`);
+  await getInitialEvents();
+  closeModalDelete()
+}
+
+const checkAllDay = () => {
+  allDay.value = !allDay.value
+}
+
 const handleEventClick = async (clickInfo) => {
-  if (confirm( `Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-    clickInfo.event.remove();
-    await axios.delete(
-      `http://localhost:3000/initialEvents/${clickInfo.event._def.publicId}`
-    );
-    await getInitialEvents();
-  }
+  titles.value = clickInfo.event._def.title;
+  allDay.value = clickInfo.event._def.allDay;
+  isDelete.value = true
+
+  modalUpdate.value.show();
+  // console.log(clickInfo.event._def.allDay);
+  // modalDelete.value.show();
+  // selectedEvent.value = clickInfo;
 };
 
 const getInitialEvents = async () => {
@@ -111,10 +154,12 @@ const calendarOption = ref({
 });
 
 onMounted(async () => {
-  myModal.value = new bootstrap.Modal(document.getElementById("exampleModal"));
+  modalUpdate.value = new bootstrap.Modal(document.getElementById("exampleModal"));
+  modalDelete.value = new bootstrap.Modal(document.getElementById("modalDelete"));
   await getInitialEvents();
   calendarOption.value.events = initialEvents.value;
 });
+
 </script>
 
 <style scoped>

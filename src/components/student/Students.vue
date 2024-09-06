@@ -60,7 +60,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
-import Modal from '../Modal/Modal.vue';
+import Modal from '../Modal/ModalDelete.vue';
 
 const list = ref([]);
 const seletedObject = ref(null);
