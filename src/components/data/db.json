@@ -9,35 +9,6 @@
             "name": "ROLE_TEACHER"
         }
     ],
-    "technical_teacher": [
-        {
-            "id": "00001",
-            "name": "PHP",
-            "teacher": {
-                "id": "11112",
-                "name": "Nguyen Van A",
-                "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg"
-            }
-        },
-        {
-            "id": "00002",
-            "name": "Java",
-            "teacher": {
-                "id": "11113",
-                "name": "Le Van B",
-                "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg"
-            }
-        },
-        {
-            "id": "00003",
-            "name": "JavaScript",
-            "teacher": {
-                "id": "11114",
-                "name": "Tran Van C",
-                "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg"
-            }
-        }
-    ],
     "teacher": [
         {
             "id": "11112",
@@ -73,6 +44,47 @@
             "roles": {
                 "id": "2",
                 "name": "ROLE_TEACHER"
+            }
+        }
+    ],
+    "technical_teacher": [
+        {
+            "id": "00001",
+            "name": "PHP",
+            "teacher": {
+                "id": "11112",
+                "name": "Nguyen Van A",
+                "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg",
+                "roles": {
+                    "id": "2",
+                    "name": "ROLE_TEACHER"
+                }
+            }
+        },
+        {
+            "id": "00002",
+            "name": "Java",
+            "teacher": {
+                "id": "11113",
+                "name": "Le Van B",
+                "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg",
+                "roles": {
+                    "id": "2",
+                    "name": "ROLE_TEACHER"
+                }
+            }
+        },
+        {
+            "id": "00003",
+            "name": "JavaScript",
+            "teacher": {
+                "id": "11114",
+                "name": "Tran Van C",
+                "avatar": "https://www.vietnamworks.com/hrinsider/wp-content/uploads/2023/12/anh-den-ngau.jpeg",
+                "roles": {
+                    "id": "2",
+                    "name": "ROLE_TEACHER"
+                }
             }
         }
     ],
