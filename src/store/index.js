@@ -4,7 +4,6 @@ export default createStore({
   state: {
     user: {
       role: "",
-      email: "",
     },
   },
   getters: {
