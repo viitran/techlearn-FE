@@ -60,7 +60,6 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
-import Modal from '../Modal/ModalDelete.vue';
 
 const list = ref([]);
 const seletedObject = ref(null);
@@ -129,7 +128,6 @@ const handleDelete = async (data) => {
       currentPage.value--;
     }
     fetchStudents(currentPage.value);
-    
     closeModal();
   } catch (error) {
     console.error('Error deleting student:', error);

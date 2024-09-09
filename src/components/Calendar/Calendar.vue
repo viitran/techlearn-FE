@@ -1,249 +1,103 @@
 <template>
-  <div class="calendar-container">
-    <div class="demo-app-main">
-      <FullCalendar class="app-calendar" :options="calendarOption">
-        <template v-slot:eventContent="arg">
-          <b>{{ arg.timeText }}</b>
-          <i>{{ arg.event.title }}</i>
-          <br />
-          <i>{{ arg.event.extendedProps.note }}</i>
-        </template>
-      </FullCalendar>
-    </div>
+  <div class="container">
+    <ejs-schedule height="600px" width="100%" ref='scheduleObj'
+      :selectedDate="selectedDate"
+      :eventSettings="eventSettings"
+      :actionBegin="onActionBegin"
+    >
+      <e-views>
+        <e-view option="Day"></e-view>
+        <e-view option="Week"></e-view>
+        <e-view option="WorkWeek"></e-view>
+        <e-view option="Month"></e-view>
+        <e-view option="Agenda"></e-view>
+      </e-views>
+      <e-resources>
+        <e-resource
+          field="OwnerId"
+          title="Owner"
+          name="Owners"
+          :dataSource="ownerDataSource"
+          textField="OwnerText"
+          idField="Id"
+          colorField="OwnerColor"
+        >
+        </e-resource>
+      </e-resources>
+    </ejs-schedule>
   </div>
-  <ModalUpdate
-  :titles="titles"
-  :notes="notes"
-  :allDay="allDay"
-  :isDelete="isDelete"
-  @confirmUpdate="confirmUpdate"
-  @close="closeModalUpdate"
-  @checkAllDay="checkAllDay"
-/>
-
-
-
 </template>
 
 <script setup>
-import FullCalendar from "@fullcalendar/vue3";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import ModalUpdate from "../Modal/ModalUpdate.vue";
-import { onMounted, ref } from "vue";
+import { onMounted, provide, ref,nextTick } from "vue";
+import {ScheduleComponent as EjsSchedule, ViewsDirective as EViews, ViewDirective as EView, ResourcesDirective as EResources, ResourceDirective as EResource,
+  Day, Week, WorkWeek, Month, Agenda,} from "@syncfusion/ej2-vue-schedule";
+import { DataManager ,WebApiAdaptor} from "@syncfusion/ej2-data";
 import axios from "axios";
+provide("schedule", [Day, Week, WorkWeek, Month, Agenda]);
 
-const initialEvents = ref([]);
-const modalUpdate = ref(null);
-const modalDelete = ref(null);
-const titles = ref("");
-const allDay = ref(false);
-const notes = ref("");
-const isDelete = ref(false);
-const selectedInfos = ref();
-const selectedEvent = ref();
+const remoteData= new DataManager({
+    url : 'http://localhost:3000/dataSource',
+    adaptor : new WebApiAdaptor,
+    crossDomain : true
+});
 
+const scheduleObj = ref(null)
+const selectedDate = new Date();
+const ownerDataSource = ref([])
+const eventSettings = ref({
+  dataSource: remoteData
+})
 
-const confirmUpdate = async (title, note) => {
-  titles.value = title;
-  notes.value = note;
+const getOwnerDataSource = async() => {
+  const res = await axios.get("http://localhost:3000/ownerDataSource");
+  ownerDataSource.value = res.data
+}
 
-  const calendarApi = selectedInfos.value.view.calendar;
-  calendarApi.unselect();
-  let newEvent ;
-  if (titles.value && allDay.value ) {
-    newEvent = {
-      title: titles.value,
-      start: selectedInfos.value.startStr.replace(/T.*$/,''),
-      end: selectedInfos.value.endStr.replace(/T.*$/,''),
-      allDay: allDay.value,
-      note: notes.value,
+const onActionBegin = async (args) => {
+  if (args.requestType === 'eventCreate') {
+    try {
+       await axios.post('http://localhost:3000/dataSource', args.data[0]);
+    } catch (error) {
+      console.error('Error adding event:', error);
+    }
+  } else if (args.requestType === 'eventRemove') {
+    try {
+      await axios.delete(`http://localhost:3000/dataSource/${args.data[0].id}`);
+    } catch (error) {
+      console.error('Error deleting event:', error);
+    }
+  } else if (args.requestType === 'eventChange') {
+    try {
+      await axios.put(`http://localhost:3000/dataSource/${args.data.id}`, args.data);
+    } catch (error) {
+      console.error('Error updating event:', error);
+    }
   }
-} else if (titles.value && allDay.value === false ) {
-  newEvent = {
-      title: titles.value,
-      start: selectedInfos.value.startStr,
-      end: selectedInfos.value.endStr,
-      allDay: allDay.value,
-      note: notes.value,
-  }
+  await nextTick(() => {
+        scheduleObj.value.refreshEvents();
+  });
 }
 
-const res = await axios.post("http://localhost:3000/initialEvents", newEvent);
-const saveEvent = res.data;
 
-calendarApi.addEvent({
-    id: saveEvent.id,
-    title: saveEvent.title,
-    start: saveEvent.start,
-    end: saveEvent.end,
-    allDay: saveEvent.allDay,
-    note: saveEvent.note,
-});
-
-await getInitialEvents();
-
-  titles.value = "";
-  notes.value = "";
-  allDay.value = false
-  closeModalUpdate();
-};
-
-const closeModalUpdate = () => {
-  titles.value = "";
-  notes.value = "";
-  allDay.value = true
-  modalUpdate.value.hide();
-}
-
-const closeModalDelete = () => {
-  modalDelete.value.hide()
-}
-
-const handleSelected = (selectedInfo) => {
-  selectedInfos.value = selectedInfo;
-  isDelete.value = false;
-  modalUpdate.value.show();
-};
-
-const confirmDelete = async (data) => {
-  data.event.remove();
-  await axios.delete(`http://localhost:3000/initialEvents/${data.event._def.publicId}`);
-  await getInitialEvents();
-  closeModalDelete()
-}
-
-const checkAllDay = () => {
-  allDay.value = !allDay.value
-}
-
-const handleEventClick = async (clickInfo) => {
-  titles.value = clickInfo.event._def.title;
-  allDay.value = clickInfo.event._def.allDay;
-  isDelete.value = true
-
-  modalUpdate.value.show();
-  // console.log(clickInfo.event._def.allDay);
-  // modalDelete.value.show();
-  // selectedEvent.value = clickInfo;
-};
-
-const getInitialEvents = async () => {
-  const res = await axios.get("http://localhost:3000/initialEvents");
-  initialEvents.value = res.data;
-};
-
-const calendarOption = ref({
-  plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-  headerToolbar: {
-    left: "today",
-    center: "prev title next",
-    right: "dayGridMonth,timeGridWeek,timeGridDay",
-  },
-  initialView: "dayGridMonth",
-  events: initialEvents.value,
-  editable: true,
-  selectable: true,
-  selectMirror: true,
-  dayMaxEvents: true,
-  weekends: true,
-  select: handleSelected,
-  eventClick: handleEventClick,
-  eventsSet: initialEvents.value,
-});
-
-onMounted(async () => {
-  modalUpdate.value = new bootstrap.Modal(document.getElementById("exampleModal"));
-  modalDelete.value = new bootstrap.Modal(document.getElementById("modalDelete"));
-  await getInitialEvents();
-  calendarOption.value.events = initialEvents.value;
-});
-
+onMounted(() =>{
+  getOwnerDataSource()
+})
 </script>
 
 <style scoped>
-::v-deep .fc-toolbar-title {
-  display: inline;
+
+.container {
+  margin-top:100px;
+  margin-bottom:100px;
 }
 
-::v-deep .fc-dayGridMonth-button {
-  border-radius: 10px 0 0 10px;
-}
-.app-calendar {
-  height: 90%;
-}
-
-::v-deep .fc .fc-button {
-  background-color: #fff;
-  color: #6b7a99;
-}
-
-::v-deep .fc-button {
-  border-radius: 15px;
-}
-
-::v-deep .fc-prev-button {
-  border-radius: 50%;
-}
-
-::v-deep .fc-next-button {
-  border-radius: 50%;
-}
-
-h2 {
-  margin: 0;
-  font-size: 16px;
-}
-
-ul {
-  margin: 0;
-  padding: 0 0 0 1.5em;
-}
-
-li {
-  margin: 1.5em 0;
-  padding: 0;
-}
-
-b {
-  /* used for event dates/times */
-  margin-right: 3px;
-}
-
-.calendar-container {
-  display: flex;
-  min-height: 90%;
-  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
-  font-size: 14px;
-}
-
-.demo-app-sidebar {
-  width: 300px;
-  line-height: 1.5;
-  background: #eaf9ff;
-  border-right: 1px solid #d3e2e8;
-}
-
-.demo-app-sidebar-section {
-  padding: 2em;
-}
-
-.demo-app-main {
-  flex-grow: 1;
-  padding: 3em;
-}
-
-.fc {
-  /* the calendar root */
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.modal-body label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 600;
-    color: #333;
-}
+@import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-calendars/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-inputs/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-navigations/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-popups/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-vue-schedule/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-base/styles/material.css';
 </style>

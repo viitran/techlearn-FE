@@ -22,7 +22,8 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" @click="closeModal">Đóng</button>
-          <button type="button" class="btn btn-primary" @click="confirmUpdate">{{ isDelete?"Xóa" :"Cập nhật" }}</button>
+          <button type="button" class="btn btn-primary" @click="confirmDelete" :disabled="!isDelete">xóa</button>
+          <button type="button" class="btn btn-primary" @click="confirmUpdate" :disabled="isDelete">Cập nhật</button>
         </div>
       </div>
     </div>
@@ -41,7 +42,7 @@ const props = defineProps({
   isDelete: Boolean
 });
 
-const emit = defineEmits(['confirmUpdate', 'close', 'checkAllDay']);
+const emit = defineEmits(['confirmUpdate', 'close', 'checkAllDay','confirmDelete']);
 
 const title = ref(props.titles);
 const note = ref(props.notes);
@@ -74,6 +75,9 @@ watch(() => props.notes,
   }
 );
 
+const confirmDelete =() => {
+  emit('confirmDelete');
+}
 const checkAllDay = (e) =>{
  allDay.value = e.target.checked;
   emit('checkAllDay', allDay.value)

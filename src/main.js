@@ -15,7 +15,9 @@ import BootstrapVue3 from 'bootstrap-vue-3';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
 
+import { registerLicense } from "@syncfusion/ej2-base"
 
+registerLicense("Ngo9BigBOggjHTQxAR8/V1NCaF1cWWhIfkx/WmFZfVpgdV9FaFZQRGYuP1ZhSXxXdkxjUH9fc3xUR2lZUkc=")
 const app = createApp(App);
 library.add(fas);
 app.component('fa', FontAwesomeIcon)
