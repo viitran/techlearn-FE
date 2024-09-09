@@ -3,8 +3,9 @@
     {
       "id": 1,
       "courseName": "Lập trình Java cơ bản",
-      "description": "Khóa học giới thiệu các khái niệm cơ bản trong lập trình Java.",
+      "description": "Khóa học \"Kỹ thuật lập trình nền tảng với Java\" cung cấp kiến thức đa chiều về Java: từ cài đặt môi trường, cú pháp căn bản đến điều kiện, lặp, phương thức, Debugging, xử lý chuỗi, và mảng đến ArrayList. Nền tảng lý thú để xây dựng ứng dụng Java chất lượng.",
       "duration": "3 tháng",
+      "image": "https://imgs.search.brave.com/Sr3cZn0VfxHk-CBgRb1GwMPqcd4vbEsrq-pHfoBA3z0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXZlLmNv/bS93cC93cDcyNTAw/MzIucG5n",
       "chapters": [
         {
           "id": 1,
@@ -45,8 +46,9 @@
     {
       "id": 3,
       "courseName": "Angular từ cơ bản đến nâng cao",
-      "description": "Học Angular từ cơ bản đến các kỹ thuật nâng cao.",
+      "description": "Khóa học ReactJS từ cơ bản tới nâng cao, kết quả của khóa học này là bạn có thể làm hầu hết các dự án thường gặp với ReactJS. Cuối khóa học này bạn sẽ sở hữu một dự án giống website bán hàng, bạn có thể tự tin đi xin việc khi nắm chắc các kiến thức được chia sẻ trong khóa học này.",
       "duration": "2 tháng",
+      "image": "https://imgs.search.brave.com/ygJJrjsj1wQGU7AZqQwugC4bN-8fDqADSfli591HdTc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXZlLmNv/bS93cC93cDc3MzI5/NjUuanBn",
       "chapters": [
         {
           "id": 1,

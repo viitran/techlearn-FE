@@ -34,7 +34,7 @@
         @click="handleSelect(5)"
         :class="{ active: selectedItem === 5 }"
       >
-        <router-link to="/submitAssignment">Khóa học của tôi</router-link>
+        <router-link to="/coursePage">Khóa học của tôi</router-link>
       </div>
     </div>
   </div>
