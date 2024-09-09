@@ -97,7 +97,7 @@ Kết quả: Pass
 
 const fetchAssignments = async () => {
   try {
-    const response = await axios.get("http://localhost:3002/khoahoc");
+    const response = await axios.get("http://localhost:3000/khoahoc");
     const data = response.data;
 
     const course = data.find((course) => course.id === courseId);

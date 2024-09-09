@@ -4,6 +4,7 @@ import StudentUpdate from '@/components/student/StudentUpdate.vue'
 import NotFound from '@/components/NotFound/NotFound.vue'
 import StudentCreate from '@/components/student/StudentCreate.vue'
 import ConfigPromptAIView from '@/views/teacherView/ConfigPromptAIView.vue'
+import SubmitAssignment from '@/views/SubmitAssignment.vue'
 
 const routes = [
   {
@@ -26,6 +27,12 @@ const routes = [
     path: '/configPrompt',
     name: 'configPrompt',
     component: ConfigPromptAIView,
+    props: true
+  },
+  {
+    path: "/submitAssignment",
+    name: "submitAssignment",
+    component: SubmitAssignment,
     props: true
   },
   {
