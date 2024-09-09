@@ -4,63 +4,141 @@
       "id": 1,
       "tenKhoaHoc": "Lập trình Java cơ bản",
       "moTa": "Khóa học giới thiệu các khái niệm cơ bản trong lập trình Java.",
-      "thoiGian": "3 tháng",
-      "chuong": [
-        {
-          "id": 1,
-          "tenChuong": "Giới thiệu Java",
-          "moTa": "Tìm hiểu về ngôn ngữ Java và cấu trúc cơ bản.",
-          "baiTap": [
-            {
-              "id": 1,
-              "tenBaiTap": "Bài tập đa hình trong Java OOP",
-              "moTa": "Thiết kế class Dog kế thừa từ class Animal"
-            },
-            {
-              "id": 2,
-              "tenBaiTap": "Bài tập kế thừa trong Java OOP",
-              "moTa": "Luyện tập về lập trình hướng đối tượng trong Java."
-            }
-          ]
-        },
-        {
-          "id": 2,
-          "tenChuong": "Nâng cao Java oop",
-          "moTa": "Tìm hiểu về ngôn ngữ Java và cấu trúc cơ bản.",
-          "baiTap": [
-            {
-              "id": 1,
-              "tenBaiTap": "Bài tập đa hình trong Java OOP",
-              "moTa": "Luyện tập về lập trình hướng đối tượng trong Java."
-            },
-            {
-              "id": 2,
-              "tenBaiTap": "Bài tập kế thừa trong Java OOP",
-              "moTa": "Luyện tập về lập trình hướng đối tượng trong Java."
-            }
-          ]
-        }
-      ]
+      "thoiGian": "3 tháng"
+    },
+    {
+      "id": 2,
+      "tenKhoaHoc": "Angular từ cơ bản đến nâng cao",
+      "moTa": "Học Angular từ cơ bản đến các kỹ thuật nâng cao.",
+      "thoiGian": "2 tháng"
     },
     {
       "id": 3,
-      "tenKhoaHoc": "Angular từ cơ bản đến nâng cao",
-      "moTa": "Học Angular từ cơ bản đến các kỹ thuật nâng cao.",
-      "thoiGian": "2 tháng",
-      "chuong": [
-        {
-          "id": 1,
-          "tenChuong": "Cơ bản về Angular",
-          "moTa": "Tìm hiểu về Angular và các component cơ bản.",
-          "baiTap": [
-            {
-              "id": 5,
-              "tenBaiTap": "Bài tập Angular Component",
-              "moTa": "Tạo và quản lý các component trong Angular."
-            }
-          ]
-        }
-      ]
+      "tenKhoaHoc": "Python cho người mới bắt đầu",
+      "moTa": "Khóa học giới thiệu về ngôn ngữ lập trình Python.",
+      "thoiGian": "2 tháng"
+    },
+    {
+      "id": 4,
+      "tenKhoaHoc": "ReactJS từ cơ bản đến nâng cao",
+      "moTa": "Khóa học ReactJS với các kỹ thuật nâng cao.",
+      "thoiGian": "3 tháng"
+    },
+    {
+      "id": 5,
+      "tenKhoaHoc": "Cấu trúc dữ liệu và giải thuật",
+      "moTa": "Khóa học chuyên sâu về cấu trúc dữ liệu và giải thuật.",
+      "thoiGian": "4 tháng"
+    },
+    {
+      "id": 6,
+      "tenKhoaHoc": "Lập trình web với PHP",
+      "moTa": "Khóa học dành cho người mới bắt đầu học PHP.",
+      "thoiGian": "2 tháng"
+    },
+    {
+      "id": 7,
+      "tenKhoaHoc": "NodeJS và Express",
+      "moTa": "Khóa học giới thiệu về backend với NodeJS và Express.",
+      "thoiGian": "3 tháng"
+    },
+    {
+      "id": 8,
+      "tenKhoaHoc": "SQL và cơ sở dữ liệu",
+      "moTa": "Khóa học về SQL và quản lý cơ sở dữ liệu.",
+      "thoiGian": "2 tháng"
+    },
+    {
+      "id": 9,
+      "tenKhoaHoc": "Docker cho lập trình viên",
+      "moTa": "Khóa học về Docker và containerization.",
+      "thoiGian": "1 tháng"
+    },
+    {
+      "id": 10,
+      "tenKhoaHoc": "Git và quản lý phiên bản",
+      "moTa": "Khóa học về Git và GitHub cho lập trình viên.",
+      "thoiGian": "1 tháng"
+    }
+  ],
+  "baiTap": [
+    {
+      "id": 1,
+      "tenBaiTap": "Bài tập đa hình trong Java OOP",
+      "moTa": "Luyện tập về lập trình hướng đối tượng trong Java.",
+      "idKhoaHoc": 1
+    },
+    {
+      "id": 2,
+      "tenBaiTap": "Bài tập kế thừa trong Java OOP",
+      "moTa": "Luyện tập về lập trình hướng đối tượng trong Java.",
+      "idKhoaHoc": 1
+    },
+    {
+      "id": 3,
+      "tenBaiTap": "Bài tập đóng gói trong Java OOP",
+      "moTa": "Luyện tập về lập trình hướng đối tượng trong Java.",
+      "idKhoaHoc": 1
+    },
+    {
+      "id": 4,
+      "tenBaiTap": "Bài tập trừu tượng Java OOP",
+      "moTa": "Luyện tập về lập trình hướng đối tượng trong Java.",
+      "idKhoaHoc": 1
+    },
+    {
+      "id": 5,
+      "tenBaiTap": "Bài tập Angular Component",
+      "moTa": "Tạo và quản lý các component trong Angular.",
+      "idKhoaHoc": 2
+    },
+    {
+      "id": 6,
+      "tenBaiTap": "Bài tập Python cơ bản",
+      "moTa": "Bài tập dành cho người mới bắt đầu với Python.",
+      "idKhoaHoc": 3
+    },
+    {
+      "id": 7,
+      "tenBaiTap": "Bài tập ReactJS Hooks",
+      "moTa": "Thực hành về Hooks trong ReactJS.",
+      "idKhoaHoc": 4
+    },
+    {
+      "id": 8,
+      "tenBaiTap": "Bài tập về Stack và Queue",
+      "moTa": "Luyện tập về các cấu trúc dữ liệu Stack và Queue.",
+      "idKhoaHoc": 5
+    },
+    {
+      "id": 9,
+      "tenBaiTap": "Bài tập PHP cơ bản",
+      "moTa": "Bài tập PHP cho người mới bắt đầu.",
+      "idKhoaHoc": 6
+    },
+    {
+      "id": 10,
+      "tenBaiTap": "Bài tập NodeJS API",
+      "moTa": "Xây dựng API với NodeJS.",
+      "idKhoaHoc": 7
+    },
+    {
+      "id": 11,
+      "tenBaiTap": "Bài tập SQL nâng cao",
+      "moTa": "Bài tập về SQL và các truy vấn phức tạp.",
+      "idKhoaHoc": 8
+    },
+    {
+      "id": 12,
+      "tenBaiTap": "Bài tập Docker container",
+      "moTa": "Thực hành tạo và quản lý container với Docker.",
+      "idKhoaHoc": 9
+    },
+    {
+      "id": 13,
+      "tenBaiTap": "Bài tập quản lý Git repo",
+      "moTa": "Thực hành quản lý Git repository.",
+      "idKhoaHoc": 10
     }
   ],
   "hocVien": [
@@ -136,6 +214,12 @@
       "id": 2,
       "idKhoaHoc": 1,
       "idHocVien": 2,
+      "ngayBatDau": "02-02-2002"
+    },
+    {
+      "id": 1,
+      "idKhoaHoc": 1,
+      "idHocVien": 1,
       "ngayBatDau": "02-02-2002"
     },
     {
@@ -232,5 +316,8 @@
       "deadline": "09-09-2024",
       "AIComment": "sửa abcdef vị trí xyz"
     }
-  ]
+  ],
+  "prompt": {
+    "contentPrompt": "Bây giờ tôi sẽ gửi cho bạn link github, tôi muốn bạn review bài tập ở link github đó. Đây là link github của tôi: {{githubLink}} Kết quả review được trả lời bằng tiếng Việt. Cấu trúc review sẽ gồm: Nhận xét chi tiết Đánh giá tổng quan Kết quả (chỉ trả lời pass/fail) 12312asaaaaaaaaaaa"
+  }
 }

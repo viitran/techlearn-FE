@@ -3,8 +3,7 @@ import Students from '@/components/student/Students.vue'
 import StudentUpdate from '@/components/student/StudentUpdate.vue'
 import NotFound from '@/components/NotFound/NotFound.vue'
 import StudentCreate from '@/components/student/StudentCreate.vue'
-// import { component } from 'vue/types/umd'
-import SubmitAssignment from '@/views/SubmitAssignment.vue'
+import ConfigPromptAIView from '@/views/teacherView/ConfigPromptAIView.vue'
 
 const routes = [
   {
@@ -23,11 +22,10 @@ const routes = [
     name: 'StudentCreate',
     component: StudentCreate,
     props: true
-  },
-  {
-    path:"/submitAssignment",
-    name: "submitAssignment",
-    component: SubmitAssignment,
+  },{
+    path: '/configPrompt',
+    name: 'configPrompt',
+    component: ConfigPromptAIView,
     props: true
   },
   {
