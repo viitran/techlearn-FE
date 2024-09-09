@@ -2,11 +2,11 @@
   <div class="container">
     <div class="assignment-container" v-if="assignmentDescription">
       <div class="title-container">
-        <p>{{ assignmentDescription.tenBaiTap }}</p>
+        <p>{{ assignmentDescription.exerciseName }}</p>
         <button @click="viewSolution">Xem solution</button>
       </div>
       <div class="assignment-description">
-        <pre>{{ assignmentDescription.moTa }}</pre>
+        <pre>{{ assignmentDescription.description }}</pre>
       </div>
     </div>
     <div v-else>
@@ -47,9 +47,9 @@
 import axios from "axios";
 import { ref, onMounted, watch } from "vue";
 
-const courseId = "1";
-const chapterId = 1;
-const exerciseId = 1;
+const courseId = "1"; // This would be dynamic in a real application
+const chapterId = 1; // This would be dynamic as well
+const exerciseId = 1; // The exercise that you're currently viewing
 
 const assignmentDescription = ref(null);
 const githubLink = ref("");
@@ -97,14 +97,16 @@ Kết quả: Pass
 
 const fetchAssignments = async () => {
   try {
-    const response = await axios.get("http://localhost:3002/khoahoc");
+    const response = await axios.get("http://localhost:3002/courses");
     const data = response.data;
-
+    // console.log(data.courses);
     const course = data.find((course) => course.id === courseId);
     if (course) {
-      const chapter = course.chuong.find((chapter) => chapter.id === chapterId);
+      const chapter = course.chapters.find(
+        (chapter) => chapter.id === chapterId
+      );
       if (chapter) {
-        const exercise = chapter.baiTap.find(
+        const exercise = chapter.exercises.find(
           (exercise) => exercise.id === exerciseId
         );
         if (exercise) {
