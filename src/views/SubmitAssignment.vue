@@ -47,9 +47,9 @@
 import axios from "axios";
 import { ref, onMounted, watch } from "vue";
 
-const courseId = "1"; // This would be dynamic in a real application
-const chapterId = 1; // This would be dynamic as well
-const exerciseId = 1; // The exercise that you're currently viewing
+const courseId = "1";
+const chapterId = 1;
+const exerciseId = 1;
 
 const assignmentDescription = ref(null);
 const githubLink = ref("");
@@ -97,7 +97,7 @@ Kết quả: Pass
 
 const fetchAssignments = async () => {
   try {
-    const response = await axios.get("http://localhost:3002/courses");
+    const response = await axios.get("http://localhost:3000/courses");
     const data = response.data;
     // console.log(data.courses);
     const course = data.find((course) => course.id === courseId);

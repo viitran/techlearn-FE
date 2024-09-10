@@ -22,10 +22,10 @@
           <p class="card-text">
             {{ course.description }}
           </p>
-          <div class="c-footer">
-            <img :src="avatar" alt="" />
-            <p>Nguyễn Tuấn</p>
-          </div>
+        </div>
+        <div class="c-footer py-3">
+          <img class="avatar" :src="avatar" alt="" />
+          <p class="my-auto">Nguyễn Tuấn</p>
         </div>
       </div>
     </div>
@@ -41,7 +41,7 @@ import avatar from "../../public/avatar.jpg";
 const courses = ref([]);
 
 const fetchCourses = async () => {
-  const response = await axios.get("http://localhost:3002/courses");
+  const response = await axios.get("http://localhost:3000/courses");
   courses.value = response.data;
 };
 
@@ -90,11 +90,16 @@ onMounted(async () => {
   display: flex;
   gap: 10px;
   justify-content: flex-start;
+  margin-left: 15px;
+  align-items: center;
 }
 
 .c-footer img {
   width: 30px;
   height: 30px;
   border-radius: 50%;
+}
+.avatar {
+  object-fit: cover;
 }
 </style>
