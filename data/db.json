@@ -1,0 +1,132 @@
+{
+  "initialEvents": [
+    {
+      "id": "62aa",
+      "title": "1234",
+      "end": "2024-09-05",
+      "allDay": false,
+      "note": ""
+    },
+    {
+      "id": "3e99",
+      "title": "asdasd",
+      "end": "2024-09-06",
+      "allDay": false,
+      "note": ""
+    },
+    {
+      "id": "051c",
+      "title": "wdqw",
+      "end": "2024-09-05",
+      "allDay": false,
+      "note": ""
+    },
+    {
+      "id": "23a2",
+      "title": "qweqwe",
+      "end": "2024-09-04",
+      "allDay": false,
+      "note": ""
+    },
+    {
+      "id": "08da"
+    },
+    {
+      "id": "a2fd"
+    },
+    {
+      "id": "a6e5",
+      "title": "test",
+      "start": "2024-09-04",
+      "end": "2024-09-05",
+      "allDay": true,
+      "note": ""
+    }
+  ],
+  "dataSource": [
+    {
+      "Id": 1,
+      "Subject": "Surgery - Andrew",
+      "EventType": "Confirmed",
+      "StartTime": "2024-09-09T09:00:00",
+      "EndTime": "2024-09-09T10:00:00",
+      "OwnerId": 1,
+      "id": "79a5"
+    },
+    {
+      "Id": 2,
+      "Subject": "Surgery - Andrew",
+      "EventType": "Confirmed",
+      "StartTime": "2024-09-10T09:00:00",
+      "EndTime": "2024-09-10T11:00:00",
+      "OwnerId": 2,
+      "id": "291f"
+    },
+    {
+      "Id": 3,
+      "Subject": "Surgery - Andrew",
+      "EventType": "Confirmed",
+      "StartTime": "2024-09-11T10:00:00",
+      "EndTime": "2024-09-11T13:00:00",
+      "OwnerId": 3,
+      "id": "fa82"
+    },
+    {
+      "id": "a329",
+      "Subject": "checkkkkkk",
+      "Id": 6,
+      "StartTime": "2024-09-12T04:30:00.000Z",
+      "EndTime": "2024-09-12T05:00:00.000Z",
+      "IsAllDay": false,
+      "OwnerId": 2,
+      "Guid": "fb251c95-bfaa-a03f-b8b2-56be9378a1eb",
+      "StartTimezone": null,
+      "EndTimezone": null,
+      "RecurrenceRule": null
+    },
+    {
+      "id": "ffb3",
+      "Subject": "demo1",
+      "StartTime": "2024-09-11T01:30:00.000Z",
+      "EndTime": "2024-09-11T02:00:00.000Z",
+      "IsAllDay": false,
+      "StartTimezone": null,
+      "EndTimezone": null,
+      "OwnerId": 3,
+      "RecurrenceRule": null,
+      "Id": 7,
+      "RecurrenceException": null,
+      "RecurrenceID": null,
+      "Guid": "aa6f3092-98aa-b0eb-8ab7-688ddb0b8ceb"
+    },
+    {
+      "id": "8305",
+      "Subject": "Add title",
+      "Id": 8,
+      "StartTime": "2024-09-12T03:30:00.000Z",
+      "EndTime": "2024-09-12T04:00:00.000Z",
+      "IsAllDay": false,
+      "OwnerId": 1
+    }
+  ],
+  "ownerDataSource": [
+    {
+      "OwnerText": "Nancy",
+      "Id": 1,
+      "OwnerColor": "#ffaa00",
+      "id": "efbd"
+    },
+    {
+      "OwnerText": "Steven",
+      "Id": 2,
+      "OwnerColor": "#f8a398",
+      "id": "c198"
+    },
+    {
+      "OwnerText": "Michael",
+      "Id": 3,
+      "OwnerColor": "#7499e1",
+      "id": "7eb2"
+    }
+  ]
+}
