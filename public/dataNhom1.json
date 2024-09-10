@@ -234,3 +234,240 @@
         }
     ]
 }
+  "courses": [
+    {
+      "id": 1,
+      "courseName": "Lập trình Java cơ bản",
+      "description": "Khóa học \"Kỹ thuật lập trình nền tảng với Java\" cung cấp kiến thức đa chiều về Java: từ cài đặt môi trường, cú pháp căn bản đến điều kiện, lặp, phương thức, Debugging, xử lý chuỗi, và mảng đến ArrayList. Nền tảng lý thú để xây dựng ứng dụng Java chất lượng.",
+      "duration": "3 tháng",
+      "image": "https://imgs.search.brave.com/Sr3cZn0VfxHk-CBgRb1GwMPqcd4vbEsrq-pHfoBA3z0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXZlLmNv/bS93cC93cDcyNTAw/MzIucG5n",
+      "chapters": [
+        {
+          "id": 1,
+          "chapterName": "Giới thiệu Java",
+          "description": "Tìm hiểu về ngôn ngữ Java và cấu trúc cơ bản.",
+          "exercises": [
+            {
+              "id": 1,
+              "exerciseName": "Bài tập đa hình trong Java OOP",
+              "description": "Thiết kế class Dog kế thừa từ class Animal"
+            },
+            {
+              "id": 2,
+              "exerciseName": "Bài tập kế thừa trong Java OOP",
+              "description": "Luyện tập về lập trình hướng đối tượng trong Java."
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "chapterName": "Nâng cao Java oop",
+          "description": "Tìm hiểu về ngôn ngữ Java và cấu trúc cơ bản.",
+          "exercises": [
+            {
+              "id": 1,
+              "exerciseName": "Bài tập đa hình trong Java OOP",
+              "description": "Luyện tập về lập trình hướng đối tượng trong Java."
+            },
+            {
+              "id": 2,
+              "exerciseName": "Bài tập kế thừa trong Java OOP",
+              "description": "Luyện tập về lập trình hướng đối tượng trong Java."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "courseName": "Angular từ cơ bản đến nâng cao",
+      "description": "Khóa học ReactJS từ cơ bản tới nâng cao, kết quả của khóa học này là bạn có thể làm hầu hết các dự án thường gặp với ReactJS. Cuối khóa học này bạn sẽ sở hữu một dự án giống website bán hàng, bạn có thể tự tin đi xin việc khi nắm chắc các kiến thức được chia sẻ trong khóa học này.",
+      "duration": "2 tháng",
+      "image": "https://imgs.search.brave.com/ygJJrjsj1wQGU7AZqQwugC4bN-8fDqADSfli591HdTc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXZlLmNv/bS93cC93cDc3MzI5/NjUuanBn",
+      "chapters": [
+        {
+          "id": 1,
+          "chapterName": "Cơ bản về Angular",
+          "description": "Tìm hiểu về Angular và các component cơ bản.",
+          "exercises": [
+            {
+              "id": 5,
+              "exerciseName": "Bài tập Angular Component",
+              "description": "Tạo và quản lý các component trong Angular."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "students": [
+    {
+      "id": 1,
+      "fullName": "Nguyễn Văn A",
+      "email": "nguyenvana@gmail.com",
+      "courseId": 1
+    },
+    {
+      "id": 2,
+      "fullName": "Trần Thị B",
+      "email": "tranthib@gmail.com",
+      "courseId": 2
+    },
+    {
+      "id": 3,
+      "fullName": "Lê Văn C",
+      "email": "levanc@gmail.com",
+      "courseId": 3
+    },
+    {
+      "id": 4,
+      "fullName": "Phạm Thị D",
+      "email": "phamthid@gmail.com",
+      "courseId": 2
+    },
+    {
+      "id": 5,
+      "fullName": "Hoàng Văn E",
+      "email": "hoangvane@gmail.com",
+      "courseId": 3
+    },
+    {
+      "id": 6,
+      "fullName": "Đỗ Thị F",
+      "email": "dothif@gmail.com",
+      "courseId": 4
+    },
+    {
+      "id": 7,
+      "fullName": "Ngô Văn G",
+      "email": "ngovang@gmail.com",
+      "courseId": 5
+    },
+    {
+      "id": 8,
+      "fullName": "Bùi Thị H",
+      "email": "buithih@gmail.com",
+      "courseId": 5
+    },
+    {
+      "id": 9,
+      "fullName": "Vũ Văn I",
+      "email": "vuvani@gmail.com",
+      "courseId": 8
+    },
+    {
+      "id": 10,
+      "fullName": "Đinh Thị K",
+      "email": "dinhthik@gmail.com",
+      "courseId": 10
+    }
+  ],
+  "courseDetails": [
+    {
+      "id": 1,
+      "courseId": 1,
+      "studentId": 1,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 2,
+      "courseId": 1,
+      "studentId": 2,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 3,
+      "courseId": 1,
+      "studentId": 5,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 4,
+      "courseId": 1,
+      "studentId": 6,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 5,
+      "courseId": 4,
+      "studentId": 1,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 6,
+      "courseId": 2,
+      "studentId": 2,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 7,
+      "courseId": 2,
+      "studentId": 1,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 8,
+      "courseId": 2,
+      "studentId": 5,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 9,
+      "courseId": 2,
+      "studentId": 6,
+      "startDate": "02-02-2002"
+    }
+  ],
+  "exerciseDetails": [
+    {
+      "id": 1,
+      "studentId": 1,
+      "exerciseId": 1,
+      "pass": true,
+      "gitHubLink": "githubAbc.com",
+      "submissionTime": "05-08-2024",
+      "deadline": "09-08-2024",
+      "AIComment": ""
+    },
+    {
+      "id": 2,
+      "studentId": 2,
+      "exerciseId": 1,
+      "pass": false,
+      "gitHubLink": "githubAbc.com",
+      "submissionTime": "05-08-2024",
+      "deadline": "09-08-2024",
+      "AIComment": "sửa abcdef vị trí xyz"
+    },
+    {
+      "id": 3,
+      "studentId": 3,
+      "exerciseId": 1,
+      "pass": false,
+      "gitHubLink": "githubA324bc.com",
+      "submissionTime": "05-08-2024",
+      "deadline": "09-08-2024",
+      "AIComment": "sửa abcdef vị trí xyz"
+    },
+    {
+      "id": 4,
+      "studentId": 1,
+      "exerciseId": 2,
+      "pass": false,
+      "gitHubLink": "githubAbc.com",
+      "submissionTime": "05-09-2024",
+      "deadline": "09-09-2024",
+      "AIComment": "sửa abcdef vị trí xyz"
+    },
+    {
+      "id": 5,
+      "studentId": 2,
+      "exerciseId": 2,
+      "pass": false,
+      "gitHubLink": "githubAbc.com",
+      "submissionTime": "05-09-2024",
+      "deadline": "09-09-2024",
+      "AIComment": "sửa abcdef vị trí xyz"
+    }
+  ]
+}
