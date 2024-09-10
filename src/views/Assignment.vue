@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="assignment-wrapper row col-12 h-100">
-            <div class="body col-9">
+            <div class="body col-12 col-lg-9">
                 <h1>{{ courses.tenKhoaHoc }}</h1>
                 <div class="separate"></div>
                 <div class="content-header">
@@ -36,7 +36,7 @@
                     </div>
                 </div>
             </div>
-            <div class="sidebar col-3 d-none d-md-flex">
+            <div class="sidebar col-3 d-none d-lg-flex">
                 <div class="avatar">
                     <img class="teacher-img"
                         src="https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png?rev=2540745" />
