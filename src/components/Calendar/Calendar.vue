@@ -4,8 +4,8 @@
       :eventSettings="eventSettings"
       :actionBegin="onActionBegin"
       class="calendar"
-      :showQuickInfo='showQuickInfo'
      :editorTemplate="'editorTemplate'"
+     :eventRendered="onEventRendered"
      :startHour="startHour"
      :endHour="endHour"
     >
@@ -75,24 +75,26 @@
 <script setup>
 import { onMounted, provide, ref,nextTick } from "vue";
 import {ScheduleComponent as EjsSchedule, ViewsDirective as EViews, ViewDirective as EView, ResourcesDirective as EResources, ResourceDirective as EResource,
-  Day, Week, WorkWeek, Month, Agenda} from "@syncfusion/ej2-vue-schedule";
+  Day, Week, WorkWeek, Month, Agenda, DragAndDrop} from "@syncfusion/ej2-vue-schedule";
 import { DataManager ,WebApiAdaptor} from "@syncfusion/ej2-data";
+import axios from "axios";
 import { DropDownListComponent as ejsDropdownlist} from "@syncfusion/ej2-vue-dropdowns";
 import { DateTimePickerComponent  as ejsDatetimepicker} from "@syncfusion/ej2-vue-calendars";
-import axios from "axios";
-provide("schedule", [Day, Week, WorkWeek, Month, Agenda]);
 
-const remoteData= new DataManager({
-    url : 'http://localhost:3000/dataSource',
-    adaptor : new WebApiAdaptor,
-    crossDomain : true
+provide("schedule", [Day, Week, WorkWeek, Month, Agenda, DragAndDrop]);
+
+const remoteData = new DataManager({
+  url: 'http://localhost:3000/dataSource',
+  adaptor: new WebApiAdaptor,
+  crossDomain: true
 });
 
-const showQuickInfo = false;
+
 const scheduleObj = ref(null);
 const selectedDate = new Date();
 const ownerDataSource = ref([]);
 const eventSettings = ref({
+
   dataSource: remoteData
 });
 
@@ -100,19 +102,39 @@ const startHour = "08:00";
 const endHour = "20:00";
 
 const dropListFields= {
-  text:"Id",
-
+  text:"OwnerText",
+  value:"Id"
 }
 
-const getOwnerDataSource = async() => {
+const getOwnerDataSource = async () => {
   const res = await axios.get("http://localhost:3000/ownerDataSource");
   ownerDataSource.value = res.data;
+
 }
+
+const onEventRendered = (args) => {
+  const ownerIds = args.data.OwnerIds || [];
+  const avatarsHtml = ownerIds.map(ownerId => {
+    const owner = ownerDataSource.value.find(owner => owner.Id === ownerId);
+    return owner ? `<div class="mx-1"><img width="30" src="${owner.avatar}" class="owner-avatar rounded-circle img-fluid border border-white" /></div>` : '';
+  }).join('');
+
+  const isSingleAvatar = ownerIds.length === 1;
+  args.element.innerHTML = !isSingleAvatar
+    ? `<div class="d-flex justify-content-center mt-1">${avatarsHtml}</div><div class="d-flex justify-content-center">${args.data.Subject}</div>`
+    : `<div class="d-flex align-items-center mt-1">${avatarsHtml}<div class="">${args.data.Subject}</div></div>`;
+};
 
 const onActionBegin = async (args) => {
   if (args.requestType === 'eventCreate') {
     try {
-       await axios.post('http://localhost:3000/dataSource', args.data[0]);
+      const eventData = {
+        ...args.data[0],
+        OwnerIds: Array.isArray(args.data[0].OwnerId) ? args.data[0].OwnerId : [args.data[0].OwnerId || []]
+      };
+      
+      delete eventData.OwnerId;
+      await axios.post('http://localhost:3000/dataSource', eventData);
     } catch (error) {
       console.error('Error adding event:', error);
     }
@@ -130,19 +152,20 @@ const onActionBegin = async (args) => {
     }
   }
   await nextTick(() => {
-        scheduleObj.value.refreshEvents();
+    scheduleObj.value.refreshEvents();
   });
   }
 
 onMounted(() =>{
   getOwnerDataSource()
 })
+
+
 </script>
 
 <style scoped>
-
 .calendar {
-  margin-top:60px;
+  margin-top: 60px;
 }
 
 @import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
