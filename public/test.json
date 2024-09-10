@@ -1,0 +1,239 @@
+{
+    "khoahoc": [
+        {
+            "id": 1,
+            "tenKhoaHoc": "Lập trình Java cơ bản",
+            "moTa": "Khóa học giới thiệu các khái niệm cơ bản trong lập trình Java.",
+            "thoiGian": "3 tháng",
+            "chuong": [
+                {
+                    "id": 1,
+                    "tenChuong": "Giới thiệu Java",
+                    "moTa": "Tìm hiểu về ngôn ngữ Java và cấu trúc cơ bản.",
+                    "baiTap": [
+                        {
+                            "id": 1,
+                            "tenBaiTap": "Bài tập đa hình trong Java OOP",
+                            "moTa": "Luyện tập về lập trình hướng đối tượng trong Java."
+                            
+                        },
+                        {
+                            "id": 2,
+                            "tenBaiTap": "Bài tập kế thừa trong Java OOP",
+                            "moTa": "Luyện tập về lập trình hướng đối tượng trong Java."
+                        }
+                    ]
+                },{
+                    "id": 2,
+                    "tenChuong": "Nâng cao Java oop",
+                    "moTa": "Tìm hiểu về ngôn ngữ Java và cấu trúc cơ bản.",
+                    "baiTap": [
+                        {
+                            "id": 1,
+                            "tenBaiTap": "Bài tập đa hình trong Java OOP",
+                            "moTa": "Luyện tập về lập trình hướng đối tượng trong Java."
+                            
+                        },
+                        {
+                            "id": 2,
+                            "tenBaiTap": "Bài tập kế thừa trong Java OOP",
+                            "moTa": "Luyện tập về lập trình hướng đối tượng trong Java."
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "tenKhoaHoc": "Angular từ cơ bản đến nâng cao",
+            "moTa": "Học Angular từ cơ bản đến các kỹ thuật nâng cao.",
+            "thoiGian": "2 tháng",
+            "chuong": [
+                {
+                    "id": 1,
+                    "tenChuong": "Cơ bản về Angular",
+                    "moTa": "Tìm hiểu về Angular và các component cơ bản.",
+                    "baiTap": [
+                        {
+                            "id": 5,
+                            "tenBaiTap": "Bài tập Angular Component",
+                            "moTa": "Tạo và quản lý các component trong Angular."
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "hocVien": [
+        {
+            "id": 1,
+            "hoTen": "Nguyễn Văn A",
+            "email": "nguyenvana@gmail.com",
+            "idKhoaHoc": 1
+        },
+        {
+            "id": 2,
+            "hoTen": "Trần Thị B",
+            "email": "tranthib@gmail.com",
+            "idKhoaHoc": 2
+        },
+        {
+            "id": 3,
+            "hoTen": "Lê Văn C",
+            "email": "levanc@gmail.com",
+            "idKhoaHoc": 3
+        },
+        {
+            "id": 4,
+            "hoTen": "Phạm Thị D",
+            "email": "phamthid@gmail.com",
+            "idKhoaHoc": 2
+        },
+        {
+            "id": 5,
+            "hoTen": "Hoàng Văn E",
+            "email": "hoangvane@gmail.com",
+            "idKhoaHoc": 3
+        },
+        {
+            "id": 6,
+            "hoTen": "Đỗ Thị F",
+            "email": "dothif@gmail.com",
+            "idKhoaHoc": 4
+        },
+        {
+            "id": 7,
+            "hoTen": "Ngô Văn G",
+            "email": "ngovang@gmail.com",
+            "idKhoaHoc": 5
+        },
+        {
+            "id": 8,
+            "hoTen": "Bùi Thị H",
+            "email": "buithih@gmail.com",
+            "idKhoaHoc": 5
+        },
+        {
+            "id": 9,
+            "hoTen": "Vũ Văn I",
+            "email": "vuvani@gmail.com",
+            "idKhoaHoc": 8
+        },
+        {
+            "id": 10,
+            "hoTen": "Đinh Thị K",
+            "email": "dinhthik@gmail.com",
+            "idKhoaHoc": 10
+        }
+    ],
+    "khoaHocDetail": [
+        {
+            "id": 1,
+            "idKhoaHoc": 1,
+            "idHocVien": 1,
+            "ngayBatDau": "02-02-2002"
+        },
+        {
+            "id": 2,
+            "idKhoaHoc": 1,
+            "idHocVien": 2,
+            "ngayBatDau": "02-02-2002"
+        },
+        {
+            "id": 3,
+            "idKhoaHoc": 1,
+            "idHocVien": 5,
+            "ngayBatDau": "02-02-2002"
+        },
+        {
+            "id": 4,
+            "idKhoaHoc": 1,
+            "idHocVien": 6,
+            "ngayBatDau": "02-02-2002"
+        },
+        {
+            "id": 5,
+            "idKhoaHoc": 4,
+            "idHocVien": 1,
+            "ngayBatDau": "02-02-2002"
+        },
+        {
+            "id": 6,
+            "idKhoaHoc": 2,
+            "idHocVien": 2,
+            "ngayBatDau": "02-02-2002"
+        },
+        {
+            "id": 7,
+            "idKhoaHoc": 2,
+            "idHocVien": 1,
+            "ngayBatDau": "02-02-2002"
+        },
+        {
+            "id": 8,
+            "idKhoaHoc": 2,
+            "idHocVien": 5,
+            "ngayBatDau": "02-02-2002"
+        },
+        {
+            "id": 9,
+            "idKhoaHoc": 2,
+            "idHocVien": 6,
+            "ngayBatDau": "02-02-2002"
+        }
+    ],
+    "baiTapDetail": [
+        {
+            "id" :1,
+            "idHocVien":1,
+            "idBaiTap":1,
+            "pass":true,
+            "linkGitHub":"githubAbc.com",
+            "thoiGianNop":"05-08-2024",
+            "deadline" : "09-08-2024",
+            "AIComment" :""
+
+        },{
+            "id" :2,
+            "idHocVien":2,
+            "idBaiTap":1,
+            "pass":false,
+            "linkGitHub":"githubAbc.com",
+            "thoiGianNop":"05-08-2024",
+            "deadline" : "09-08-2024",
+            "AIComment" :"sửa abcdef vị trí xyz"
+
+        },{
+            "id" :3,
+            "idHocVien":3,
+            "idBaiTap":1,
+            "pass":false,
+            "linkGitHub":"githubA324bc.com",
+            "thoiGianNop":"05-08-2024",
+            "deadline" : "09-08-2024",
+            "AIComment" :"sửa abcdef vị trí xyz"
+
+        },{
+            "id" :4,
+            "idHocVien":1,
+            "idBaiTap":2,
+            "pass":false,
+            "linkGitHub":"githubAbc.com",
+            "thoiGianNop":"05-09-2024",
+            "deadline" : "09-09-2024",
+            "AIComment" :"sửa abcdef vị trí xyz"
+
+        },{
+            "id" :5,
+            "idHocVien":2,
+            "idBaiTap":2,
+            "pass":false,
+            "linkGitHub":"githubAbc.com",
+            "thoiGianNop":"05-09-2024",
+            "deadline" : "09-09-2024",
+            "AIComment" :"sửa abcdef vị trí xyz"
+
+        }
+    ]
+
+}
