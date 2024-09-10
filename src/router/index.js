@@ -3,6 +3,7 @@ import Students from '@/components/student/Students.vue'
 import StudentUpdate from '@/components/student/StudentUpdate.vue'
 import NotFound from '@/components/NotFound/NotFound.vue'
 import StudentCreate from '@/components/student/StudentCreate.vue'
+import Assignment from '@/views/Assignment.vue'
 
 const routes = [
   {
@@ -26,6 +27,11 @@ const routes = [
     path: "/:catchAll(.*)",
     name: 'NotFound',
     component: NotFound
+  },
+  {
+    path: '/course/:id',
+    name: 'assignment',
+    component: Assignment
   }
 ]
 
