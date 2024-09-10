@@ -1,9 +1,10 @@
 <template>
-  <div class="container">
-    <ejs-schedule height="600px" width="100%" ref='scheduleObj'
+  <!-- <div class="container"> -->
+    <ejs-schedule height="750px" width="100%" ref='scheduleObj'
       :selectedDate="selectedDate"
       :eventSettings="eventSettings"
       :actionBegin="onActionBegin"
+      class="calendar"
     >
       <e-views>
         <e-view option="Day"></e-view>
@@ -25,13 +26,13 @@
         </e-resource>
       </e-resources>
     </ejs-schedule>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script setup>
 import { onMounted, provide, ref,nextTick } from "vue";
 import {ScheduleComponent as EjsSchedule, ViewsDirective as EViews, ViewDirective as EView, ResourcesDirective as EResources, ResourceDirective as EResource,
-  Day, Week, WorkWeek, Month, Agenda,} from "@syncfusion/ej2-vue-schedule";
+  Day, Week, WorkWeek, Month, Agenda} from "@syncfusion/ej2-vue-schedule";
 import { DataManager ,WebApiAdaptor} from "@syncfusion/ej2-data";
 import axios from "axios";
 provide("schedule", [Day, Week, WorkWeek, Month, Agenda]);
@@ -87,9 +88,8 @@ onMounted(() =>{
 
 <style scoped>
 
-.container {
-  margin-top:100px;
-  margin-bottom:100px;
+.calendar {
+  margin-top:60px;
 }
 
 @import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
