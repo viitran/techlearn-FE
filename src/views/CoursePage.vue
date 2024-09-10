@@ -24,7 +24,7 @@
           </p>
         </div>
         <div class="c-footer py-3">
-          <img :src="avatar" alt="" />
+          <img class="avatar" :src="avatar" alt="" />
           <p class="my-auto">Nguyễn Tuấn</p>
         </div>
       </div>
@@ -98,5 +98,8 @@ onMounted(async () => {
   width: 30px;
   height: 30px;
   border-radius: 50%;
+}
+.avatar {
+  object-fit: cover;
 }
 </style>
