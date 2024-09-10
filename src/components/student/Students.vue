@@ -60,7 +60,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
-import Modal from '../Modal/Modal.vue';
+
+// import Modal from '../Modal/Modal.vue';
 import { useStore } from 'vuex';
 
 const list = ref([]);
@@ -145,7 +146,6 @@ const handleDelete = async (data) => {
       currentPage.value--;
     }
     fetchStudents(currentPage.value);
-    
     closeModal();
   } catch (error) {
     console.error('Error deleting student:', error);

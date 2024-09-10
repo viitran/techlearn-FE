@@ -3,6 +3,7 @@ import Students from '@/components/student/Students.vue'
 import StudentUpdate from '@/components/student/StudentUpdate.vue'
 import NotFound from '@/components/NotFound/NotFound.vue'
 import StudentCreate from '@/components/student/StudentCreate.vue'
+import Calendar from '@/components/Calendar/Calendar.vue'
 import { checkRole } from "@/components/Middleware/AuthenticateTecher";
 
 const routes = [
@@ -25,6 +26,12 @@ const routes = [
     meta: {
       middleware: [checkRole],
     },
+  },
+  {
+    path: '/calendar',
+    name: 'Calendar',
+    component: Calendar,
+    props: true
   },
   {
     path: "/:catchAll(.*)",
