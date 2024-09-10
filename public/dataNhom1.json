@@ -3,40 +3,40 @@
     {
       "id": "1",
       "tenKhoaHoc": "Lập trình Java cơ bản",
-      "moTa": "Khóa học giới thiệu các khái niệm cơ bản trong lập trình Java.",
+      "moTa": "Khóa học giới thiệu các khái niệm cơ bản trong lập trình Java, từ câu lệnh điều kiện đến lập trình hướng đối tượng.",
       "thoiGian": "3 tháng",
       "chuong": [
         {
           "id": 1,
-          "tenChuong": "Giới thiệu Java",
-          "moTa": "Tìm hiểu về ngôn ngữ Java và cấu trúc cơ bản.",
+          "tenChuong": "Câu lệnh điều kiện (if-else)",
+          "moTa": "Tìm hiểu về câu lệnh điều kiện và cách sử dụng chúng trong Java.",
           "baiTap": [
             {
               "id": 1,
-              "tenBaiTap": "Bài tập đa hình trong Java OOP",
-              "moTa": "Thiết kế class Dog kế thừa từ class Animal"
+              "tenBaiTap": "Bài tập sử dụng câu lệnh if-else",
+              "moTa": "Yêu cầu:<br>- Viết một chương trình Java yêu cầu người dùng nhập tuổi của họ.<br>- Sử dụng câu lệnh if-else để kiểm tra:<br>&nbsp;&nbsp;&nbsp;+ Nếu tuổi lớn hơn hoặc bằng 18, in ra: 'Bạn đủ tuổi trưởng thành.'<br>&nbsp;&nbsp;&nbsp;+ Nếu tuổi nhỏ hơn 18, in ra: 'Bạn chưa đủ tuổi trưởng thành.'"
             },
             {
               "id": 2,
-              "tenBaiTap": "Bài tập kế thừa trong Java OOP",
-              "moTa": "Luyện tập về lập trình hướng đối tượng trong Java."
+              "tenBaiTap": "Bài tập sử dụng switch-case",
+              "moTa": "Yêu cầu:<br>- Viết một chương trình Java yêu cầu người dùng nhập một số từ 1 đến 7.<br>- Sử dụng câu lệnh switch-case để:<br>&nbsp;&nbsp;&nbsp;+ In ra ngày tương ứng với số đã nhập (1 là Chủ nhật, 2 là Thứ hai,...)<br>&nbsp;&nbsp;&nbsp;+ Nếu số không hợp lệ, hiển thị: 'Số không hợp lệ.'"
             }
           ]
         },
         {
           "id": 2,
-          "tenChuong": "Nâng cao Java oop",
-          "moTa": "Tìm hiểu về ngôn ngữ Java và cấu trúc cơ bản.",
+          "tenChuong": "Lập trình hướng đối tượng với Java",
+          "moTa": "Tìm hiểu về các khái niệm lập trình hướng đối tượng trong Java, bao gồm kế thừa, đa hình và đóng gói.",
           "baiTap": [
             {
               "id": 1,
-              "tenBaiTap": "Bài tập đa hình trong Java OOP",
-              "moTa": "Luyện tập về lập trình hướng đối tượng trong Java."
+              "tenBaiTap": "Thiết kế class động vật (Animal) và kế thừa",
+              "moTa": "Yêu cầu:<br>- Tạo class `Animal` với các thuộc tính: `name`, `age`.<br>- Tạo class `Dog` kế thừa từ `Animal`, có phương thức đặc biệt `bark()`.<br>- Viết chương trình tạo đối tượng của `Dog` và gọi phương thức `bark()` cũng như các phương thức kế thừa từ `Animal`."
             },
             {
               "id": 2,
-              "tenBaiTap": "Bài tập kế thừa trong Java OOP",
-              "moTa": "Luyện tập về lập trình hướng đối tượng trong Java."
+              "tenBaiTap": "Xây dựng hệ thống phân cấp lớp học (Class Hierarchy)",
+              "moTa": "Yêu cầu:<br>- Tạo class `Person` với các thuộc tính chung.<br>- Tạo class `Student` và `Teacher`, đều kế thừa từ `Person`.<br>- Mỗi class có các thuộc tính và phương thức riêng.<br>- Viết chương trình tạo đối tượng `Student`, `Teacher` và truy cập các phương thức và thuộc tính thông qua tính kế thừa."
             }
           ]
         }
@@ -45,18 +45,18 @@
     {
       "id": "3",
       "tenKhoaHoc": "Angular từ cơ bản đến nâng cao",
-      "moTa": "Học Angular từ cơ bản đến các kỹ thuật nâng cao.",
+      "moTa": "Học cách phát triển ứng dụng web với Angular từ các khái niệm cơ bản đến các kỹ thuật nâng cao.",
       "thoiGian": "2 tháng",
       "chuong": [
         {
           "id": 1,
           "tenChuong": "Cơ bản về Angular",
-          "moTa": "Tìm hiểu về Angular và các component cơ bản.",
+          "moTa": "Tìm hiểu về cách xây dựng ứng dụng Angular và làm việc với các component.",
           "baiTap": [
             {
               "id": 5,
-              "tenBaiTap": "Bài tập Angular Component",
-              "moTa": "Tạo và quản lý các component trong Angular."
+              "tenBaiTap": "Tạo component trong Angular",
+              "moTa": "Yêu cầu:<br>- Sử dụng Angular CLI để tạo component `Product`.<br>- Component hiển thị thông tin sản phẩm như tên, giá.<br>- Sử dụng component này để hiển thị danh sách sản phẩm trong ứng dụng Angular."
             }
           ]
         }
