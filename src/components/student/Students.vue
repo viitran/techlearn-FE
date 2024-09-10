@@ -1,12 +1,15 @@
-
 <template>
-   <div class="container">
+  <div class="container">
     <div class="button-container">
-      <button class="btn btn-primary">
+      <!-- <button class="btn btn-primary">
         <router-link :to="{ name: 'StudentCreate' }" class="link-text">
           Add +
         </router-link>
-      </button>
+      </button> -->
+    </div>
+
+    <div>
+      <FormStudent />
     </div>
 
     <table v-if="list.length" class="styled-table">
@@ -48,11 +51,7 @@
       </button>
     </div>
 
-    <Modal
-      @confirm="handleDelete(seletedObject)"
-      @close="closeModal"
-      class="custom-modal"
-    ></Modal>
+    <Modal @confirm="handleDelete(seletedObject)" @close="closeModal" class="custom-modal"></Modal>
   </div>
 </template>
 
@@ -63,6 +62,7 @@ import axios from 'axios';
 
 // import Modal from '../Modal/Modal.vue';
 import { useStore } from 'vuex';
+import FormStudent from './FormStudent.vue';
 
 const list = ref([]);
 const seletedObject = ref(null);
@@ -103,7 +103,7 @@ const fetchStudents = async (page = 1) => {
 const takeUser = async () => {
   try {
     const response = await axios.get(`http://localhost:3000/users`);
-    const resRole = response.data[1].role;
+    const resRole = response.data[0].role;
     store.dispatch('setUserRole', resRole);
   } catch (error) {
     console.error('Error: ', error);
