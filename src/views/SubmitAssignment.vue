@@ -6,7 +6,7 @@
         <button @click="viewSolution">Xem solution</button>
       </div>
       <div class="assignment-description">
-        <pre>{{ assignmentDescription.moTa }}</pre>
+        <div class="description-text" v-html="assignmentDescription.moTa"></div>
       </div>
     </div>
     <div v-else>
@@ -20,7 +20,12 @@
           placeholder="Thêm link github tại đây"
           v-model="githubLink"
         />
-        <button @click="submitAssignment">Submit</button>
+        <button @click="submitAssignment" :disabled="isLoading">
+          <span v-if="isLoading">
+            <div class="spinner"></div>
+          </span>
+          <span v-else>Submit</span>
+        </button>
       </div>
     </div>
     <div class="result-container">
@@ -32,12 +37,13 @@
         :key="index"
       >
         <p>Lần submit thứ {{ index + 1 }}:</p>
-        <textarea
+        <!-- <textarea
           ref='"resultTextarea"+ index'
           readonly
           v-model="result[index]"
           @input="adjustHeight"
-        ></textarea>
+        ></textarea> -->
+        <div class="response-AI-text" v-html="formatResult(res)"></div>
       </div>
     </div>
   </div>
@@ -45,7 +51,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted } from "vue";
 
 const courseId = "1";
 const chapterId = 1;
@@ -53,47 +59,8 @@ const exerciseId = 1;
 
 const assignmentDescription = ref(null);
 const githubLink = ref("");
-const result = ref([
-  `
-Nhận xét Chi tiết:
-    Nhập Dữ Liệu:
-        Chương trình sử dụng đối tượng Scanner để nhận dữ liệu từ người dùng, điều này là đúng.
-    Xử Lý Dữ Liệu:
-        Phần mã xử lý điều kiện trong câu lệnh if-else không chính xác. Trong mã hiện tại, có hai điều kiện if kiểm tra số âm (number < 0). Điều này dẫn đến việc không bao giờ thực hiện điều kiện thứ hai là số dương. Đặc biệt, không có điều kiện nào kiểm tra số dương.
-    Câu Lệnh if-else:
-        Điều kiện kiểm tra số âm (number < 0) được lặp lại hai lần.
-        Điều kiện kiểm tra số dương và số không chưa được xử lý đúng cách.
-        Câu lệnh else cuối cùng sẽ chỉ được thực hiện nếu số là 0, điều này là đúng nhưng có thể không đạt yêu cầu nếu các điều kiện không được kiểm tra đúng cách trước đó.
-    Đóng Đối Tượng Scanner:
-        Chương trình đóng đối tượng Scanner sau khi sử dụng, điều này là đúng và giúp giải phóng tài nguyên.
-Đánh Giá Tổng Quan:
-    Sự Chính Xác:
-        Chương trình không chính xác vì điều kiện kiểm tra số âm được lặp lại và không có điều kiện kiểm tra số dương.
-    Hiệu Quả:
-        Mặc dù chương trình thực hiện bước nhập dữ liệu và xử lý điều kiện cơ bản, nhưng điều kiện kiểm tra chưa được triển khai chính xác.
-    Độ Sáng Sủa:
-    Mã nguồn dễ đọc và dễ hiểu, nhưng có lỗi logic làm ảnh hưởng đến kết quả.
-Kết Quả: Fail
-`,
-  `
-Nhận xét chi tiết
-  Nhập dữ liệu từ người dùng:
-    Bạn sử dụng đối tượng Scanner để nhận dữ liệu từ người dùng, điều này là hoàn toàn chính xác và hợp lý trong trường hợp này.
-  Yêu cầu nhập số nguyên:
-    Bạn đã sử dụng System.out.print để yêu cầu người dùng nhập số nguyên, giúp chương trình dễ hiểu và dễ sử dụng.
-  Kiểm tra số nhập vào:
-    Câu lệnh if-else được sử dụng đúng để kiểm tra ba điều kiện (số dương, số âm, số không). Đây là cách tiếp cận chuẩn cho bài toán này.
-  In kết quả:
-    Bạn đã in đúng các thông báo cho từng điều kiện. Thông báo phù hợp với yêu cầu đề bài.
-  Đóng đối tượng Scanner:
-    Việc đóng đối tượng Scanner bằng scanner.close() là một thực hành tốt để giải phóng tài nguyên.
-Đánh giá tổng quan
-  Chức năng: Chương trình thực hiện đúng các yêu cầu đề bài.
-  Đọc hiểu mã nguồn: Mã nguồn dễ đọc, dễ hiểu và không có lỗi cú pháp hay lỗi logic.
-  Hiệu quả: Chương trình hoạt động hiệu quả với các điều kiện được nêu.
-Kết quả: Pass
-`,
-]);
+const result = ref([]);
+const isLoading = ref(false);
 
 const fetchAssignments = async () => {
   try {
@@ -127,25 +94,31 @@ const viewSolution = () => {
   console.log("Solution clicked");
 };
 
-const submitAssignment = () => {
-  console.log("GitHub link submitted:", githubLink.value);
+const submitAssignment = async () => {
+  try {
+    isLoading.value = true;
+    console.log(githubLink.value);
+    const response = await axios.post(
+      "http://localhost:8080/api/v1/reviews/fetch-repo-content",
+      {
+        github_link: githubLink.value,
+      }
+    );
+    const data = JSON.parse(response.data.result);
+
+    result.value.push(data.result);
+    isLoading.value = false;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-const adjustHeight = () => {
-  const textareas = Array.from(document.querySelectorAll("textarea"));
-  textareas.forEach((textarea) => {
-    textarea.style.height = "auto";
-    textarea.style.height = textarea.scrollHeight + "px";
-  });
+const formatResult = (result) => {
+  return result.replace(/\n/g, "<br>");
 };
 
 onMounted(async () => {
   await fetchAssignments();
-  adjustHeight();
-});
-
-watch(result, () => {
-  adjustHeight();
 });
 </script>
 
@@ -175,10 +148,12 @@ watch(result, () => {
   margin-right: 30px;
 }
 
-.assignment-description pre {
-  font-size: 16px;
+.description-text {
+  font-size: 17px;
   margin-left: 12px;
   font-family: Avenir, Helvetica, Arial, sans-serif;
+  margin-top: 15px;
+  margin-bottom: 20px;
 }
 .submit-container p,
 .result-container p {
@@ -226,5 +201,30 @@ watch(result, () => {
 .result-AI-container p {
   font-weight: 600;
   font-size: 16px;
+}
+.response-AI-text {
+  border: 1px solid #d3bfbf;
+  border-radius: 10px;
+  padding: 13px;
+  margin-left: 12px;
+}
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left: 4px solid white;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
