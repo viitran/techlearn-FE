@@ -1,64 +1,74 @@
 <template>
-  <!-- <div class="container"> -->
-    <ejs-schedule height="750px" width="100%" ref='scheduleObj'
-      :selectedDate="selectedDate"
-      :eventSettings="eventSettings"
-      :actionBegin="onActionBegin"
-      class="calendar"
-    >
-      <e-views>
-        <e-view option="Day"></e-view>
-        <e-view option="Week"></e-view>
-        <e-view option="WorkWeek"></e-view>
-        <e-view option="Month"></e-view>
-        <e-view option="Agenda"></e-view>
-      </e-views>
-      <e-resources>
-        <e-resource
-          field="OwnerId"
-          title="Owner"
-          name="Owners"
-          :dataSource="ownerDataSource"
-          textField="OwnerText"
-          idField="Id"
-          colorField="OwnerColor"
-        >
-        </e-resource>
-      </e-resources>
-    </ejs-schedule>
-  <!-- </div> -->
+  <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate" :eventSettings="eventSettings" :actionBegin="onActionBegin"
+    :eventTemplate="eventTemplate" :eventRendered="onEventRendered" startHour="08:00" endHour="22:00" class="calendar">
+    <e-views>
+      <e-view option="Day"></e-view>
+      <e-view option="Week"></e-view>
+      <e-view option="WorkWeek"></e-view>
+      <e-view option="Month"></e-view>
+      <e-view option="Agenda"></e-view>
+    </e-views>
+    <e-resources>
+      <e-resource field="OwnerId" title="Owner" name="Owners" :dataSource="ownerDataSource" textField="OwnerText" idField="Id"
+        colorField="OwnerColor">
+      </e-resource>
+    </e-resources>
+  </ejs-schedule>
 </template>
 
 <script setup>
-import { onMounted, provide, ref,nextTick } from "vue";
-import {ScheduleComponent as EjsSchedule, ViewsDirective as EViews, ViewDirective as EView, ResourcesDirective as EResources, ResourceDirective as EResource,
-  Day, Week, WorkWeek, Month, Agenda} from "@syncfusion/ej2-vue-schedule";
-import { DataManager ,WebApiAdaptor} from "@syncfusion/ej2-data";
+import { onMounted, provide, ref, nextTick } from "vue";
+import {
+  ScheduleComponent as EjsSchedule, ViewsDirective as EViews, ViewDirective as EView, ResourcesDirective as EResources, ResourceDirective as EResource,
+  Day, Week, WorkWeek, Month, Agenda, DragAndDrop
+} from "@syncfusion/ej2-vue-schedule";
+import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import axios from "axios";
-provide("schedule", [Day, Week, WorkWeek, Month, Agenda]);
 
-const remoteData= new DataManager({
-    url : 'http://localhost:3000/dataSource',
-    adaptor : new WebApiAdaptor,
-    crossDomain : true
+provide("schedule", [Day, Week, WorkWeek, Month, Agenda, DragAndDrop]);
+
+const remoteData = new DataManager({
+  url: 'http://localhost:3000/dataSource',
+  adaptor: new WebApiAdaptor,
+  crossDomain: true
 });
 
-const scheduleObj = ref(null)
+const scheduleObj = ref(null);
 const selectedDate = new Date();
-const ownerDataSource = ref([])
+const ownerDataSource = ref([]);
 const eventSettings = ref({
-  dataSource: remoteData
-})
+  dataSource: remoteData,
+});
 
-const getOwnerDataSource = async() => {
+const getOwnerDataSource = async () => {
   const res = await axios.get("http://localhost:3000/ownerDataSource");
-  ownerDataSource.value = res.data
-}
+  ownerDataSource.value = res.data;
+};
+
+const onEventRendered = (args) => {
+  const ownerIds = args.data.OwnerIds || [];
+  const avatarsHtml = ownerIds.map(ownerId => {
+    const owner = ownerDataSource.value.find(owner => owner.Id === ownerId);
+    return owner ? `<div class="mx-1"><img width="30" src="${owner.avatar}" class="owner-avatar rounded-circle img-fluid border border-white" /></div>` : '';
+  }).join('');
+
+  const isSingleAvatar = ownerIds.length === 1;
+  args.element.innerHTML = !isSingleAvatar
+    ? `<div class="d-flex justify-content-center mt-1">${avatarsHtml}</div><div class="d-flex justify-content-center">${args.data.Subject}</div>`
+    : `<div class="d-flex align-items-center mt-1">${avatarsHtml}<div class="">${args.data.Subject}</div></div>`;
+};
 
 const onActionBegin = async (args) => {
   if (args.requestType === 'eventCreate') {
     try {
-       await axios.post('http://localhost:3000/dataSource', args.data[0]);
+      const eventData = {
+        ...args.data[0],
+        OwnerIds: Array.isArray(args.data[0].OwnerId) ? args.data[0].OwnerId : [args.data[0].OwnerId || []]
+      };
+
+      delete eventData.OwnerId;
+
+      await axios.post('http://localhost:3000/dataSource', eventData);
     } catch (error) {
       console.error('Error adding event:', error);
     }
@@ -76,20 +86,18 @@ const onActionBegin = async (args) => {
     }
   }
   await nextTick(() => {
-        scheduleObj.value.refreshEvents();
+    scheduleObj.value.refreshEvents();
   });
-}
+};
 
-
-onMounted(() =>{
-  getOwnerDataSource()
-})
+onMounted(() => {
+  getOwnerDataSource();
+});
 </script>
 
 <style scoped>
-
 .calendar {
-  margin-top:60px;
+  margin-top: 60px;
 }
 
 @import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
