@@ -6,7 +6,9 @@
                 <div class="separate"></div>
                 <div class="content-header">
                     <h3 class="content-title">Nội dung khóa học</h3>
-                    <p class="course-time">26 chương • 30 bài giảng • 42 giờ tổng thời lượng</p>
+                    <p class="course-time">{{ totalChapters }} chương • {{ totalLessons }}  bài giảng • Tổng thời lượng:
+                        {{
+                            courses.thoiGian }} </p>
                 </div>
                 <div class="content-body mt-3">
                     <div id="accordion">
@@ -17,7 +19,7 @@
                                     <button class="btn chapter-title" data-toggle="collapse"
                                         :data-target="'#collapse' + index" :aria-controls="'collapse' + index">
                                         <i class="fa-solid fa-angle-down"></i>
-                                        {{ chuong.tenChuong }}
+                                        Chapter {{ index + ": " + chuong.tenChuong }}
                                     </button>
                                 </h5>
                             </div>
@@ -26,7 +28,7 @@
                                 <div class="card-body" v-for="(item, index) in chuong.baiTap" :key="index">
                                     <div class="assignment">
                                         <i class="fa-solid fa-book"></i>
-                                        <p class="ml-2 assignment-title">{{ item.tenBaiTap }}</p>
+                                        <p class="ml-2 assignment-title">#{{ index + " " + item.tenBaiTap }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -58,13 +60,18 @@ import { ref } from "vue";
 import { onMounted } from "vue";
 
 const courses = ref([]);
+const totalChapters = ref([]);
+const totalLessons = ref([]);
 
 const fetchCourses = async () => {
     const response = await axios.get("/dataNhom1.json");
     console.log("test", response.data.khoahoc[0]);
     courses.value = response.data.khoahoc[0];
-    console.log(courses.id);
-
+    totalChapters.value = courses.value.chuong.length;
+    totalLessons.value = courses.value.chuong.reduce((acc, chuong) => {
+        return acc + chuong.baiTap.length;
+    }, 0);
+    console.log("totalChapters", totalLessons.value);
 };
 
 onMounted(async () => {
@@ -109,6 +116,7 @@ p {
     width: 20px;
     height: 20px;
     padding-right: 2px;
+    line-height: 20px;
 }
 
 .student-count {
@@ -156,6 +164,7 @@ p {
     display: flex;
     align-items: center;
     height: 30px;
+    padding-left: 12px;
 }
 
 .body-wrapper {
