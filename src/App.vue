@@ -17,6 +17,10 @@ import Footer from './components/Footer/Footer.vue';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 </script>
 <style>
+:root {
+  --text-color: #ADB8CC;
+}
+
 body {
   margin: 0;
   padding: 0;

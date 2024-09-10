@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-container">
     <div class="list-item">
-        <div class="item" @click="handleSelect(1)" :class="{active: selectedItem === 1}">
+        <div v-if="isTeacher" class="item" @click="handleSelect(1)" :class="{active: selectedItem === 1}">
             <router-link to="">Đặt Lịch support</router-link>
         </div>
         <div class="item" @click="handleSelect(2)" :class="{active: selectedItem === 2}">
@@ -10,7 +10,7 @@
         <div class="item" @click="handleSelect(3)" :class="{active: selectedItem === 3}">
             <router-link to="">Quản Lý Tài khoản Học Viên</router-link>
         </div>
-        <div class="item" @click="handleSelect(4)" :class="{active: selectedItem === 4}">
+        <div v-if="isTeacher" class="item" @click="handleSelect(4)" :class="{active: selectedItem === 4}">
             <router-link to="">Quản Lý Tài khoản Giảng Viên</router-link>
         </div>
     </div>
@@ -18,7 +18,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { useStore } from 'vuex';
 
 
 const selectedItem = ref(0);
@@ -27,6 +28,12 @@ const handleSelect = (e) => {
     selectedItem.value = e
 
 }
+
+// take role from store
+const store = useStore();
+const role = computed(() => store.getters.getUserRole);
+const isTeacher = computed(() => role.value === 'gvT');
+
 </script>
 
 <style scoped>
