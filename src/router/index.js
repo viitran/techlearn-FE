@@ -3,7 +3,7 @@ import Students from '@/components/student/Students.vue'
 import StudentUpdate from '@/components/student/StudentUpdate.vue'
 import NotFound from '@/components/NotFound/NotFound.vue'
 import StudentCreate from '@/components/student/StudentCreate.vue'
-import { checkRole } from "@/components/Middleware/AuthenticateTecher";
+import { checkRole } from "@/components/Middleware/AuthenticateTeacher";
 
 const routes = [
   {
