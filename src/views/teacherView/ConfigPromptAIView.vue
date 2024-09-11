@@ -1,25 +1,48 @@
 <template>
-  <div class="container w-100 my-5 h-100">
-    <h3>CẤU HÌNH FROM REVIEW BÀI TẬP</h3>
+  <div class="container w-100 my-2 h-100">
+    <h3>CẤU HÌNH prompt REVIEW BÀI TẬP</h3>
+
     <hr />
-    <h5>Cấu trúc prompt</h5>
+    <h5>
+      Cấu trúc prompt
+      <span class="text-secondary" v-if="promptAI && promptAI.isTemplate"
+        >(Template)</span
+      >
+    </h5>
     <div class="mb-3">
       <textarea
         class="form-control shadow"
         id="exampleFormControlTextarea1"
         rows="10"
-        v-model="promptAI.contentPrompt"
+        v-if="promptAI"
+        v-model="promptAI.promptStructure"
       >
       </textarea>
     </div>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
       <button
         class="btn btn-primary me-md-2"
-        @click="submitPrompt"
+        @click="createPrompt"
         type="button"
       >
-        Submit
+        Add new
       </button>
+      <button
+        v-if="promptAI.id && !promptAI.isTemplate"
+        class="btn btn-primary me-md-2"
+        @click="updatePrompt"
+        type="button"
+      >
+        Update
+      </button>
+      <!-- <button
+        v-if="promptAI.id"
+        class="btn btn-danger me-md-2"
+        @click="deletePrompt"
+        type="button"
+      >
+        Delete
+      </button> -->
     </div>
   </div>
 </template>
@@ -31,38 +54,65 @@ import * as yup from "yup";
 export default {
   async mounted() {
     try {
-      const response = await axios.get(this.mockApi);
+      this.paramID = this.$route.query.param;
+      console.log(this.paramID);
+      const response = await axios.get(this.rootApi + "/api/v1/admin/review-config/" + this.paramID);
 
       if (response.status == 200) {
-        this.promptAI.contentPrompt = response.data.contentPrompt;
+        this.promptAI = response.data.result;
+        console.log(response.data.result);
       } else {
         toast.error("Update Failed !");
       }
     } catch (error) {
-      toast.error("An error occurred while fill prompt!");
+      // toast.error("An error occurred while fill prompt!");
     }
   },
   data() {
     return {
       mockApi: "http://localhost:3000/prompt",
       rootApi: process.env.VUE_APP_ROOT_API,
+      paramID: null,
       promptAI: {
-        contentPrompt: `Bây giờ tôi sẽ gửi cho bạn link github, tôi muốn bạn review bài tập ở link github đó.     
-Đây là link github của tôi: {{githubLink}} 
-Kết quả review được trả lời bằng tiếng Việt.     
-Cấu trúc review sẽ gồm:
-Nhận xét chi tiết
-Đánh giá tổng quan
-Kết quả (chỉ trả lời pass/fail) `,
+        id: null,
+        promptStructure: "",
+        isActive: false,
       },
     };
   },
 
   methods: {
-    async submitPrompt() {
+
+    async createPrompt() {
       try {
-        const response = await axios.put(this.mockApi, this.promptAI);
-        console.log(response.data);
+        this.promptAI.id=null;
+        this.promptAI.isActive=false;
+        // this.promptAI.isTemplate=false;
+        const response = await axios.post(  this.rootApi+"/api/v1/admin/review-config" ,this.promptAI);
+        console.log(this.promptAI);
+        if (response.status === 200) {
+          
+          toast.success("Add Success !", {
+            autoClose: 2000,
+          });
+        } else {
+          toast.error("Add Failed !");
+        }
+      } catch (error) {
+        toast.error("An error occurred while Add prompt!");
+        console.log(error);
+      }
+    },
+
+    async updatePrompt() {
+     
+      try {
+        const response = await axios.put(
+          this.rootApi + "/api/v1/admin/review-config/" + this.promptAI.id,
+           {promptStructure: this.promptAI.promptStructure}
+        );
+        console.log(this.promptAI.promptStructure);
+
         if (response.status === 200) {
           toast.success("Update  Success !", {
             autoClose: 2000,
@@ -72,6 +122,24 @@ Kết quả (chỉ trả lời pass/fail) `,
         }
       } catch (error) {
         toast.error("An error occurred while update prompt!");
+        console.log(error);
+      }
+    },
+
+    async deletePrompt() {
+      try {
+        const response = await axios.delete(  this.rootApi + "/api/v1/admin/review-config/" + this.promptAI.id);
+        console.log(response.data);
+        if (response.status === 200) {
+          this.$router.push("/listPrompt")
+          toast.success("delete  Success !", {
+            autoClose: 2000,
+          });
+        } else {
+          toast.error("delete Failed !");
+        }
+      } catch (error) {
+        toast.error("An error occurred while delete prompt!");
         console.log(error);
       }
     },

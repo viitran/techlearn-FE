@@ -34,7 +34,7 @@
         @click="handleSelect(5)"
         :class="{ active: selectedItem === 5 }"
       >
-        <router-link to="configPrompt">Config Promp chấm điểm </router-link>
+        <router-link to="listPrompt">Config Promp chấm điểm </router-link>
       </div>
       <div
         class="item"

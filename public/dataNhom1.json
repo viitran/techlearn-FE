@@ -319,7 +319,31 @@
       "AIComment": "sửa abcdef vị trí xyz"
     }
   ],
-  "prompt": {
-    "contentPrompt": "Bây giờ tôi sẽ gửi cho bạn link github, tôi muốn bạn review bài tập ở link github đó. Đây là link github của tôi: {{githubLink}} Kết quả review được trả lời bằng tiếng Việt. Cấu trúc review sẽ gồm: Nhận xét chi tiết Đánh giá tổng quan Kết quả (chỉ trả lời pass/fail)"
-  }
+  "prompt": [
+    {
+      "id": "2",
+      "promptStructure": "Bây giờ tôi sẽ gửi cho bạn link github, tôi muốn bạn review bài tập ở link github đó. Đây là link github của tôi: {{githubLink}} Kết quả review được trả lời bằng tiếng Việt. Cấu trúc review sẽ gồm: Nhận xét chi tiết Đánh giá tổng quan Kết quả (chỉ trả lời pass/fail)",
+      "isActive": false,
+      "isTemplate": true
+    },
+    {
+      "id": "3",
+      "promptStructure": "Bây giờ tôi sẽ gửi cho bạn link github, tôi muốn bạn review bài tập ở link github đó. Đây là link github của tôi: {{githubLink}} Kết quả review được trả lời bằng tiếng Việt. Cấu trúc review sẽ gồm: Nhận xét chi tiết Đánh giá tổng quan Kết quả (chỉ trả lời pass/fail)",
+      "isActive": false,
+      "isTemplate": true
+    },
+    {
+      "id": "4",
+      "promptStructure": "Bây giờ tôi sẽ gửi cho bạn link github, tôi muốn bạn review bài tập ở link github đó. Đây là link github của tôi: {{githubLink}} Kết quả review được trả lời bằng tiếng Việt. Cấu trúc review sẽ gồm: Nhận xét chi tiết Đánh giá tổng quan Kết quả (chỉ trả lời pass/fail)",
+      "isActive": false,
+      "isTemplate": true
+    },
+    {
+      "id": "1",
+      "promptStructure": "Bây giờ tôi sẽ gửi cho bạn link github, tôi muốn bạn review bài tập ở link github đó. Đây là link github của tôi: {{githubLink}} Kết quả review được trả lời bằng tiếng Việt. Cấu trúc review sẽ gồm: Nhận xét chi tiết Đánh giá tổng quan Kết quả (chỉ trả lời pass/fail)",
+      "isActive": true,
+      "isTemplate": true
+    }
+  
+  ]
 }
