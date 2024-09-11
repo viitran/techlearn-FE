@@ -1,4 +1,22 @@
 <template>
+    <div class="navbar-container">
+        <div class="list-item">
+            <div class="item" @click="handleSelect(1)" :class="{ active: selectedItem === 1 }">
+                <router-link to="">Đặt Lịch support</router-link>
+            </div>
+            <div class="item" @click="handleSelect(2)" :class="{ active: selectedItem === 2 }">
+                <router-link to="">Xem Lịch Giảng Viên</router-link>
+            </div>
+            <div class="item" @click="handleSelect(3)" :class="{ active: selectedItem === 3 }">
+                <router-link to="">Quản Lý Tài khoản Học Viên</router-link>
+            </div>
+            <div class="item" @click="handleSelect(4)" :class="{ active: selectedItem === 4 }">
+                <router-link to="">Quản Lý Tài khoản Giảng Viên</router-link>
+            </div>
+            <div class="item" @click="handleSelect(5)" :class="{ active: selectedItem === 5 }">
+                <router-link to="/coursePage">Khóa học của tôi</router-link>
+            </div>
+        </div>
   <div class="navbar-container">
     <div class="list-item">
       <div
@@ -37,7 +55,6 @@
         <router-link to="/coursePage">Khóa học của tôi</router-link>
       </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -52,6 +69,18 @@ const handleSelect = (e) => {
 
 <style scoped>
 .navbar-container {
+
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.list-item {
+    /* padding: 5px; */
+}
+
+
   display: flex;
   flex-direction: column;
   border-radius: 5px;
