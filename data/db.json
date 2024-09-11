@@ -54,53 +54,25 @@
       "RecurrenceID": null,
       "Guid": "2b4b408c-6469-810a-4aca-b5943288b334",
       "OwnerId": null
-    },
-    {
-      "id": "8305",
-      "Subject": "Demo from Tuan",
-      "Id": 8,
-      "StartTime": "2024-09-09T04:00:00.000Z",
-      "EndTime": "2024-09-09T04:30:00.000Z",
-      "IsAllDay": false,
-      "OwnerIds": [1],
-      "Guid": "e9e980bd-235a-933f-eaa4-faa6b96b8fc4",
-      "StartTimezone": null,
-      "EndTimezone": null,
-      "RecurrenceRule": null
-    },
-    {
-      "id": "333c",
-      "Subject": "Add title",
-      "StartTime": "2024-09-12T03:30:00.000Z",
-      "EndTime": "2024-09-12T04:00:00.000Z",
-      "IsAllDay": false,
-      "StartTimezone": null,
-      "EndTimezone": null,
-      "RecurrenceRule": null,
-      "Id": 9,
-      "RecurrenceException": null,
-      "RecurrenceID": null,
-      "OwnerIds": [1],
-      "Guid": "c8f1f0b6-5258-bb17-a8b4-cfa2d01aa783"
     }
   ],
   "ownerDataSource": [
     {
-      "OwnerText": "Nancy",
+      "OwnerText": "Orange",
       "Id": 1,
       "OwnerColor": "#ffaa00",
       "id": "efbd",
       "avatar": "https://media.discordapp.net/attachments/1276452438135799840/1282903831318888560/455284467_1042581230583933_1145821705937534774_n.jpg?ex=66e10ccc&is=66dfbb4c&hm=678e8578d6e6ca3305326309c9dc00b865f5a9538f71e4ddcc99538ae6a13fa3&=&format=webp&width=565&height=565"
     },
     {
-      "OwnerText": "Steven",
+      "OwnerText": "Peach",
       "Id": 2,
       "OwnerColor": "#FFF000",
       "id": "c198",
       "avatar": "https://media.discordapp.net/attachments/1276452438135799840/1282903831318888560/455284467_1042581230583933_1145821705937534774_n.jpg?ex=66e10ccc&is=66dfbb4c&hm=678e8578d6e6ca3305326309c9dc00b865f5a9538f71e4ddcc99538ae6a13fa3&=&format=webp&width=565&height=565"
     },
     {
-      "OwnerText": "Michael",
+      "OwnerText": "Blue",
       "Id": 3,
       "OwnerColor": "#7499e1",
       "id": "7eb2",
