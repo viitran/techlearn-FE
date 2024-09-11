@@ -138,6 +138,9 @@ const searchCalendar = handleSubmit ( async (formData) => {
         const res = await axios.get(`http://localhost:8181/api/v1/teacher-calendar/find-by-id/${formData.giangvien.Id}`);
         if (res.status === 200) {
             resetForm();
+            module.value = "";
+            chuong.value = "";
+            giangvien.value = null;
             idGV.value = res.data[0].OwnerId
         }
     } catch (error) {

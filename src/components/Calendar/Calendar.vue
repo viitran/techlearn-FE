@@ -116,17 +116,18 @@ const getOwnerDataSource = async () => {
 
 }
 const getEvent = async () => {
+  // remoteData.url = props.url
   try {
     const filtered = await axios.get(`http://localhost:8181/api/v1/teacher-calendar/find-by-id/${props.id}`);
-  
     const res = await axios.get("http://localhost:8181/api/v1/teacher-calendar/?StartDate=2020-09-07T17:00:00.000Z&EndDate=2024-09-14T17:00:00.000Z");
-    let allEvents = res.data;  // Tất cả sự kiện từ API
+    let allEvents = res.data;
     allEvents = res.data.filter((i) =>{
         return i.Id  === filtered.data[0].Id
       })
-      eventSettings.value.dataSource = allEvents;
+      eventSettings.value = {
+      dataSource: filtered.data
+};
        await nextTick();
-      scheduleObj.value.refreshEvents();
   } catch (error) {
     console.error('Error fetching or filtering events:', error);
   }
