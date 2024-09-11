@@ -104,17 +104,20 @@ const viewSolution = () => {
 const submitAssignment = async () => {
   try {
     isLoading.value = true;
-    console.log(githubLink.value);
     const response = await axios.post(
       `${rootApi}/api/v1/reviews/fetch-repo-content`,
       {
         github_link: githubLink.value,
+        exerciseTitle:
+          assignmentDescription.value.tenBaiTap +
+          "yêu cầu: " +
+          assignmentDescription.value.moTa +
+          " ",
       }
     );
-    // const data = JSON.parse(response.data.result);
     const data = response.data;
-    // console.log(response.data.result);
     result.value.push(data.result);
+    console.log(assignmentDescription.value.moTa);
     isLoading.value = false;
   } catch (error) {
     console.log(error);
@@ -122,7 +125,6 @@ const submitAssignment = async () => {
 };
 
 const formatResult = (result) => {
-  // const str = JSON.parse(result);
   return result.replace(/\\n/g, "<br>");
 };
 
