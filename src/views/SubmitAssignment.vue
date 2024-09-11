@@ -37,12 +37,6 @@
         :key="index"
       >
         <p>Lần submit thứ {{ index + 1 }}:</p>
-        <!-- <textarea
-          ref='"resultTextarea"+ index'
-          readonly
-          v-model="result[index]"
-          @input="adjustHeight"
-        ></textarea> -->
         <div class="response-AI-text" v-html="formatResult(res)"></div>
       </div>
     </div>
@@ -61,6 +55,19 @@ const assignmentDescription = ref(null);
 const githubLink = ref("");
 const result = ref([]);
 const isLoading = ref(false);
+const rootApi = process.env.VUE_APP_ROOT_API;
+
+const fetchReview = async () => {
+  try {
+    const response = await axios.get(`${rootApi}/api/v1/reviews`);
+    response.data.result.items.map((review, index) => {
+      result.value.push(review.content);
+    });
+    console.log(result.value);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const fetchAssignments = async () => {
   try {
@@ -99,13 +106,14 @@ const submitAssignment = async () => {
     isLoading.value = true;
     console.log(githubLink.value);
     const response = await axios.post(
-      "http://localhost:8080/api/v1/reviews/fetch-repo-content",
+      `${rootApi}/api/v1/reviews/fetch-repo-content`,
       {
         github_link: githubLink.value,
       }
     );
-    const data = JSON.parse(response.data.result);
-
+    // const data = JSON.parse(response.data.result);
+    const data = response.data;
+    // console.log(response.data.result);
     result.value.push(data.result);
     isLoading.value = false;
   } catch (error) {
@@ -114,11 +122,13 @@ const submitAssignment = async () => {
 };
 
 const formatResult = (result) => {
-  return result.replace(/\n/g, "<br>");
+  // const str = JSON.parse(result);
+  return result.replace(/\\n/g, "<br>");
 };
 
 onMounted(async () => {
   await fetchAssignments();
+  await fetchReview();
 });
 </script>
 
