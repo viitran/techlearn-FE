@@ -45,10 +45,12 @@
                             <span class="error-message">{{ teacherError }}</span>
                         </div>
                         <div>
-                            <select class="modify-select" name="giangvien" v-model="giangvien">
-                                <option value="" disabled selected hidden>Chọn giảng viên</option>
-                                <option class="modify-option" value="giangvien1">Giảng viên 1</option>
-                            </select>
+                                <select class="modify-select" name="giangvien" v-model="giangvien">
+                                    <option :value="null" disabled selected hidden>Chọn giảng viên</option>
+                                    <option class="modify-option"  v-for="teacher in allTeachers" :key="teacher.id" :value="teacher">
+                                        {{ teacher.OwnerText }}
+                                    </option>
+                                </select>
                         </div>
                     </div>
                 </div>
@@ -67,7 +69,7 @@
     </div>
     <div v-if="stateButtonFormStudent === true" class="row">
         <div class="col">
-            <Calendar />
+            <Calendar :url="url" :id="idGV"/>
         </div>
     </div>
 </template>
@@ -75,11 +77,13 @@
 <script setup>
 import axios from 'axios';
 import { useField, useForm } from 'vee-validate';
+import { onMounted } from 'vue';
 import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 import * as yup from 'yup';
 import Calendar from '../Calendar/Calendar.vue';
-const rootApi = process.env.VUE_APP_ROOT_API;
+
+
 
 const stateButtonFormStudent = ref(false);
 
@@ -92,35 +96,59 @@ const { handleSubmit, resetForm } = useForm({
             .string()
             .required('*'),
         giangvien: yup
-            .string()
-            .required('*'),
+            .object().nullable()
+            .required('*')
     }),
 });
 
 const { value: module, errorMessage: moduleError } = useField('module');
 const { value: chuong, errorMessage: chuongError } = useField('chuong');
 const { value: giangvien, errorMessage: teacherError } = useField('giangvien');
-
+const allTeachers = ref([]);
+const url =ref("");
+const idGV = ref()
 // value default option in select
 module.value = "";
 chuong.value = "";
-giangvien.value = "";
+giangvien.value = null;
+
+
+const getAllCalendars =  () =>{
+    url.value="http://localhost:8181/api/v1"
+}
+const getAllTeacher = async () => {
+    try {
+        const res = await axios.get(`http://localhost:8181/api/v1/teachers/`);
+        allTeachers.value=res.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const filterEventsByOwner = (events) => {
+  return events.filter(event => event.OwnerIds.includes(1));
+};
 
 const changeOfStateButtonStudent = () => {
     stateButtonFormStudent.value = !stateButtonFormStudent.value;
 }
 
-const searchCalendar = handleSubmit(async (formData) => {
+const searchCalendar = handleSubmit ( async (formData) => {
     try {
-        const res = await axios.post(`${rootApi}/`, formData);
+        const res = await axios.get(`http://localhost:8181/api/v1/teacher-calendar/find-by-id/${formData.giangvien.Id}`);
         if (res.status === 200) {
             resetForm();
+            idGV.value = res.data[0].OwnerId
         }
     } catch (error) {
         toast.error("Error your submit. Please try again!");
     }
 });
 
+onMounted(() => {
+    getAllTeacher();
+    getAllCalendars();
+})
 </script>
 
 <style scoped>

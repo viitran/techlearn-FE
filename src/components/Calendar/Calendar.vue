@@ -80,8 +80,9 @@ import { DataManager ,WebApiAdaptor} from "@syncfusion/ej2-data";
 import axios from "axios";
 import { DropDownListComponent as ejsDropdownlist} from "@syncfusion/ej2-vue-dropdowns";
 import { DateTimePickerComponent  as ejsDatetimepicker} from "@syncfusion/ej2-vue-calendars";
+import { watch } from "vue";
 
-const props = defineProps(['url']);
+const props = defineProps(['url', 'id']);
 
 provide("schedule", [Day, Week, WorkWeek, Month, Agenda, DragAndDrop]);
 
@@ -114,6 +115,22 @@ const getOwnerDataSource = async () => {
   ownerDataSource.value = res.data;
 
 }
+const getEvent = async () => {
+  try {
+    const filtered = await axios.get(`http://localhost:8181/api/v1/teacher-calendar/find-by-id/${props.id}`);
+  
+    const res = await axios.get("http://localhost:8181/api/v1/teacher-calendar/?StartDate=2020-09-07T17:00:00.000Z&EndDate=2024-09-14T17:00:00.000Z");
+    let allEvents = res.data;  // Tất cả sự kiện từ API
+    allEvents = res.data.filter((i) =>{
+        return i.Id  === filtered.data[0].Id
+      })
+      eventSettings.value.dataSource = allEvents;
+       await nextTick();
+      scheduleObj.value.refreshEvents();
+  } catch (error) {
+    console.error('Error fetching or filtering events:', error);
+  }
+};
 
 const onEventRendered = (args) => {
   const ownerIds = args.data.OwnerIds || [];
@@ -184,7 +201,14 @@ onMounted(() =>{
   getOwnerDataSource()
 })
 
-
+watch(() => props.id, async (newId) => {
+  if (newId) {
+    getEvent();
+    await nextTick(() => {
+    scheduleObj.value.refreshEvents();
+  });
+  }
+});
 </script>
 
 <style scoped>
