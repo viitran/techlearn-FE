@@ -6,7 +6,6 @@ import StudentCreate from '@/components/student/StudentCreate.vue'
 import Calendar from '@/components/Calendar/Calendar.vue'
 import { checkRole } from "@/components/Middleware/AuthenticateTeacher";
 import Teacher from '@/components/Teacher/Teacher.vue'
-import FormStudent from '@/components/student/FormStudent.vue'
 
 const routes = [
   {

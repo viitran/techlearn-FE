@@ -82,7 +82,7 @@ import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 import * as yup from 'yup';
 import Calendar from '../Calendar/Calendar.vue';
-
+const rootApi = process.env.VUE_APP_ROOT_API;
 
 
 const stateButtonFormStudent = ref(false);
@@ -114,20 +114,16 @@ giangvien.value = null;
 
 
 const getAllCalendars =  () =>{
-    url.value="http://localhost:8181/api/v1"
+    url.value=`${rootApi}`
 }
 const getAllTeacher = async () => {
     try {
-        const res = await axios.get(`http://localhost:8181/api/v1/teachers/`);
+        const res = await axios.get(`${rootApi}/teachers/`);
         allTeachers.value=res.data;
     } catch (error) {
         console.log(error);
     }
 }
-
-const filterEventsByOwner = (events) => {
-  return events.filter(event => event.OwnerIds.includes(1));
-};
 
 const changeOfStateButtonStudent = () => {
     stateButtonFormStudent.value = !stateButtonFormStudent.value;
@@ -135,7 +131,7 @@ const changeOfStateButtonStudent = () => {
 
 const searchCalendar = handleSubmit ( async (formData) => {
     try {
-        const res = await axios.get(`http://localhost:8181/api/v1/teacher-calendar/find-by-id/${formData.giangvien.Id}`);
+        const res = await axios.get(`${rootApi}/teacher-calendar/find-by-id/${formData.giangvien.Id}`);
         if (res.status === 200) {
             resetForm();
             module.value = "";
