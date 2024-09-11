@@ -1,27 +1,27 @@
 <template>
-  <header class="header-container">
-    <div class="header-maxwidth">
-        <div class="div-right">
-            <img alt="Logo" src="https://www.dongdu.studyarts.vn/static/images/logo-jp.png"/>
-            <div class="header-search">
-                <input class="input-search" placeholder="Nhập Từ Khóa"/>
+    <header class="header-container">
+        <div class="header-maxwidth">
+            <div class="div-right">
+                <img alt="Logo" src="https://www.dongdu.studyarts.vn/static/images/logo-jp.png" />
+                <div class="header-search">
+                    <input class="input-search" placeholder="Nhập Từ Khóa" />
+                    <div>
+                        <span>Tìm kiếm</span>
+                    </div>
+                </div>
+            </div>
+            <div class="div-left">
                 <div>
-                    <span>Tìm kiếm</span>
+                    <router-link to="">
+                        <span>
+                            Đăng nhập
+                        </span>
+                        <fa icon="right-to-bracket" />
+                    </router-link>
                 </div>
             </div>
         </div>
-        <div class="div-left">
-            <div>
-                <router-link to="">
-                <span>
-                        Đăng nhập
-                    </span>
-                    <fa icon="right-to-bracket"/>
-                </router-link>
-            </div>
-        </div>
-    </div>
-  </header>
+    </header>
 </template>
 
 <script setup>
@@ -56,6 +56,7 @@ import { ref } from 'vue';
     display: flex;
     min-width: 80%;
 }
+
 .input-search {
     height: 38px;
     border: none;
@@ -88,5 +89,4 @@ import { ref } from 'vue';
     text-decoration: none;
     color: #fff;
 }
-
 </style>
