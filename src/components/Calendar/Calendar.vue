@@ -81,10 +81,13 @@ import axios from "axios";
 import { DropDownListComponent as ejsDropdownlist} from "@syncfusion/ej2-vue-dropdowns";
 import { DateTimePickerComponent  as ejsDatetimepicker} from "@syncfusion/ej2-vue-calendars";
 
+const props = defineProps(['url']);
+
 provide("schedule", [Day, Week, WorkWeek, Month, Agenda, DragAndDrop]);
 
 const remoteData = new DataManager({
-  url: 'http://localhost:3000/dataSource',
+  // url: 'http://localhost:3000/dataSource',
+  url: `${props.url}/teacher-calendar`,
   adaptor: new WebApiAdaptor,
   crossDomain: true
 });
@@ -107,7 +110,7 @@ const dropListFields= {
 }
 
 const getOwnerDataSource = async () => {
-  const res = await axios.get("http://localhost:3000/ownerDataSource");
+  const res = await axios.get(`${props.url}/teachers/`);
   ownerDataSource.value = res.data;
 
 }
@@ -125,28 +128,49 @@ const onEventRendered = (args) => {
     : `<div class="d-flex align-items-center mt-1">${avatarsHtml}<div class="">${args.data.Subject}</div></div>`;
 };
 
+const formatDate = (dateStr) => {
+  const date = new Date(dateStr);
+  // Chuyển đổi sang múi giờ Asia/Bangkok
+  date.setHours(date.getHours() + 7);
+  // Format date to 'yyyy-MM-ddTHH:mm:ss'
+  return date.toISOString().slice(0, 19);
+};
+
 const onActionBegin = async (args) => {
   if (args.requestType === 'eventCreate') {
     try {
-      const eventData = {
-        ...args.data[0],
-        OwnerIds: Array.isArray(args.data[0].OwnerId) ? args.data[0].OwnerId : [args.data[0].OwnerId || []]
+      const eventData = args.data[0];
+
+      const formattedEventData = {
+        ...eventData,
+        StartTime: formatDate(eventData.StartTime),
+        EndTime: formatDate(eventData.EndTime),
       };
+      console.log(formattedEventData);
+
+      await axios.post(`${props.url}/teacher-calendar`, formattedEventData);
       
-      delete eventData.OwnerId;
-      await axios.post('http://localhost:3000/dataSource', eventData);
     } catch (error) {
       console.error('Error adding event:', error);
     }
   } else if (args.requestType === 'eventRemove') {
     try {
-      await axios.delete(`http://localhost:3000/dataSource/${args.data[0].id}`);
+      await axios.delete(`${props.url}/teacher-calendar/${args.data[0].Id}`);
     } catch (error) {
       console.error('Error deleting event:', error);
     }
   } else if (args.requestType === 'eventChange') {
     try {
-      await axios.put(`http://localhost:3000/dataSource/${args.data.id}`, args.data);
+
+      const formattedEventData = {
+        ...args.data,
+        StartTime: formatDate(args.data.StartTime),
+        EndTime: formatDate(args.data.EndTime),
+      };
+
+      console.log(formattedEventData);
+
+      await axios.put(`${props.url}/teacher-calendar/${formattedEventData.Id}`, formattedEventData);
     } catch (error) {
       console.error('Error updating event:', error);
     }
