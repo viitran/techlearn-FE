@@ -1,20 +1,20 @@
 <template>
-  <div class="navbar-container">
-    <div class="list-item">
-        <div v-if="isTeacher" class="item" @click="handleSelect(1)" :class="{active: selectedItem === 1}">
-            <router-link to="">Đặt Lịch support</router-link>
-        </div>
-        <div class="item" @click="handleSelect(2)" :class="{active: selectedItem === 2}">
-            <router-link to="">Xem Lịch Giảng Viên</router-link>
-        </div>
-        <div class="item" @click="handleSelect(3)" :class="{active: selectedItem === 3}">
-            <router-link to="">Quản Lý Tài khoản Học Viên</router-link>
-        </div>
-        <div v-if="isTeacher" class="item" @click="handleSelect(4)" :class="{active: selectedItem === 4}">
-            <router-link to="">Quản Lý Tài khoản Giảng Viên</router-link>
+    <div class="navbar-container">
+        <div class="list-item">
+            <div v-if="isTeacher" class="item" @click="handleSelect(1)" :class="{ active: selectedItem === 1 }">
+                <router-link to="">Đặt Lịch support</router-link>
+            </div>
+            <div class="item" @click="handleSelect(2)" :class="{ active: selectedItem === 2 }">
+                <router-link to="">Xem Lịch Giảng Viên</router-link>
+            </div>
+            <div class="item" @click="handleSelect(3)" :class="{ active: selectedItem === 3 }">
+                <router-link to="">Quản Lý Tài khoản Học Viên</router-link>
+            </div>
+            <div v-if="isTeacher" class="item" @click="handleSelect(4)" :class="{ active: selectedItem === 4 }">
+                <router-link to="">Quản Lý Tài khoản Giảng Viên</router-link>
+            </div>
         </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -41,11 +41,13 @@ const isTeacher = computed(() => role.value === 'gvT');
     display: flex;
     flex-direction: column;
     border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.list-item{
+
+.list-item {
     /* padding: 5px; */
 }
+
 .item {
     padding: 10px;
     cursor: pointer;

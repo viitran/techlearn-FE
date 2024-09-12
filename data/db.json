@@ -1,132 +1,82 @@
 {
-  "initialEvents": [
-    {
-      "id": "62aa",
-      "title": "1234",
-      "end": "2024-09-05",
-      "allDay": false,
-      "note": ""
-    },
-    {
-      "id": "3e99",
-      "title": "asdasd",
-      "end": "2024-09-06",
-      "allDay": false,
-      "note": ""
-    },
-    {
-      "id": "051c",
-      "title": "wdqw",
-      "end": "2024-09-05",
-      "allDay": false,
-      "note": ""
-    },
-    {
-      "id": "23a2",
-      "title": "qweqwe",
-      "end": "2024-09-04",
-      "allDay": false,
-      "note": ""
-    },
-    {
-      "id": "08da"
-    },
-    {
-      "id": "a2fd"
-    },
-    {
-      "id": "a6e5",
-      "title": "test",
-      "start": "2024-09-04",
-      "end": "2024-09-05",
-      "allDay": true,
-      "note": ""
-    }
-  ],
   "dataSource": [
     {
-      "Id": 1,
-      "Subject": "Surgery - Andrew",
-      "EventType": "Confirmed",
-      "StartTime": "2024-09-09T09:00:00",
-      "EndTime": "2024-09-09T10:00:00",
-      "OwnerId": 1,
-      "id": "79a5"
+      "Subject": "Surgery",
+      "StartTime": "2024-09-13T02:30:00.000Z",
+      "EndTime": "2024-09-13T03:00:00.000Z",
+      "OwnerIds": [2],
+      "IsAllDay": false,
+      "OwnerId": 2
     },
     {
       "Id": 2,
       "Subject": "Surgery - Andrew",
       "EventType": "Confirmed",
-      "StartTime": "2024-09-10T09:00:00",
-      "EndTime": "2024-09-10T11:00:00",
-      "OwnerId": 2,
-      "id": "291f"
+      "StartTime": "2024-09-09T17:00:00.000Z",
+      "EndTime": "2024-09-09T17:00:00.000Z",
+      "OwnerIds": [2],
+      "id": "291f",
+      "Guid": "2a61efa6-7879-bffd-196c-d5b4b79a9fa7",
+      "Location": "Da Nang",
+      "IsAllDay": false,
+      "StartTimezone": null,
+      "EndTimezone": null,
+      "RecurrenceRule": null,
+      "OwnerId": null
     },
     {
       "Id": 3,
-      "Subject": "Surgery - Andrew",
+      "Subject": "Le Thanh Tuan",
       "EventType": "Confirmed",
-      "StartTime": "2024-09-11T10:00:00",
-      "EndTime": "2024-09-11T13:00:00",
-      "OwnerId": 3,
-      "id": "fa82"
-    },
-    {
-      "id": "a329",
-      "Subject": "checkkkkkk",
-      "Id": 6,
-      "StartTime": "2024-09-12T04:30:00.000Z",
-      "EndTime": "2024-09-12T05:00:00.000Z",
+      "StartTime": "2024-09-10T03:30:00.000Z",
+      "EndTime": "2024-09-10T06:30:00.000Z",
+      "OwnerIds": [1, 2, 3],
+      "id": "fa82",
+      "Guid": "ea16e0b9-1369-9950-39b4-419e3b7bac27",
       "IsAllDay": false,
-      "OwnerId": 2,
-      "Guid": "fb251c95-bfaa-a03f-b8b2-56be9378a1eb",
       "StartTimezone": null,
       "EndTimezone": null,
-      "RecurrenceRule": null
+      "RecurrenceRule": null,
+      "OwnerId": 2
     },
     {
       "id": "ffb3",
       "Subject": "demo1",
-      "StartTime": "2024-09-11T01:30:00.000Z",
-      "EndTime": "2024-09-11T02:00:00.000Z",
-      "IsAllDay": false,
+      "StartTime": "2024-09-10T17:00:00.000Z",
+      "EndTime": "2024-09-11T17:00:00.000Z",
+      "IsAllDay": true,
       "StartTimezone": null,
       "EndTimezone": null,
-      "OwnerId": 3,
+      "OwnerIds": [3],
       "RecurrenceRule": null,
       "Id": 7,
       "RecurrenceException": null,
       "RecurrenceID": null,
-      "Guid": "aa6f3092-98aa-b0eb-8ab7-688ddb0b8ceb"
-    },
-    {
-      "id": "8305",
-      "Subject": "Add title",
-      "Id": 8,
-      "StartTime": "2024-09-12T03:30:00.000Z",
-      "EndTime": "2024-09-12T04:00:00.000Z",
-      "IsAllDay": false,
-      "OwnerId": 1
+      "Guid": "2b4b408c-6469-810a-4aca-b5943288b334",
+      "OwnerId": null
     }
   ],
   "ownerDataSource": [
     {
-      "OwnerText": "Nancy",
+      "OwnerText": "Orange",
       "Id": 1,
       "OwnerColor": "#ffaa00",
-      "id": "efbd"
+      "id": "efbd",
+      "avatar": "https://media.discordapp.net/attachments/1276452438135799840/1282903831318888560/455284467_1042581230583933_1145821705937534774_n.jpg?ex=66e10ccc&is=66dfbb4c&hm=678e8578d6e6ca3305326309c9dc00b865f5a9538f71e4ddcc99538ae6a13fa3&=&format=webp&width=565&height=565"
     },
     {
-      "OwnerText": "Steven",
+      "OwnerText": "Peach",
       "Id": 2,
-      "OwnerColor": "#f8a398",
-      "id": "c198"
+      "OwnerColor": "#FFF000",
+      "id": "c198",
+      "avatar": "https://media.discordapp.net/attachments/1276452438135799840/1282903831318888560/455284467_1042581230583933_1145821705937534774_n.jpg?ex=66e10ccc&is=66dfbb4c&hm=678e8578d6e6ca3305326309c9dc00b865f5a9538f71e4ddcc99538ae6a13fa3&=&format=webp&width=565&height=565"
     },
     {
-      "OwnerText": "Michael",
+      "OwnerText": "Blue",
       "Id": 3,
       "OwnerColor": "#7499e1",
-      "id": "7eb2"
+      "id": "7eb2",
+      "avatar": "https://media.discordapp.net/attachments/1276452438135799840/1282903831318888560/455284467_1042581230583933_1145821705937534774_n.jpg?ex=66e10ccc&is=66dfbb4c&hm=678e8578d6e6ca3305326309c9dc00b865f5a9538f71e4ddcc99538ae6a13fa3&=&format=webp&width=565&height=565"
     }
   ]
 }
