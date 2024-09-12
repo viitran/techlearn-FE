@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="p-2">
     <div class="button-container">
       <!-- <button class="btn btn-primary">
         <router-link :to="{ name: 'StudentCreate' }" class="link-text">

@@ -1,71 +1,102 @@
 <template>
-    <div class="navbar-container">
-        <div class="list-item">
-            <div v-if="isTeacher" class="item" @click="handleSelect(1)" :class="{ active: selectedItem === 1 }">
-                <router-link to="">Đặt Lịch support</router-link>
+    <div class="wrapper">
+        <nav id="sidebar" :class="{ 'active': isSidebarCollapsed }">
+            <div class="sidebar-header">
+                <h3>Teachlearn</h3>
             </div>
-            <div class="item" @click="handleSelect(2)" :class="{ active: selectedItem === 2 }">
-                <router-link to="">Xem Lịch Giảng Viên</router-link>
-            </div>
-            <div class="item" @click="handleSelect(3)" :class="{ active: selectedItem === 3 }">
-                <router-link to="">Quản Lý Tài khoản Học Viên</router-link>
-            </div>
-            <div v-if="isTeacher" class="item" @click="handleSelect(4)" :class="{ active: selectedItem === 4 }">
-                <router-link to="">Quản Lý Tài khoản Giảng Viên</router-link>
-            </div>
-        </div>
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li><a href="#">Home 1</a></li>
+                        <li><a href="#">Home 2</a></li>
+                        <li><a href="#">Home 3</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">About</a>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
+                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                        <li><a href="#">Page 1</a></li>
+                        <li><a href="#">Page 2</a></li>
+                        <li><a href="#">Page 3</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Portfolio</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
     </div>
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import { useStore } from 'vuex';
+import { inject } from 'vue';
 
-
-const selectedItem = ref(0);
-
-const handleSelect = (e) => {
-    selectedItem.value = e
-
-}
-
-// take role from store
-const store = useStore();
-const role = computed(() => store.getters.getUserRole);
-const isTeacher = computed(() => role.value === 'gvT');
-
+const isSidebarCollapsed = inject('isSidebarCollapsed');
 </script>
 
 <style scoped>
-.navbar-container {
+.wrapper {
     display: flex;
-    flex-direction: column;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    align-items: stretch;
 }
 
-.list-item {
-    /* padding: 5px; */
+#sidebar {
+    min-width: 220px;
+    max-width: 220px;
+    background: #7386D5;
+    color: #fff;
+    transition: all 0.3s;
 }
 
-.item {
-    padding: 10px;
-    cursor: pointer;
-    margin: 20px 5px;
-    display: flex;
-    border-bottom: 1px solid #ddd;
-
-}
-
-.active {
-    background-color: #eee;
-    font-weight: bold;
-    border-radius: 5px;
-}
-
-.item a {
+#sidebar a,
+#sidebar a:hover,
+#sidebar a:focus {
+    color: inherit;
     text-decoration: none;
-    color: black;
-    font-size: 15px;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #6d7fcc;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+}
+
+#sidebar ul li a {
+    padding: 10px 20px;
+    font-size: 1.1em;
+    display: block;
+}
+
+#sidebar ul ul li a {
+    padding: 10px 30px;
+    font-size: 1em;
+    display: block;
+}
+
+#sidebar ul li a:hover {
+    background: #6d7fcc;
+}
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+    background: #6d7fcc;
+}
+
+#sidebar.active {
+    margin-left: -220px;
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -220px;
+    }
+
+    #sidebar.active {
+        margin-left: 0;
+    }
 }
 </style>
