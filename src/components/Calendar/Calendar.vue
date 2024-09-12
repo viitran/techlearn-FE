@@ -117,9 +117,13 @@ const getOwnerDataSource = async () => {
 }
 const getEvent = async () => {
   try {
-    const filtered = await axios.get(`${rootApi}/teacher-calendar/find-by-id/${props.id}`);
+    const res = await axios.get(`${rootApi}/teacher-calendar/find-by-id/${props.id}`);
+    const filtered = res.data.filter((event) => {
+      return new Date(event.StartTime) >= new Date();
+    })
+    console.log(res.data);
     eventSettings.value = {
-      dataSource: filtered.data
+      dataSource: res.data
     };
   } catch (error) {
     console.error('Error fetching or filtering events:', error);

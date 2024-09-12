@@ -63,7 +63,7 @@
         </div>
         <div v-if="stateButtonFormStudent === false" class="col col-md-1 d-flex align-items-center justify-content-center">
             <button @click="changeOfStateButtonStudent" class="btn btn-primary border-0 modify-button">
-                <span><i class="fa-solid fa-plus"></i> Tạo lịch</span>
+                <span><i class="fas fa-plus"></i> Tạo lịch</span>
             </button>
         </div>
     </div>
