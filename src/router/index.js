@@ -3,7 +3,10 @@ import Students from '@/components/student/Students.vue'
 import StudentUpdate from '@/components/student/StudentUpdate.vue'
 import NotFound from '@/components/NotFound/NotFound.vue'
 import StudentCreate from '@/components/student/StudentCreate.vue'
-import Calendar from '@/components/Calendar/Calendar.vue'
+import ConfigPromptAIView from '@/views/teacherView/ConfigPromptAIView.vue'
+import SubmitAssignment from '@/views/SubmitAssignment.vue'
+import ListTemplatePromptView from '@/views/teacherView/listTemplatePromptView.vue'
+// import Calendar from '@/components/Calendar/Calendar.vue'
 import { checkRole } from "@/components/Middleware/AuthenticateTeacher";
 import Teacher from '@/components/Teacher/Teacher.vue'
 
@@ -32,6 +35,22 @@ const routes = [
     path: '/teacher',
     name: 'teacher',
     component: Teacher,
+    props: true
+  },{
+    path: '/configPrompt',
+    name: 'configPrompt',
+    component: ConfigPromptAIView,
+    props: true
+  },{
+    path: '/listPrompt',
+    name: 'listPrompt',
+    component: ListTemplatePromptView,
+    props: true
+  },
+  {
+    path: "/submitAssignment",
+    name: "submitAssignment",
+    component: SubmitAssignment,
     props: true
   },
   {
