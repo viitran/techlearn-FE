@@ -208,7 +208,7 @@ const onActionBegin = async (args) => {
     try {
       await axios.delete(`${props.url}/teacher-calendar/${args.data[0].Id}`);
       Swal.fire({
-        text: "Bạn đã xóa lịch",
+        text: "Bạn đã xóa lịch thành công",
         icon: "success",
         confirmButtonText: "Đồng ý (5)",
         timer: 5000,
