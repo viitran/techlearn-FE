@@ -27,7 +27,11 @@
           placeholder="Thêm link github tại đây"
           v-model="githubLink"
         />
-        <button @click="submitAssignment" :disabled="isLoading">
+        <button
+          @click="submitAssignment"
+          :disabled="isLoading || isPassed"
+          :class="{ 'button-disabled': isPassed }"
+        >
           <span v-if="isLoading">
             <div class="spinner"></div>
           </span>
@@ -106,27 +110,39 @@ const isLoading = ref(false);
 const rootApi = process.env.VUE_APP_ROOT_API;
 const description = ref(null);
 const lastResult = ref("");
+const id = ref("6a1b4eba-fbc6-412b-8219-2a1f84eba567");
+const assignmentId = ref(1);
+const isPassed = ref(false);
 
 const openModal = () => {
   const modal = new bootstrap.Modal(document.getElementById("historyModal"));
   modal.show();
 };
 
-// Lấy dữ liệu review từ API
 const fetchReview = async () => {
   try {
-    const response = await axios.get(`${rootApi}/api/v1/reviews`);
-    response.data.result.items.map((review, index) => {
-      result.value.push(review.content);
+    const response = await axios.get(
+      `${rootApi}/api/v1/reviews?id=${id.value}&assignment=${assignmentId.value}`
+    );
+    response.data.result.items.map((rev, index) => {
+      result.value.push(rev.review);
     });
-    lastResult.value = result.value[result.value.length - 1];
-    console.log(result.value);
+    // console.log(result.value);
   } catch (error) {
     console.log(error);
   }
 };
 
-// Lấy thông tin bài tập từ API
+const fetchLastResult = async () => {
+  try {
+    const response = await axios.get(
+      `${rootApi}/api/v1/reviews/${assignmentId.value}?id=${id.value}`
+    );
+    lastResult.value = response.data.result.review;
+    isPassed.value = response.data.result.status === "PASS" ? true : false;
+  } catch (error) {}
+};
+
 const fetchAssignments = async () => {
   try {
     const response = await axios.get("http://localhost:3000/khoahoc");
@@ -155,7 +171,6 @@ const fetchAssignments = async () => {
   }
 };
 
-// Nộp bài tập
 const submitAssignment = async () => {
   try {
     isLoading.value = true;
@@ -174,27 +189,33 @@ const submitAssignment = async () => {
     const data = response.data;
     result.value.push(data.result);
     lastResult.value = data.result;
+    isPassed.value = data.result.status === "PASS" ? true : false;
     isLoading.value = false;
   } catch (error) {
     console.log(error);
   }
 };
 
-// Định dạng nội dung để hiển thị
 const format = (result) => {
   return result.replace(/\n/g, "<br>");
 };
 
-// Khởi động khi component được mount
 onMounted(async () => {
   await fetchAssignments();
   await fetchReview();
+  await fetchLastResult();
 });
 </script>
 
 <style scoped>
 .container {
   margin: 30px;
+}
+.button-disabled {
+  background-color: #d8bebe !important;
+  color: #999999;
+  cursor: not-allowed;
+  border: 1px solid #d3d3d3;
 }
 
 .title-container {
