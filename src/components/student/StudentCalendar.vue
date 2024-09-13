@@ -22,12 +22,11 @@
                         <div>
                             <select class="modify-select" name="course" v-model="course" @change="onCourseChange">
                                 <option value="" disabled selected hidden>Chọn Khóa học</option>
-                                <option class="modify-option" value="Python">Lập trình
-                                    Python cơ bản và nâng cao</option>
-                                <option class="modify-option" value="C++">Lập trình C++ cơ
-                                    bản và nâng cao</option>
-                                <option class="modify-option" value="Java">Lập trình Java
-                                    cơ bản và nâng cao</option>
+                                <option class="modify-option" value="Python Cơ Bản">Lập trình
+                                    Python cơ bản</option>
+                                <option class="modify-option" value="Java Nâng Cao">Lập trình Java nâng cao</option>
+                                <option class="modify-option" value="Java Cơ Bản">Lập trình Java
+                                    cơ bản</option>
                             </select>
                         </div>
                     </div>
