@@ -83,7 +83,7 @@ const fetchCourseData = async () => {
         filteredChapters.value = courseData.value.chapters;
         totalLessons.value = calculateTotalLessons(courseData.value.chapters);
     } catch (error) {
-        console.error("Error fetching courses: ", error);
+        console.error("Error when fetching courses: ", error);
     }
 };
 
