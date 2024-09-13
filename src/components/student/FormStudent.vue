@@ -3,7 +3,7 @@
         <div class="col col-md-3 d-md-flex justify-content-between align-items-center">
             <div class="img-avatar">
                 <img class="rounded-circle"
-                    src="https://media.discordapp.net/attachments/1276452438135799840/1282903831318888560/455284467_1042581230583933_1145821705937534774_n.jpg?ex=66e3afcc&is=66e25e4c&hm=8c4af59644a8c0c11d4088105720e9e0e0bebcb184214336d0e528c279fc519b&=&format=webp&width=643&height=643"
+                    src="https://i.pinimg.com/564x/0b/2b/52/0b2b527a5d4ad76e7ee6115e895afac2.jpg"
                     alt="my-avatar">
             </div>
             <div class="d-flex flex-column align-items-center m-0">
