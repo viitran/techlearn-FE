@@ -22,11 +22,11 @@
                         <div>
                             <select class="modify-select" name="course" v-model="course" @change="onCourseChange">
                                 <option value="" disabled selected hidden>Chọn Khóa học</option>
-                                <option class="modify-option" value="Course 1">Lập trình
+                                <option class="modify-option" value="Python">Lập trình
                                     Python cơ bản và nâng cao</option>
-                                <option class="modify-option" value="Lập trình C++ cơ bản và nâng cao">Lập trình C++ cơ
+                                <option class="modify-option" value="C++">Lập trình C++ cơ
                                     bản và nâng cao</option>
-                                <option class="modify-option" value="Lập trình Java cơ bản và nâng cao">Lập trình Java
+                                <option class="modify-option" value="Java">Lập trình Java
                                     cơ bản và nâng cao</option>
                             </select>
                         </div>
@@ -40,9 +40,9 @@
                             <select class="modify-select" name="chapter" v-model="chapter" :disabled="!course"
                                 @change="onChuongChange">
                                 <option value="" disabled selected hidden>Chọn chương</option>
-                                <option class="modify-option" value="Chapter 1">Chương 1</option>
-                                <option class="modify-option" value="chuong2">Chương 2</option>
-                                <option class="modify-option" value="chuong3">Chương 3</option>
+                                <option class="modify-option" value="Chương 1">Chương 1</option>
+                                <option class="modify-option" value="Chương 2">Chương 2</option>
+                                <option class="modify-option" value="Chương 3">Chương 3</option>
                             </select>
                         </div>
                     </div>
@@ -149,7 +149,7 @@ const changeOfStateButtonStudent = () => {
 const searchCalendar = handleSubmit(async (formData) => {
     try {
         const { course, chapter, teacher } = formData;
-        
+
         const teacherName = teacher ? teacher.OwnerText : null;
         const technicalTeacherName = course;
         const chapterName = chapter;
