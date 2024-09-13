@@ -119,6 +119,7 @@ const getOwnerDataSource = async () => {
   ownerDataSource.value = res.data;
 }
 
+
 const getEvent = async () => {
   try {
     const res = await axios.get(`${rootApi}/find-by-id/${props.id}`);
@@ -134,6 +135,7 @@ const getEvent = async () => {
   }
 };
 ;
+
 
 const onEventRendered = (args) => {
   const ownerId = args.data.OwnerId;
@@ -231,17 +233,16 @@ onMounted(() => {
   getOwnerDataSource()
 })
 
-watch(() => props.id, async (newId) => {
+watch(() => props.id, (newId) => {
   if (newId) {
-    await getEvent();
+    eventSettings.value = {
+      dataSource: props.id,
+    };
   }
 });
 </script>
 
 <style scoped>
-/* .calendar {
-  margin-top: 60px;
-} */
 
 @import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
 @import '../../../node_modules/@syncfusion/ej2-calendars/styles/material.css';
