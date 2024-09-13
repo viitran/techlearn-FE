@@ -1,5 +1,5 @@
 <template>
-    <div class="row d-md-flex justify-content-between nav-student">
+    <div class="row mb-3 d-md-flex justify-content-between nav-student">
         <div class="col col-md-3 d-md-flex justify-content-between align-items-center">
             <div class="img-avatar">
                 <img class="rounded-circle"
@@ -45,18 +45,18 @@
                             <span class="error-message">{{ teacherError }}</span>
                         </div>
                         <div>
-                                <select class="modify-select" name="giangvien" v-model="giangvien">
-                                    <option :value="null" disabled selected hidden>Chọn giảng viên</option>
-                                    <option class="modify-option"  v-for="teacher in allTeachers" :key="teacher.id" :value="teacher">
-                                        {{ teacher.OwnerText }}
-                                    </option>
-                                </select>
+                            <select class="modify-select" name="giangvien" v-model="giangvien">
+                                <option :value="null" disabled selected hidden>Chọn giảng viên</option>
+                                <option class="modify-option" v-for="teacher in allTeachers" :key="teacher.id" :value="teacher">
+                                    {{ teacher.OwnerText }}
+                                </option>
+                            </select>
                         </div>
                     </div>
                 </div>
                 <div class="col col-md-1 d-flex justify-content-center align-items-center mt-4">
                     <button type="submit" class="btn btn-primary border-0 modify-button">
-                        <span><i class="fa-solid fa-filter"></i> Filter</span>
+                        <span><i class="fas fa-filter"></i> Filter</span>
                     </button>
                 </div>
             </form>
@@ -69,7 +69,7 @@
     </div>
     <div v-if="stateButtonFormStudent === true" class="row">
         <div class="col">
-            <Calendar :url="url" :id="idGV"/>
+            <Calendar :url="url" :id="idGV" />
         </div>
     </div>
 </template>
@@ -105,7 +105,7 @@ const { value: module, errorMessage: moduleError } = useField('module');
 const { value: chuong, errorMessage: chuongError } = useField('chuong');
 const { value: giangvien, errorMessage: teacherError } = useField('giangvien');
 const allTeachers = ref([]);
-const url =ref("");
+const url = ref("");
 const idGV = ref()
 // value default option in select
 module.value = "";
@@ -113,13 +113,13 @@ chuong.value = "";
 giangvien.value = null;
 
 
-const getAllCalendars =  () =>{
-    url.value=`${rootApi}`
+const getAllCalendars = () => {
+    url.value = `${rootApi}`
 }
 const getAllTeacher = async () => {
     try {
         const res = await axios.get(`${rootApi}/teachers/`);
-        allTeachers.value=res.data;
+        allTeachers.value = res.data;
     } catch (error) {
         console.log(error);
     }
@@ -129,7 +129,7 @@ const changeOfStateButtonStudent = () => {
     stateButtonFormStudent.value = !stateButtonFormStudent.value;
 }
 
-const searchCalendar = handleSubmit ( async (formData) => {
+const searchCalendar = handleSubmit(async (formData) => {
     try {
         const res = await axios.get(`${rootApi}/teacher-calendar/find-by-id/${formData.giangvien.Id}`);
         if (res.status === 200) {

@@ -1,85 +1,71 @@
 <template>
-    <ejs-schedule height="750px" width="100%" ref='scheduleObj'
-      :selectedDate="selectedDate"
-      :eventSettings="eventSettings"
-      :actionBegin="onActionBegin"
-      class="calendar"
-     :editorTemplate="'editorTemplate'"
-     :eventRendered="onEventRendered"
-     :startHour="startHour"
-     :endHour="endHour"
-    >
+  <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate" :eventSettings="eventSettings" :actionBegin="onActionBegin"
+    class="calendar" :editorTemplate="'editorTemplate'" :eventRendered="onEventRendered" :startHour="startHour" :endHour="endHour"
+    :timeScale="timeScale">
     <template v-slot:editorTemplate>
       <table class="custom-event-editor" width="100%" cellpadding="5">
         <tbody>
-              <tr>
-                <td class="e-textlabel">Title</td>
-                <td colspan="4">
-                  <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
-                </td>
-              </tr>
-              <tr>
-                <td class="e-textlabel">Status</td>
-                <td colspan="4"><ejsDropdownlist
-                  id='OwnerId'
-                  name="OwnerId"
-                  class="e-field"
-                  placeholder= 'Choose status'
-                  :dataSource='ownerDataSource'
-                  :fields="dropListFields" >
-                    </ejsDropdownlist>
-                </td>
-              </tr>
-              <tr>
-                <td class="e-textlabel">From</td>
-                <td colspan="4"><ejsDatetimepicker id="StartTime" class="e-field" name="StartTime"></ejsDatetimepicker>
-                </td>
-              </tr>
-              <tr>
-                <td class="e-textlabel">To</td>
-                <td colspan="4"><ejsDatetimepicker id="EndTime" class="e-field" name="EndTime" ></ejsDatetimepicker>
-                </td>
-              </tr>
-              <tr>
-                <td class="e-textlabel">Description</td>
-                <td colspan="4">
-                  <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
-                    style="width: 100%; height: 60px !important; resize: vertical"></textarea>
-                </td>
-              </tr>
-            </tbody>
+          <tr>
+            <td class="e-textlabel">Title</td>
+            <td colspan="4">
+              <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
+            </td>
+          </tr>
+          <tr>
+            <td class="e-textlabel">Status</td>
+            <td colspan="4">
+              <ejsDropdownlist id='OwnerId' name="OwnerId" class="e-field" placeholder='Choose status' :dataSource='ownerDataSource'
+                :fields="dropListFields">
+              </ejsDropdownlist>
+            </td>
+          </tr>
+          <tr>
+            <td class="e-textlabel">From</td>
+            <td colspan="4">
+              <ejsDatetimepicker id="StartTime" class="e-field" name="StartTime"></ejsDatetimepicker>
+            </td>
+          </tr>
+          <tr>
+            <td class="e-textlabel">To</td>
+            <td colspan="4">
+              <ejsDatetimepicker id="EndTime" class="e-field" name="EndTime"></ejsDatetimepicker>
+            </td>
+          </tr>
+          <tr>
+            <td class="e-textlabel">Description</td>
+            <td colspan="4">
+              <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
+                style="width: 100%; height: 60px !important; resize: vertical"></textarea>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </template>
-      <e-views>
-        <e-view option="Day"></e-view>
-        <e-view option="Week"></e-view>
-        <e-view option="WorkWeek"></e-view>
-        <e-view option="Month"></e-view>
-        <e-view option="Agenda"></e-view>
-      </e-views>
-      <e-resources>
-        <e-resource
-          field="OwnerId"
-          title="Owner"
-          name="Owners"
-          :dataSource="ownerDataSource"
-          textField="OwnerText"
-          idField="Id"
-          colorField="OwnerColor"
-        >
-        </e-resource>
-      </e-resources>
-    </ejs-schedule>
+    <e-views>
+      <e-view option="Day"></e-view>
+      <e-view option="Week"></e-view>
+      <e-view option="WorkWeek"></e-view>
+      <e-view option="Month"></e-view>
+      <e-view option="Agenda"></e-view>
+    </e-views>
+    <e-resources>
+      <e-resource field="OwnerId" title="Owner" name="Owners" :dataSource="ownerDataSource" textField="OwnerText" idField="Id"
+        colorField="OwnerColor">
+      </e-resource>
+    </e-resources>
+  </ejs-schedule>
 </template>
 
 <script setup>
-import { onMounted, provide, ref,nextTick } from "vue";
-import {ScheduleComponent as EjsSchedule, ViewsDirective as EViews, ViewDirective as EView, ResourcesDirective as EResources, ResourceDirective as EResource,
-  Day, Week, WorkWeek, Month, Agenda, DragAndDrop} from "@syncfusion/ej2-vue-schedule";
-import { DataManager ,WebApiAdaptor} from "@syncfusion/ej2-data";
+import { onMounted, provide, ref, nextTick } from "vue";
+import {
+  ScheduleComponent as EjsSchedule, ViewsDirective as EViews, ViewDirective as EView, ResourcesDirective as EResources, ResourceDirective as EResource,
+  Day, Week, WorkWeek, Month, Agenda, DragAndDrop
+} from "@syncfusion/ej2-vue-schedule";
+import { DataManager, WebApiAdaptor } from "@syncfusion/ej2-data";
 import axios from "axios";
-import { DropDownListComponent as ejsDropdownlist} from "@syncfusion/ej2-vue-dropdowns";
-import { DateTimePickerComponent  as ejsDatetimepicker} from "@syncfusion/ej2-vue-calendars";
+import { DropDownListComponent as ejsDropdownlist } from "@syncfusion/ej2-vue-dropdowns";
+import { DateTimePickerComponent as ejsDatetimepicker } from "@syncfusion/ej2-vue-calendars";
 import { watch } from "vue";
 const rootApi = process.env.VUE_APP_ROOT_API;
 const props = defineProps(['url', 'id']);
@@ -103,11 +89,16 @@ const eventSettings = ref({
 });
 
 const startHour = "08:00";
-const endHour = "20:00";
+const endHour = "21:00";
+const timeScale = {
+  enable: true,
+  interval: 10,
+  slotCount: 1
+};
 
-const dropListFields= {
-  text:"OwnerText",
-  value:"Id"
+const dropListFields = {
+  text: "OwnerText",
+  value: "Id"
 }
 
 const getOwnerDataSource = async () => {
@@ -118,10 +109,6 @@ const getOwnerDataSource = async () => {
 const getEvent = async () => {
   try {
     const res = await axios.get(`${rootApi}/teacher-calendar/find-by-id/${props.id}`);
-    const filtered = res.data.filter((event) => {
-      return new Date(event.StartTime) >= new Date();
-    })
-    console.log(res.data);
     eventSettings.value = {
       dataSource: res.data
     };
@@ -165,7 +152,7 @@ const onActionBegin = async (args) => {
       console.log(formattedEventData);
 
       await axios.post(`${props.url}/teacher-calendar`, formattedEventData);
-      
+
     } catch (error) {
       console.error('Error adding event:', error);
     }
@@ -194,9 +181,9 @@ const onActionBegin = async (args) => {
   await nextTick(() => {
     scheduleObj.value.refreshEvents();
   });
-  }
+}
 
-onMounted(() =>{
+onMounted(() => {
   getOwnerDataSource()
 })
 
@@ -208,10 +195,6 @@ watch(() => props.id, async (newId) => {
 </script>
 
 <style scoped>
-.calendar {
-  margin-top: 60px;
-}
-
 @import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
 @import '../../../node_modules/@syncfusion/ej2-calendars/styles/material.css';
 @import '../../../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
