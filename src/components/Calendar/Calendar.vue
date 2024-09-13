@@ -114,22 +114,6 @@ const getOwnerDataSource = async () => {
   ownerDataSource.value = res.data;
 }
 
-const getEvent = async () => {
-  try {
-    const res = await axios.get(`${rootApi}/teacher-calendar/find-by-id/${props.id}`);
-    const filtered = res.data.filter((event) => {
-      return new Date(event.StartTime) >= new Date();
-    })
-    console.log(res.data);
-    eventSettings.value = {
-      dataSource: res.data
-    };
-  } catch (error) {
-    console.error('Error fetching or filtering events:', error);
-  }
-};
-;
-
 const onEventRendered = (args) => {
   const ownerId = args.data.OwnerId;
   if (ownerId) {
@@ -279,17 +263,16 @@ onMounted(() => {
   getOwnerDataSource()
 })
 
-watch(() => props.id, async (newId) => {
+watch(() => props.id, (newId) => {
   if (newId) {
-    await getEvent();
+    eventSettings.value = {
+      dataSource: props.id,
+    };
   }
 });
 </script>
 
 <style scoped>
-/* .calendar {
-  margin-top: 60px;
-} */
 
 @import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
 @import '../../../node_modules/@syncfusion/ej2-calendars/styles/material.css';
