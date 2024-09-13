@@ -2,19 +2,20 @@
   <div class="container">
     <p class="title">Khóa học của tôi</p>
     <div class="card-container">
-      <div
-        v-for="(course, index) in courses"
-        :key="index"
-        class="card shadow"
-        style="width: 18rem"
-      >
+      <div class="card shadow" v-for="(course, index) in courses" :key="index" style="width: 18rem">
         <img :src="course.image" class="card-img-top" alt="..." />
         <div class="card-body">
-          <h5 class="card-title">{{ course.courseName }}</h5>
+          <router-link :to="{
+            name: 'assignment',
+            params: { id: index }
+          }" class="h5 card-title">
+            {{ course.name }}
+          </router-link>
+
           <p class="quantity-exercise">
             {{
               course.chapters.reduce((total, chapter) => {
-                return total + chapter.exercises.length;
+                return total + chapter.assignments.length;
               }, 0)
             }}
             Bài tập
@@ -34,15 +35,15 @@
 
 <script setup>
 import axios from "axios";
-import { ref } from "vue";
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import avatar from "../../public/avatar.jpg";
 
 const courses = ref([]);
 
+
 const fetchCourses = async () => {
-  const response = await axios.get("http://localhost:3000/courses");
-  courses.value = response.data;
+  const response = await axios.get("/api/v1/courses");
+  courses.value = response.data.courses;
 };
 
 onMounted(async () => {
@@ -70,22 +71,27 @@ onMounted(async () => {
   font-weight: 650;
   font-size: 24px;
 }
+
 .card-title {
   font-weight: 580;
 }
+
 .card {
   cursor: pointer;
   border-radius: 15px;
 }
+
 .quantity-exercise {
   font-size: 14px;
   color: rgb(175, 154, 154);
 }
+
 .card-text {
   font-weight: 400;
   font-size: 14px;
   color: rgb(120, 88, 88);
 }
+
 .c-footer {
   display: flex;
   gap: 10px;
@@ -99,6 +105,7 @@ onMounted(async () => {
   height: 30px;
   border-radius: 50%;
 }
+
 .avatar {
   object-fit: cover;
 }
