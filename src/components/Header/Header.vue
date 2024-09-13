@@ -5,16 +5,17 @@
                 <button @click="toggleSidebar" type="button" id="sidebarCollapse" class="btn btn-info">
                     <i class="fas fa-align-left text-white"></i>
                 </button>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-                    aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto align-items-center">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false">
-                                <img src="https://cdn-icons-png.flaticon.com/512/6858/6858504.png" class="rounded-circle avatar" alt="User Avatar">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="https://media.discordapp.net/attachments/1276452438135799840/1282903831318888560/455284467_1042581230583933_1145821705937534774_n.jpg?ex=66e3afcc&is=66e25e4c&hm=8c4af59644a8c0c11d4088105720e9e0e0bebcb184214336d0e528c279fc519b&=&format=webp&width=643&height=643"
+                                    class="rounded-circle avatar" alt="User Avatar">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">Profile</a>
