@@ -17,13 +17,18 @@
                 <div class="col col-md-11 d-flex justify-content-evenly">
                     <div>
                         <div>
-                            <label class="font-weight-bold" for="module">Module</label>
-                            <span class="error-message">{{ moduleError }}</span>
+                            <label class="font-weight-bold" for="course">Khóa học</label>
+                            <span class="error-message">{{ courseError }}</span>
                         </div>
                         <div>
-                            <select class="modify-select" name="module" v-model="module">
-                                <option value="" disabled selected hidden>Chọn module</option>
-                                <option class="modify-option" value="module1">Module 1</option>
+                            <select class="modify-select" name="course" v-model="course" @change="onCourseChange">
+                                <option value="" disabled selected hidden>Chọn Khóa học</option>
+                                <option class="modify-option" value="Lập trình Python cơ bản và nâng cao">Lập trình
+                                    Python cơ bản và nâng cao</option>
+                                <option class="modify-option" value="Lập trình C++ cơ bản và nâng cao">Lập trình C++ cơ
+                                    bản và nâng cao</option>
+                                <option class="modify-option" value="Lập trình Java cơ bản và nâng cao">Lập trình Java
+                                    cơ bản và nâng cao</option>
                             </select>
                         </div>
                     </div>
@@ -33,9 +38,12 @@
                             <span class="error-message">{{ chuongError }}</span>
                         </div>
                         <div>
-                            <select class="modify-select" name="chuong" v-model="chuong">
+                            <select class="modify-select" name="chuong" v-model="chuong" :disabled="!course"
+                                @change="onChuongChange">
                                 <option value="" disabled selected hidden>Chọn chương</option>
                                 <option class="modify-option" value="chuong1">Chương 1</option>
+                                <option class="modify-option" value="chuong2">Chương 2</option>
+                                <option class="modify-option" value="chuong3">Chương 3</option>
                             </select>
                         </div>
                     </div>
@@ -45,7 +53,7 @@
                             <span class="error-message">{{ teacherError }}</span>
                         </div>
                         <div>
-                            <select class="modify-select" name="giangvien" v-model="giangvien">
+                            <select class="modify-select" name="giangvien" v-model="giangvien" :disabled="!chuong">
                                 <option :value="null" disabled selected hidden>Chọn giảng viên</option>
                                 <option class="modify-option" v-for="teacher in allTeachers" :key="teacher.id"
                                     :value="teacher">
@@ -56,7 +64,6 @@
                     </div>
                 </div>
                 <div class="col col-md-1 d-flex justify-content-center align-items-center mt-4">
-
                     <button type="submit" class="btn btn-primary border-0 modify-button"
                         style="background-color: rgb(49, 210, 242) ">
                         <span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
@@ -77,7 +84,7 @@
         </div>
     </div>
     <div v-if="stateButtonFormStudent === true" class="row">
-        <div class="col">
+        <div class="col" style="margin-top: 60px;">
             <Calendar :url="url" :id="idGV" />
         </div>
     </div>
@@ -98,7 +105,7 @@ const stateButtonFormStudent = ref(false);
 
 const { handleSubmit, resetForm } = useForm({
     validationSchema: yup.object({
-        module: yup
+        course: yup
             .string()
             .required('*'),
         chuong: yup
@@ -110,14 +117,14 @@ const { handleSubmit, resetForm } = useForm({
     }),
 });
 
-const { value: module, errorMessage: moduleError } = useField('module');
+const { value: course, errorMessage: courseError } = useField('course');
 const { value: chuong, errorMessage: chuongError } = useField('chuong');
 const { value: giangvien, errorMessage: teacherError } = useField('giangvien');
 const allTeachers = ref([]);
 const url = ref("");
 const idGV = ref()
 // value default option in select
-module.value = "";
+course.value = "";
 chuong.value = "";
 giangvien.value = null;
 
@@ -143,15 +150,26 @@ const searchCalendar = handleSubmit(async (formData) => {
         const res = await axios.get(`${rootApi}/teacher-calendar/find-by-id/${formData.giangvien.Id}`);
         if (res.status === 200) {
             resetForm();
-            module.value = "";
+            course.value = "";
             chuong.value = "";
             giangvien.value = null;
-            idGV.value = res.data[0].OwnerId
+            idGV.value = res.data[0].OwnerId;
+            getAllTeacher();
         }
     } catch (error) {
-        toast.error("Error your submit. Please try again!");
+        toast.error("Không có khung giờ giảng viên trong ngày hôm nay!");
     }
 });
+
+const onCourseChange = () => {
+    chuong.value = "";
+    giangvien.value = null;
+}
+
+const onChuongChange = () => {
+    giangvien.value = null;
+}
+
 
 onMounted(() => {
     getAllTeacher();

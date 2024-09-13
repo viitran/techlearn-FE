@@ -68,8 +68,11 @@ import { DropDownListComponent as ejsDropdownlist } from "@syncfusion/ej2-vue-dr
 import { DateTimePickerComponent as ejsDatetimepicker } from "@syncfusion/ej2-vue-calendars";
 import { toast } from 'vue3-toastify';
 import { watch } from "vue";
+import Swal from "sweetalert2";
+
 const rootApi = process.env.VUE_APP_ROOT_API;
 const props = defineProps(['url', 'id']);
+let timerInterval;
 
 provide("schedule", [Day, Week, WorkWeek, Month, Agenda, DragAndDrop]);
 
@@ -124,12 +127,29 @@ const onEventRendered = (args) => {
     const owner = ownerDataSource.value.find(owner => owner.Id === ownerId);
     if (owner) {
       const avatarHtml = `<div class="mx-1">
-                            <img width="30" src="${owner.avatar}" 
+                            <img width="24" height="24" src="${owner.avatar}" 
                               class="owner-avatar rounded-circle img-fluid border border-white" />
                           </div>`;
-      args.element.innerHTML = `<div class="d-flex align-items-center mt-1">
-                                  ${avatarHtml}<div class="">${args.data.Subject}</div>
-                                </div>`;
+      
+      // Calculate available width for text
+      const eventWidth = args.element.offsetWidth;
+      const avatarWidth = 30; // 24px image + 6px margin
+      const availableWidth = eventWidth - avatarWidth - 10; // 10px for padding
+      
+      // Truncate text if necessary
+      let subjectText = args.data.Subject;
+      if (subjectText.length > 20) {
+        subjectText = subjectText.substring(0, 17) + '...';
+      }
+      
+      args.element.innerHTML = `
+        <div class="d-flex align-items-center h-100 overflow-hidden">
+          ${avatarHtml}
+          <div class="text-truncate" style="max-width: ${availableWidth}px;">${subjectText}</div>
+        </div>`;
+      
+      // Add tooltip for full subject text
+      args.element.title = args.data.Subject;
     }
   }
 };
@@ -153,8 +173,26 @@ const onActionBegin = async (args) => {
         EndTime: formatDate(eventData.EndTime),
       };
       await axios.post(`${props.url}/teacher-calendar`, formattedEventData);
-      toast.success('Thêm lịch thành công!', {
-        autoClose: 2000
+      Swal.fire({
+        text: "Cập nhật lịch thành công",
+        icon: "success",
+        confirmButtonText: "Đồng ý (5)",
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: () => {
+          const swalConfirmButton = Swal.getConfirmButton();
+          let timeLeft = 5;
+
+          timerInterval = setInterval(() => {
+            timeLeft -= 0.1;
+            swalConfirmButton.textContent = `Đồng ý (${Math.ceil(
+              timeLeft
+            )})`;
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        },
       });
     } catch (error) {
       console.error('Error adding event:', error);
@@ -163,13 +201,30 @@ const onActionBegin = async (args) => {
   } else if (args.requestType === 'eventRemove') {
     try {
       await axios.delete(`${props.url}/teacher-calendar/${args.data[0].Id}`);
-      toast.success('Bạn đã Xóa lịch thành công!', {
-        autoClose: 2000
+      Swal.fire({
+        text: "Bạn đã xóa lịch",
+        icon: "success",
+        confirmButtonText: "Đồng ý (5)",
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: () => {
+          const swalConfirmButton = Swal.getConfirmButton();
+          let timeLeft = 5;
+
+          timerInterval = setInterval(() => {
+            timeLeft -= 0.1;
+            swalConfirmButton.textContent = `Đồng ý (${Math.ceil(
+              timeLeft
+            )})`;
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        },
       });
     } catch (error) {
       console.error('Error deleting event:', error);
       toast.error('Không thể xóa sự kiện!');
-
     }
   } else if (args.requestType === 'eventChange') {
     try {
@@ -183,13 +238,30 @@ const onActionBegin = async (args) => {
       console.log(formattedEventData);
 
       await axios.put(`${props.url}/teacher-calendar/${formattedEventData.Id}`, formattedEventData);
-      toast.success('Cập nhật lại lịch thành công!', {
-        autoClose: 2000
+      Swal.fire({
+        text: "Cập nhật lại lịch thành công",
+        icon: "success",
+        confirmButtonText: "Đồng ý (5)",
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: () => {
+          const swalConfirmButton = Swal.getConfirmButton();
+          let timeLeft = 5;
+
+          timerInterval = setInterval(() => {
+            timeLeft -= 0.1;
+            swalConfirmButton.textContent = `Đồng ý (${Math.ceil(
+              timeLeft
+            )})`;
+          }, 100);
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        },
       });
     } catch (error) {
       console.error('Error updating event:', error);
       toast.error('Cập nhật lịch thất bại!');
-
     }
   }
   await nextTick(() => {
@@ -209,9 +281,9 @@ watch(() => props.id, async (newId) => {
 </script>
 
 <style scoped>
-.calendar {
+/* .calendar {
   margin-top: 60px;
-}
+} */
 
 @import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
 @import '../../../node_modules/@syncfusion/ej2-calendars/styles/material.css';
