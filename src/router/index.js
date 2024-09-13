@@ -46,9 +46,10 @@ const routes = [
     component: NotFound
   },
   {
-    path: '/course/:id',
+    path: '/coursePage/:id',
     name: 'assignment',
-    component: Assignment
+    component: Assignment,
+    props: route => ({ courseData: route.params.courseData })
   }
 ]
 
