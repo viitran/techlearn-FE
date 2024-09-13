@@ -1,17 +1,24 @@
 <template>
   <div class="container">
+    <!-- Nội dung bài tập -->
     <div class="assignment-container" v-if="assignmentDescription">
       <div class="title-container">
         <p>{{ assignmentDescription.tenBaiTap }}</p>
         <button @click="viewSolution">Xem solution</button>
       </div>
       <div class="assignment-description">
-        <div class="description-text" v-html="assignmentDescription.moTa"></div>
+        <div
+          ref="description"
+          class="description-text"
+          v-html="format(assignmentDescription.moTa)"
+        ></div>
       </div>
     </div>
     <div v-else>
       <p>Đang tải dữ liệu...</p>
     </div>
+
+    <!-- Form nộp bài tập -->
     <div class="submit-container">
       <p>Nộp bài tập:</p>
       <div class="input-container">
@@ -20,7 +27,11 @@
           placeholder="Thêm link github tại đây"
           v-model="githubLink"
         />
-        <button @click="submitAssignment" :disabled="isLoading">
+        <button
+          @click="submitAssignment"
+          :disabled="isLoading || isPassed"
+          :class="{ 'button-disabled': isPassed }"
+        >
           <span v-if="isLoading">
             <div class="spinner"></div>
           </span>
@@ -28,16 +39,55 @@
         </button>
       </div>
     </div>
-    <div class="result-container">
-      <p>Kết quả:</p>
 
-      <div
-        class="result-AI-container"
-        v-for="(res, index) in result"
-        :key="index"
-      >
-        <p>Lần submit thứ {{ index + 1 }}:</p>
-        <div class="response-AI-text" v-html="formatResult(res)"></div>
+    <!-- Kết quả -->
+    <div class="result-container">
+      <div class="result-header">
+        <p>Kết quả:</p>
+        <button @click="openModal">Xem lịch sử nộp bài</button>
+      </div>
+
+      <div v-if="lastResult" class="result-AI-container">
+        <div class="response-AI-text" v-html="format(lastResult)"></div>
+      </div>
+    </div>
+
+    <!-- Modal Bootstrap -->
+    <div
+      class="modal fade"
+      id="historyModal"
+      tabindex="-1"
+      aria-labelledby="historyModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="historyModalLabel"
+              style="font-weight: 600; font-size: 25px"
+            >
+              Lịch sử nộp bài
+            </h5>
+          </div>
+          <div class="modal-body">
+            <div v-if="result.length > 0">
+              <div v-for="(res, index) in result" :key="index">
+                <p
+                  style="font-size: 18px; font-weight: 550; margin-bottom: 15px"
+                >
+                  Lần nộp thứ {{ index + 1 }}
+                </p>
+                <div class="response-AI-text" v-html="format(res)"></div>
+              </div>
+            </div>
+            <div v-else>
+              <p>Chưa có lịch sử nộp bài.</p>
+            </div>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -46,6 +96,8 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted } from "vue";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const courseId = "1";
 const chapterId = 1;
@@ -56,17 +108,39 @@ const githubLink = ref("");
 const result = ref([]);
 const isLoading = ref(false);
 const rootApi = process.env.VUE_APP_ROOT_API;
+const description = ref(null);
+const lastResult = ref("");
+const id = ref("6a1b4eba-fbc6-412b-8219-2a1f84eba567");
+const assignmentId = ref(1);
+const isPassed = ref(false);
+
+const openModal = () => {
+  const modal = new bootstrap.Modal(document.getElementById("historyModal"));
+  modal.show();
+};
 
 const fetchReview = async () => {
   try {
-    const response = await axios.get(`${rootApi}/api/v1/reviews`);
-    response.data.result.items.map((review, index) => {
-      result.value.push(review.content);
+    const response = await axios.get(
+      `${rootApi}/api/v1/reviews?id=${id.value}&assignment=${assignmentId.value}`
+    );
+    response.data.result.items.map((rev, index) => {
+      result.value.push(rev.review);
     });
-    console.log(result.value);
+    // console.log(result.value);
   } catch (error) {
     console.log(error);
   }
+};
+
+const fetchLastResult = async () => {
+  try {
+    const response = await axios.get(
+      `${rootApi}/api/v1/reviews/${assignmentId.value}?id=${id.value}`
+    );
+    lastResult.value = response.data.result.review;
+    isPassed.value = response.data.result.status === "PASS" ? true : false;
+  } catch (error) {}
 };
 
 const fetchAssignments = async () => {
@@ -97,46 +171,51 @@ const fetchAssignments = async () => {
   }
 };
 
-const viewSolution = () => {
-  console.log("Solution clicked");
-};
-
 const submitAssignment = async () => {
   try {
     isLoading.value = true;
+    console.log(assignmentDescription.value.moTa);
     const response = await axios.post(
       `${rootApi}/api/v1/reviews/fetch-repo-content`,
       {
         github_link: githubLink.value,
         exerciseTitle:
           assignmentDescription.value.tenBaiTap +
-          "yêu cầu: " +
+          " yêu cầu: " +
           assignmentDescription.value.moTa +
           " ",
       }
     );
     const data = response.data;
     result.value.push(data.result);
-    console.log(assignmentDescription.value.moTa);
+    lastResult.value = data.result;
+    isPassed.value = data.result.status === "PASS" ? true : false;
     isLoading.value = false;
   } catch (error) {
     console.log(error);
   }
 };
 
-const formatResult = (result) => {
-  return result.replace(/\\n/g, "<br>");
+const format = (result) => {
+  return result.replace(/\n/g, "<br>");
 };
 
 onMounted(async () => {
   await fetchAssignments();
   await fetchReview();
+  await fetchLastResult();
 });
 </script>
 
 <style scoped>
 .container {
   margin: 30px;
+}
+.button-disabled {
+  background-color: #d8bebe !important;
+  color: #999999;
+  cursor: not-allowed;
+  border: 1px solid #d3d3d3;
 }
 
 .title-container {
@@ -171,6 +250,21 @@ onMounted(async () => {
 .result-container p {
   font-weight: 600;
   font-size: 20px;
+}
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.result-header button {
+  /* padding: 10px; */
+  border-radius: 8px;
+  background-color: #1872db;
+  color: white;
+  outline: none;
+  border: none;
+  margin-right: 30px;
+  height: 40px;
 }
 .input-container {
   outline: solid 1px #9b9b9b;
@@ -219,6 +313,8 @@ onMounted(async () => {
   border-radius: 10px;
   padding: 13px;
   margin-left: 12px;
+  margin-right: 27px;
+  margin-bottom: 15px;
 }
 .spinner {
   border: 4px solid rgba(0, 0, 0, 0.1);
