@@ -69,11 +69,20 @@ import { DateTimePickerComponent as ejsDatetimepicker } from "@syncfusion/ej2-vu
 import { toast } from 'vue3-toastify';
 import { watch } from "vue";
 import Swal from "sweetalert2";
-
+import { L10n, setCulture } from "@syncfusion/ej2-base";
+import viLocale from "../../locale/vi.json";
+import { loadCldr} from '@syncfusion/ej2-base';
+import frNumberData from '@syncfusion/ej2-cldr-data/main/vi/numbers.json';
+import frtimeZoneData from '@syncfusion/ej2-cldr-data/main/vi/timeZoneNames.json';
+import frGregorian from '@syncfusion/ej2-cldr-data/main/vi/ca-gregorian.json';
+import frNumberingSystem from '@syncfusion/ej2-cldr-data/supplemental/numberingSystems.json';
 const rootApi = process.env.VUE_APP_ROOT_API;
 const props = defineProps(['url', 'id']);
 let timerInterval;
 
+setCulture('vi');
+L10n.load(viLocale)
+loadCldr(frNumberData, frtimeZoneData, frGregorian, frNumberingSystem);
 provide("schedule", [Day, Week, WorkWeek, Month, Agenda, DragAndDrop]);
 
 const remoteData = new DataManager({
@@ -131,12 +140,10 @@ const onEventRendered = (args) => {
                               class="owner-avatar rounded-circle img-fluid border border-white" />
                           </div>`;
       
-      // Calculate available width for text
       const eventWidth = args.element.offsetWidth;
-      const avatarWidth = 30; // 24px image + 6px margin
-      const availableWidth = eventWidth - avatarWidth - 10; // 10px for padding
+      const avatarWidth = 30; 
+      const availableWidth = eventWidth - avatarWidth - 10; 
       
-      // Truncate text if necessary
       let subjectText = args.data.Subject;
       if (subjectText.length > 20) {
         subjectText = subjectText.substring(0, 17) + '...';
@@ -148,7 +155,6 @@ const onEventRendered = (args) => {
           <div class="text-truncate" style="max-width: ${availableWidth}px;">${subjectText}</div>
         </div>`;
       
-      // Add tooltip for full subject text
       args.element.title = args.data.Subject;
     }
   }
