@@ -125,7 +125,7 @@ giangvien.value = null;
 
 
 const getAllCalendars = () => {
-    url.value = rootApi;
+    url.value = `${rootApi}/student-calendar`;
 }
 const getAllTeacher = async () => {
     try {

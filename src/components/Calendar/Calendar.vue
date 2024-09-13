@@ -87,7 +87,7 @@ provide("schedule", [Day, Week, WorkWeek, Month, Agenda, DragAndDrop]);
 
 const remoteData = new DataManager({
   // url: 'http://localhost:3000/dataSource',
-  url: `${props.url}/teacher-calendar`,
+  url: `${props.url}`,
   adaptor: new WebApiAdaptor,
   crossDomain: true
 });
@@ -115,13 +115,13 @@ const dropListFields = {
 }
 
 const getOwnerDataSource = async () => {
-  const res = await axios.get(`${props.url}/teachers/`);
+  const res = await axios.get("http://localhost:8181/api/v1/teachers/");
   ownerDataSource.value = res.data;
 }
 
 const getEvent = async () => {
   try {
-    const res = await axios.get(`${rootApi}/teacher-calendar/find-by-id/${props.id}`);
+    const res = await axios.get(`${rootApi}/find-by-id/${props.id}`);
     const filtered = res.data.filter((event) => {
       return new Date(event.StartTime) >= new Date();
     })
@@ -183,56 +183,16 @@ const onActionBegin = async (args) => {
         StartTime: formatDate(eventData.StartTime),
         EndTime: formatDate(eventData.EndTime),
       };
-      await axios.post(`${props.url}/teacher-calendar`, formattedEventData);
-      Swal.fire({
-        text: "Cập nhật lịch thành công",
-        icon: "success",
-        confirmButtonText: "Đồng ý (5)",
-        timer: 5000,
-        timerProgressBar: true,
-        didOpen: () => {
-          const swalConfirmButton = Swal.getConfirmButton();
-          let timeLeft = 5;
-
-          timerInterval = setInterval(() => {
-            timeLeft -= 0.1;
-            swalConfirmButton.textContent = `Đồng ý (${Math.ceil(
-              timeLeft
-            )})`;
-          }, 100);
-        },
-        willClose: () => {
-          clearInterval(timerInterval);
-        },
-      });
+      await axios.post(`${props.url}`, formattedEventData);
+      toast.success('Tạo lịch thành công!');
     } catch (error) {
       console.error('Error adding event:', error);
-      toast.error('Thêm lịch thất bại!Bạn phải thêm lịch vào ngày và giờ lớn hơn ngày và giờ hiện tại');
+      toast.error('Bạn phải thêm lịch vào ngày và giờ lớn hơn ngày và giờ hiện tại!');
     }
   } else if (args.requestType === 'eventRemove') {
     try {
-      await axios.delete(`${props.url}/teacher-calendar/${args.data[0].Id}`);
-      Swal.fire({
-        text: "Bạn đã xóa lịch thành công",
-        icon: "success",
-        confirmButtonText: "Đồng ý (5)",
-        timer: 5000,
-        timerProgressBar: true,
-        didOpen: () => {
-          const swalConfirmButton = Swal.getConfirmButton();
-          let timeLeft = 5;
-
-          timerInterval = setInterval(() => {
-            timeLeft -= 0.1;
-            swalConfirmButton.textContent = `Đồng ý (${Math.ceil(
-              timeLeft
-            )})`;
-          }, 100);
-        },
-        willClose: () => {
-          clearInterval(timerInterval);
-        },
-      });
+      await axios.delete(`${props.url}/${args.data[0].Id}`);
+      toast.success('Xóa lịch thành công!');
     } catch (error) {
       console.error('Error deleting event:', error);
       toast.error('Không thể xóa sự kiện!');
@@ -240,36 +200,23 @@ const onActionBegin = async (args) => {
   } else if (args.requestType === 'eventChange') {
     try {
 
-      const formattedEventData = {
+      let formattedEventData = {
         ...args.data,
         StartTime: formatDate(args.data.StartTime),
         EndTime: formatDate(args.data.EndTime),
       };
 
+      if (props.url.includes('student')) {
+        formattedEventData = {
+          ...formattedEventData,
+          UserId: '4d281145-ef96-4320-b42b-a94463effcdf',
+        };
+      }
+
       console.log(formattedEventData);
 
-      await axios.put(`${props.url}/teacher-calendar/${formattedEventData.Id}`, formattedEventData);
-      Swal.fire({
-        text: "Cập nhật lại lịch thành công",
-        icon: "success",
-        confirmButtonText: "Đồng ý (5)",
-        timer: 5000,
-        timerProgressBar: true,
-        didOpen: () => {
-          const swalConfirmButton = Swal.getConfirmButton();
-          let timeLeft = 5;
-
-          timerInterval = setInterval(() => {
-            timeLeft -= 0.1;
-            swalConfirmButton.textContent = `Đồng ý (${Math.ceil(
-              timeLeft
-            )})`;
-          }, 100);
-        },
-        willClose: () => {
-          clearInterval(timerInterval);
-        },
-      });
+      await axios.put(`${props.url}/${formattedEventData.Id}`, formattedEventData);
+      toast.success('Cập nhật lại lịch thành công!');
     } catch (error) {
       console.error('Error updating event:', error);
       toast.error('Cập nhật lịch thất bại!');
