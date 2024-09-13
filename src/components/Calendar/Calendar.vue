@@ -68,7 +68,6 @@ import { DropDownListComponent as ejsDropdownlist } from "@syncfusion/ej2-vue-dr
 import { DateTimePickerComponent as ejsDatetimepicker } from "@syncfusion/ej2-vue-calendars";
 import { toast } from 'vue3-toastify';
 import { watch } from "vue";
-import Swal from "sweetalert2";
 import { L10n, setCulture } from "@syncfusion/ej2-base";
 import viLocale from "../../locale/vi.json";
 import { loadCldr } from '@syncfusion/ej2-base';
@@ -78,7 +77,6 @@ import frGregorian from '@syncfusion/ej2-cldr-data/main/vi/ca-gregorian.json';
 import frNumberingSystem from '@syncfusion/ej2-cldr-data/supplemental/numberingSystems.json';
 const rootApi = process.env.VUE_APP_ROOT_API;
 const props = defineProps(['url', 'id']);
-let timerInterval;
 
 setCulture('vi');
 L10n.load(viLocale)
@@ -184,6 +182,7 @@ const onActionBegin = async (args) => {
         ...eventData,
         StartTime: formatDate(eventData.StartTime),
         EndTime: formatDate(eventData.EndTime),
+        status: 'FREE',
       };
       await axios.post(`${props.url}`, formattedEventData);
       toast.success('Tạo lịch thành công!');
@@ -211,7 +210,10 @@ const onActionBegin = async (args) => {
       if (props.url.includes('student')) {
         formattedEventData = {
           ...formattedEventData,
-          UserId: '4d281145-ef96-4320-b42b-a94463effcdf',
+          UserId: '516cc73e-48ed-426e-947f-93abdb55bbee',
+          CourseId: "1",
+          ChapterId: "1",
+          status: "BOOKED"
         };
       }
 
