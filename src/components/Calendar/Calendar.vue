@@ -70,7 +70,17 @@ import { toast } from 'vue3-toastify';
 import { watch } from "vue";
 const rootApi = process.env.VUE_APP_ROOT_API;
 const props = defineProps(['url', 'id']);
+import { L10n, setCulture } from "@syncfusion/ej2-base";
+import viLocale from "../../locale/vi.json";
+import { loadCldr} from '@syncfusion/ej2-base';
+import frNumberData from '@syncfusion/ej2-cldr-data/main/vi/numbers.json';
+import frtimeZoneData from '@syncfusion/ej2-cldr-data/main/vi/timeZoneNames.json';
+import frGregorian from '@syncfusion/ej2-cldr-data/main/vi/ca-gregorian.json';
+import frNumberingSystem from '@syncfusion/ej2-cldr-data/supplemental/numberingSystems.json';
 
+setCulture('vi');
+L10n.load(viLocale)
+loadCldr(frNumberData, frtimeZoneData, frGregorian, frNumberingSystem);
 provide("schedule", [Day, Week, WorkWeek, Month, Agenda, DragAndDrop]);
 
 const remoteData = new DataManager({
