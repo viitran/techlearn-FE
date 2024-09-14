@@ -54,6 +54,12 @@ const routes = [
     props: true
   },
   {
+    path: "/student",
+    name: "studentCalendar",
+    component: StudentCalendar,
+    props: true
+  },
+  {
     path: "/:catchAll(.*)",
     name: 'NotFound',
     component: NotFound
