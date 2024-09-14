@@ -1,92 +1,65 @@
 <template>
-  <header class="header-container">
-    <div class="header-maxwidth">
-        <div class="div-right">
-            <img alt="Logo" src="https://www.dongdu.studyarts.vn/static/images/logo-jp.png"/>
-            <div class="header-search">
-                <input class="input-search" placeholder="Nhập Từ Khóa"/>
-                <div>
-                    <span>Tìm kiếm</span>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <button @click="toggleSidebar" type="button" id="sidebarCollapse" class="btn btn-info">
+                    <i class="fas fa-align-left text-white"></i>
+                </button>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ml-auto align-items-center">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="https://i.pinimg.com/564x/0b/2b/52/0b2b527a5d4ad76e7ee6115e895afac2.jpg"
+                                    class="rounded-circle avatar" alt="User Avatar">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#">Profile</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Logout</a>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </div>
-        </div>
-        <div class="div-left">
-            <div>
-                <router-link to="">
-                <span>
-                        Đăng nhập
-                    </span>
-                    <fa icon="right-to-bracket"/>
-                </router-link>
-            </div>
-        </div>
-    </div>
-  </header>
+        </nav>
+    </header>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { inject } from 'vue';
 
-
+const toggleSidebar = inject('toggleSidebar');
 </script>
 
 <style scoped>
-.header-container {
-    background-color: #1d44f2;
-    width: 100%;
-    height: 50px;
-}
-
-.header-maxwidth {
-    width: 60%;
-    margin: 0 auto;
-    display: flex;
-    height: 50px;
-}
-
-.div-right {
-    display: flex;
-    width: 50%;
-    justify-content: space-between;
-    padding: 5px 0;
-}
-
-
-.header-search {
-    display: flex;
-    min-width: 80%;
-}
-.input-search {
-    height: 38px;
+.navbar {
+    padding: 15px 10px;
+    background: #fff;
     border: none;
-    border-radius: 20px 0 0 20px;
-    width: 65%;
-    padding-left: 15px;
-    outline: none;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.header-search div {
-    border-radius: 0 20px 20px 0;
-    color: #fff;
-    background-color: #66bad6;
-    width: 30%;
-    height: 38px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
 }
 
-.div-left {
-    width: 50%;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    color: #fff;
+.avatar {
+    width: 40px;
+    height: 40px;
 }
 
-.div-left div a {
-    text-decoration: none;
-    color: #fff;
+.nav-item .dropdown-menu {
+    min-width: 150px;
 }
 
+.dropdown-item {
+    cursor: pointer;
+}
 </style>

@@ -1,69 +1,113 @@
 <template>
-  <div class="navbar-container">
-    <div class="list-item">
-        <div v-if="isTeacher" class="item" @click="handleSelect(1)" :class="{active: selectedItem === 1}">
-            <router-link to="">Đặt Lịch support</router-link>
-        </div>
-        <div class="item" @click="handleSelect(2)" :class="{active: selectedItem === 2}">
-            <router-link to="">Xem Lịch Giảng Viên</router-link>
-        </div>
-        <div class="item" @click="handleSelect(3)" :class="{active: selectedItem === 3}">
-            <router-link to="">Quản Lý Tài khoản Học Viên</router-link>
-        </div>
-        <div v-if="isTeacher" class="item" @click="handleSelect(4)" :class="{active: selectedItem === 4}">
-            <router-link to="">Quản Lý Tài khoản Giảng Viên</router-link>
-        </div>
+    <div class="wrapper">
+        <nav id="sidebar" :class="{ 'active': isSidebarCollapsed }">
+            <div class="sidebar-header">
+                <h3>Teachlearn</h3>
+            </div>
+            <ul class="list-unstyled components">
+                <li class="active">
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Trang
+                        chủ</a>
+                    <ul class="collapse list-unstyled" id="homeSubmenu">
+                        <li>
+                            <router-link to="/teacher" class="nav-link">Lịch giảng viên</router-link>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">Giới thiệu</a>
+                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
+                        class="dropdown-toggle">Trang</a>
+                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                        <li>
+                            <router-link to="/student" class="nav-link">Đặt lịch học</router-link>
+                        </li>
+                        <li><a href="#">Trang 2</a></li>
+                        <li><a href="#">Trang 3</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">Dự án</a></li>
+                <li><a href="#">Liên hệ</a></li>
+            </ul>
+        </nav>
     </div>
-  </div>
 </template>
 
+
 <script setup>
-import { computed, ref } from 'vue';
-import { useStore } from 'vuex';
-
-
-const selectedItem = ref(0);
-
-const handleSelect = (e) => {
-    selectedItem.value = e
-
-}
-
-// take role from store
-const store = useStore();
-const role = computed(() => store.getters.getUserRole);
-const isTeacher = computed(() => role.value === 'gvT');
-
+import { inject } from 'vue';
+const isSidebarCollapsed = inject('isSidebarCollapsed');
 </script>
 
 <style scoped>
-.navbar-container {
+.wrapper {
     display: flex;
-    flex-direction: column;
-    border-radius: 5px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-.list-item{
-    /* padding: 5px; */
-}
-.item {
-    padding: 10px;
-    cursor: pointer;
-    margin: 20px 5px;
-    display: flex;
-    border-bottom: 1px solid #ddd;
-
+    align-items: stretch;
 }
 
-.active {
-    background-color: #eee;
-    font-weight: bold;
-    border-radius: 5px;
+#sidebar {
+    min-width: 220px;
+    max-width: 220px;
+    background: #4A4A8E;
+    color: #ffffff;
+    transition: all 0.3s;
 }
 
-.item a {
+#sidebar a,
+#sidebar a:hover,
+#sidebar a:focus {
+    color: inherit;
     text-decoration: none;
-    color: black;
-    font-size: 15px;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #393975;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+}
+
+#sidebar ul li a {
+    padding: 10px 20px;
+    font-size: 1.1em;
+    display: block;
+}
+
+#sidebar ul ul li a {
+    padding: 10px 30px;
+    font-size: 1em;
+    display: block;
+}
+
+#sidebar ul li a:hover {
+    background: #5B5BAD;
+}
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+    background: #5B5BAD;
+}
+
+
+#sidebar.active {
+    margin-left: -220px;
+}
+
+.router-link-active,
+.router-link-exact-active {
+    background-color: #5B5BAD;
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -220px;
+    }
+
+    #sidebar.active {
+        margin-left: 0;
+    }
 }
 </style>
