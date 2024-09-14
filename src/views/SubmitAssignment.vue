@@ -113,8 +113,8 @@ const result = ref([]);
 const isLoading = ref(false);
 const rootApi = process.env.VUE_APP_ROOT_API;
 const description = ref(null);
-const lastResult = ref("");
-const id = ref("6a1b4eba-fbc6-412b-8219-2a1f84eba567");
+const lastResult = ref();
+const id = ref("d8f6a72f-889c-4f2f-b7b7-f8b9e7b77d4b");
 const assignmentId = ref(1);
 const isPassed = ref(false);
 
@@ -139,6 +139,7 @@ const fetchLastResult = async () => {
       `${rootApi}/api/v1/reviews/${assignmentId.value}?id=${id.value}`
     );
     lastResult.value = response.data.result;
+    // console.log(response.data);
     isPassed.value = response.data.result.status === "PASS" ? true : false;
   } catch (error) {}
 };
@@ -187,8 +188,8 @@ const submitAssignment = async () => {
       }
     );
     const data = response.data;
-    result.value.push(data.result);
-    lastResult.value = data.result;
+    // result.value.push(data.result);
+    await fetchLastResult();
     isPassed.value = data.result.status === "PASS" ? true : false;
     isLoading.value = false;
   } catch (error) {
