@@ -1,39 +1,27 @@
 <template>
   <div class="container w-100 my-2 h-100">
-    <h3>CẤU HÌNH prompt REVIEW BÀI TẬP</h3>
+    <h3>CẤU HÌNH AI ĐÁNH GIÁ BÀI TẬP</h3>
 
     <hr />
     <h5>
-      Cấu trúc prompt
-      <span class="text-secondary" v-if="promptAI && promptAI.isTemplate"
-        >(Template)</span
-      >
+      Cấu trúc
+      <span class="text-secondary" v-if="promptAI && promptAI.isTemplate">(Template)</span>
     </h5>
     <div class="mb-3">
-      <textarea
-        class="form-control shadow"
-        id="exampleFormControlTextarea1"
-        rows="10"
-        v-if="promptAI"
-        v-model="promptAI.promptStructure"
-      >
+      <textarea class="form-control shadow" id="exampleFormControlTextarea1" rows="10" v-if="promptAI"
+        v-model="promptAI.promptStructure">
       </textarea>
     </div>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-      <button
-        class="btn btn-primary me-md-2"
-        @click="createPrompt"
-        type="button"
-      >
-        Add new
+      <button class="btn btn-primary me-md-2" @click="() => { $router.push('/listPrompt'); }" type="button">
+        Trở lại
       </button>
-      <button
-        v-if="promptAI.id && !promptAI.isTemplate"
-        class="btn btn-primary me-md-2"
-        @click="updatePrompt"
-        type="button"
-      >
-        Update
+      <button class="btn btn-primary me-md-2" @click="createPrompt" type="button">
+        Thêm mới
+      </button>
+      <button v-if="promptAI.id && !promptAI.isTemplate" class="btn btn-primary me-md-2" @click="updatePrompt"
+        type="button">
+        Cập nhật
       </button>
       <!-- <button
         v-if="promptAI.id"
@@ -85,13 +73,13 @@ export default {
 
     async createPrompt() {
       try {
-        this.promptAI.id=null;
-        this.promptAI.isActive=false;
+        this.promptAI.id = null;
+        this.promptAI.isActive = false;
         // this.promptAI.isTemplate=false;
-        const response = await axios.post(  this.rootApi+"/api/v1/admin/review-config" ,this.promptAI);
+        const response = await axios.post(this.rootApi + "/api/v1/admin/review-config", this.promptAI);
         console.log(this.promptAI);
         if (response.status === 200) {
-          
+
           toast.success("Add Success !", {
             autoClose: 2000,
           });
@@ -105,11 +93,11 @@ export default {
     },
 
     async updatePrompt() {
-     
+
       try {
         const response = await axios.put(
           this.rootApi + "/api/v1/admin/review-config/" + this.promptAI.id,
-           {promptStructure: this.promptAI.promptStructure}
+          { promptStructure: this.promptAI.promptStructure }
         );
         console.log(this.promptAI.promptStructure);
 
@@ -128,7 +116,7 @@ export default {
 
     async deletePrompt() {
       try {
-        const response = await axios.delete(  this.rootApi + "/api/v1/admin/review-config/" + this.promptAI.id);
+        const response = await axios.delete(this.rootApi + "/api/v1/admin/review-config/" + this.promptAI.id);
         console.log(response.data);
         if (response.status === 200) {
           this.$router.push("/listPrompt")
