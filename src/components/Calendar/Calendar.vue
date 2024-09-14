@@ -1,59 +1,65 @@
 <template>
-  <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate" :eventSettings="eventSettings" :actionBegin="onActionBegin"
-    class="calendar" :editorTemplate="'editorTemplate'" :eventRendered="onEventRendered" :startHour="startHour" :endHour="endHour"
-    :timeScale="timeScale">
-    <template v-slot:editorTemplate>
-      <table class="custom-event-editor" width="100%" cellpadding="5">
-        <tbody>
-          <tr>
-            <td class="e-textlabel">Tiêu đề</td>
-            <td colspan="4">
-              <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
-            </td>
-          </tr>
-          <tr>
-            <td class="e-textlabel">Giảng viên</td>
-            <td colspan="4">
-              <ejsDropdownlist id='OwnerId' name="OwnerId" class="e-field" placeholder='Choose status' :dataSource='ownerDataSource'
-                :fields="dropListFields">
-              </ejsDropdownlist>
-            </td>
-          </tr>
-          <tr>
-            <td class="e-textlabel">Giờ bắt đầu</td>
-            <td colspan="4">
-              <ejsDatetimepicker id="StartTime" class="e-field" name="StartTime"></ejsDatetimepicker>
-            </td>
-          </tr>
-          <tr>
-            <td class="e-textlabel">Giờ kết thúc</td>
-            <td colspan="4">
-              <ejsDatetimepicker id="EndTime" class="e-field" name="EndTime"></ejsDatetimepicker>
-            </td>
-          </tr>
-          <tr>
-            <td class="e-textlabel">Mô tả</td>
-            <td colspan="4">
-              <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
-                style="width: 100%; height: 60px !important; resize: vertical"></textarea>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </template>
-    <e-views>
-      <e-view option="Day"></e-view>
-      <e-view option="Week"></e-view>
-      <e-view option="WorkWeek"></e-view>
-      <e-view option="Month"></e-view>
-      <e-view option="Agenda"></e-view>
-    </e-views>
-    <e-resources>
-      <e-resource field="OwnerId" title="Owner" name="Owners" :dataSource="ownerDataSource" textField="OwnerText" idField="Id"
-        colorField="OwnerColor">
-      </e-resource>
-    </e-resources>
-  </ejs-schedule>
+  <div class="relative">
+    <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate"
+      :eventSettings="eventSettings" :actionBegin="onActionBegin" class="calendar" :editorTemplate="'editorTemplate'"
+      :eventRendered="onEventRendered" :startHour="startHour" :endHour="endHour" :timeScale="timeScale">
+      <template v-slot:editorTemplate>
+        <table class="custom-event-editor" width="100%" cellpadding="5">
+          <tbody>
+            <tr>
+              <td class="e-textlabel">Tiêu đề</td>
+              <td colspan="4">
+                <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
+              </td>
+            </tr>
+            <tr>
+              <td class="e-textlabel">Giảng viên</td>
+              <td colspan="4">
+                <ejsDropdownlist id='OwnerId' name="OwnerId" class="e-field" placeholder='Choose status'
+                  :dataSource='ownerDataSource' :fields="dropListFields">
+                </ejsDropdownlist>
+              </td>
+            </tr>
+            <tr>
+              <td class="e-textlabel">Giờ bắt đầu</td>
+              <td colspan="4">
+                <ejsDatetimepicker id="StartTime" class="e-field" name="StartTime"></ejsDatetimepicker>
+              </td>
+            </tr>
+            <tr>
+              <td class="e-textlabel">Giờ kết thúc</td>
+              <td colspan="4">
+                <ejsDatetimepicker id="EndTime" class="e-field" name="EndTime"></ejsDatetimepicker>
+              </td>
+            </tr>
+            <tr>
+              <td class="e-textlabel">Mô tả</td>
+              <td colspan="4">
+                <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
+                  style="width: 100%; height: 60px !important; resize: vertical"></textarea>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </template>
+      <e-views>
+        <e-view option="Day"></e-view>
+        <e-view option="Week"></e-view>
+        <e-view option="WorkWeek"></e-view>
+        <e-view option="Month"></e-view>
+        <e-view option="Agenda"></e-view>
+      </e-views>
+      <e-resources>
+        <e-resource field="OwnerId" title="Owner" name="Owners" :dataSource="ownerDataSource" textField="OwnerText"
+          idField="Id" colorField="OwnerColor">
+        </e-resource>
+      </e-resources>
+    </ejs-schedule>
+    <div v-if="isLoading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div class="loader"></div>
+    </div>
+  </div>
+
 </template>
 
 <script setup>
@@ -77,6 +83,7 @@ import frGregorian from '@syncfusion/ej2-cldr-data/main/vi/ca-gregorian.json';
 import frNumberingSystem from '@syncfusion/ej2-cldr-data/supplemental/numberingSystems.json';
 const rootApi = process.env.VUE_APP_ROOT_API;
 const props = defineProps(['url', 'id']);
+const isLoading = ref(false);
 
 setCulture('vi');
 L10n.load(viLocale)
@@ -89,6 +96,7 @@ const remoteData = new DataManager({
   adaptor: new WebApiAdaptor,
   crossDomain: true
 });
+
 
 
 const scheduleObj = ref(null);
@@ -200,32 +208,37 @@ const onActionBegin = async (args) => {
     }
   } else if (args.requestType === 'eventChange') {
     try {
-
       let formattedEventData = {
         ...args.data,
         StartTime: formatDate(args.data.StartTime),
         EndTime: formatDate(args.data.EndTime),
       };
 
-      if (props.url.includes('student')) {
+      const isStudentBooking = window.location.href.includes('student');
+      // if(prop.url.includes('student'))
+      if (isStudentBooking) {
         formattedEventData = {
           ...formattedEventData,
-          UserId: '516cc73e-48ed-426e-947f-93abdb55bbee',
+          UserId: '35313663-6337-3365-2d34-3865642d3432',
           CourseId: "1",
           ChapterId: "1",
           status: "BOOKED"
         };
+        await axios.put(`${props.url}/student-calendar/${formattedEventData.Id}`, formattedEventData);
+        toast.success('Đặt lịch thành công!Vui lòng kiểm tra gmail để xem chi tiết');
+        isLoading.value = true;
+      } else {
+        await axios.put(`${props.url}/${formattedEventData.Id}`, formattedEventData);
+        toast.success('Cập nhật lịch thành công!');
       }
-
-      console.log(formattedEventData);
-
-      await axios.put(`${props.url}/${formattedEventData.Id}`, formattedEventData);
-      toast.success('Cập nhật lại lịch thành công!');
     } catch (error) {
       console.error('Error updating event:', error);
       toast.error('Cập nhật lịch thất bại!');
+    } finally {
+      isLoading.value = false;
     }
   }
+
   await nextTick(() => {
     scheduleObj.value.refreshEvents();
   });
@@ -242,10 +255,10 @@ watch(() => props.id, (newId) => {
     };
   }
 });
+
 </script>
 
 <style scoped>
-
 @import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
 @import '../../../node_modules/@syncfusion/ej2-calendars/styles/material.css';
 @import '../../../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
@@ -254,4 +267,40 @@ watch(() => props.id, (newId) => {
 @import '../../../node_modules/@syncfusion/ej2-popups/styles/material.css';
 @import '../../../node_modules/@syncfusion/ej2-vue-schedule/styles/material.css';
 @import '../../../node_modules/@syncfusion/ej2-base/styles/material.css';
+
+.relative {
+  position: relative;
+}
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  --r1: 154%;
+  --r2: 68.5%;
+  width: 60px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(var(--r1) var(--r2) at top, #0000 79.5%, #269af2 80%),
+    radial-gradient(var(--r1) var(--r2) at bottom, #269af2 79.5%, #0000 80%),
+    radial-gradient(var(--r1) var(--r2) at top, #0000 79.5%, #269af2 80%),
+    #ccc;
+  background-size: 50.5% 220%;
+  background-position: -100% 0%, 0% 0%, 100% 0%;
+  background-repeat: no-repeat;
+  animation: l9 2s infinite linear;
+}
+
+@keyframes l9 {
+  33% {
+    background-position: 0% 33%, 100% 33%, 200% 33%
+  }
+
+  66% {
+    background-position: -100% 66%, 0% 66%, 100% 66%
+  }
+
+  100% {
+    background-position: 0% 100%, 100% 100%, 200% 100%
+  }
+}
 </style>

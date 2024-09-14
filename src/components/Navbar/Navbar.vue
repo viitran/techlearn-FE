@@ -20,7 +20,7 @@
                         class="dropdown-toggle">Trang</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         <li>
-                            <router-link to="/" class="nav-link">Đặt lịch học</router-link>
+                            <router-link to="/student" class="nav-link">Đặt lịch học</router-link>
                         </li>
                         <li><a href="#">Trang 2</a></li>
                         <li><a href="#">Trang 3</a></li>
