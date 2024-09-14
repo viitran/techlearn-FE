@@ -4,7 +4,7 @@
     <div class="assignment-container" v-if="assignmentDescription">
       <div class="title-container">
         <p>{{ assignmentDescription.tenBaiTap }}</p>
-        <button @click="viewSolution">Xem solution</button>
+        <button @click="viewSolution">Xem giải pháp</button>
       </div>
       <div class="assignment-description">
         <div
@@ -35,7 +35,7 @@
           <span v-if="isLoading">
             <div class="spinner"></div>
           </span>
-          <span v-else>Submit</span>
+          <span v-else>Nộp bài</span>
         </button>
       </div>
     </div>
@@ -48,7 +48,10 @@
       </div>
 
       <div v-if="lastResult" class="result-AI-container">
-        <div class="response-AI-text" v-html="format(lastResult)"></div>
+        <div class="time-container">
+          <p>{{ formatDateString(lastResult.createdDate) }}</p>
+        </div>
+        <div class="response-AI-text" v-html="format(lastResult.review)"></div>
       </div>
     </div>
 
@@ -79,7 +82,8 @@
                 >
                   Lần nộp thứ {{ index + 1 }}
                 </p>
-                <div class="response-AI-text" v-html="format(res)"></div>
+                <p>{{ formatDateString(res.createdDate) }}</p>
+                <div class="response-AI-text" v-html="format(res.review)"></div>
               </div>
             </div>
             <div v-else>
@@ -109,28 +113,24 @@ const result = ref([]);
 const isLoading = ref(false);
 const rootApi = process.env.VUE_APP_ROOT_API;
 const description = ref(null);
-const lastResult = ref("");
-const id = ref("6a1b4eba-fbc6-412b-8219-2a1f84eba567");
+const lastResult = ref();
+const id = ref("d8f6a72f-889c-4f2f-b7b7-f8b9e7b77d4b");
 const assignmentId = ref(1);
 const isPassed = ref(false);
 
-const openModal = () => {
+const openModal = async () => {
   const modal = new bootstrap.Modal(document.getElementById("historyModal"));
   modal.show();
-};
 
-const fetchReview = async () => {
   try {
     const response = await axios.get(
       `${rootApi}/api/v1/reviews?id=${id.value}&assignment=${assignmentId.value}`
     );
     response.data.result.items.map((rev, index) => {
-      result.value.push(rev.review);
+      result.value.push(rev);
     });
-    // console.log(result.value);
-  } catch (error) {
-    console.log(error);
-  }
+    console.log(result.value);
+  } catch (error) {}
 };
 
 const fetchLastResult = async () => {
@@ -138,7 +138,8 @@ const fetchLastResult = async () => {
     const response = await axios.get(
       `${rootApi}/api/v1/reviews/${assignmentId.value}?id=${id.value}`
     );
-    lastResult.value = response.data.result.review;
+    lastResult.value = response.data.result;
+    // console.log(response.data);
     isPassed.value = response.data.result.status === "PASS" ? true : false;
   } catch (error) {}
 };
@@ -187,8 +188,8 @@ const submitAssignment = async () => {
       }
     );
     const data = response.data;
-    result.value.push(data.result);
-    lastResult.value = data.result;
+    // result.value.push(data.result);
+    await fetchLastResult();
     isPassed.value = data.result.status === "PASS" ? true : false;
     isLoading.value = false;
   } catch (error) {
@@ -200,9 +201,22 @@ const format = (result) => {
   return result.replace(/\n/g, "<br>");
 };
 
+const formatDateString = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleString("vi-VN", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: false,
+  });
+};
+
 onMounted(async () => {
   await fetchAssignments();
-  await fetchReview();
   await fetchLastResult();
 });
 </script>
@@ -307,6 +321,12 @@ onMounted(async () => {
 .result-AI-container p {
   font-weight: 600;
   font-size: 16px;
+}
+.time-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 25px;
 }
 .response-AI-text {
   border: 1px solid #d3bfbf;
