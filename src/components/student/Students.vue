@@ -8,9 +8,9 @@
       </button> -->
     </div>
 
-    <div>
+    <!-- <div>
       <FormStudent />
-    </div>
+    </div> -->
 
     <table v-if="list.length" class="styled-table">
       <thead>

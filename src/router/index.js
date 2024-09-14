@@ -9,6 +9,7 @@ import ListTemplatePromptView from '@/views/teacherView/listTemplatePromptView.v
 // import Calendar from '@/components/Calendar/Calendar.vue'
 import { checkRole } from "@/components/Middleware/AuthenticateTeacher";
 import Teacher from '@/components/Teacher/Teacher.vue'
+import StudentCalendar from '@/components/student/StudentCalendar.vue'
 
 const routes = [
   {
@@ -51,6 +52,12 @@ const routes = [
     path: "/submitAssignment",
     name: "submitAssignment",
     component: SubmitAssignment,
+    props: true
+  },
+  {
+    path: "/student",
+    name: "studentCalendar",
+    component: StudentCalendar,
     props: true
   },
   {
