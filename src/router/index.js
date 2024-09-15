@@ -12,11 +12,8 @@ import ListTemplatePromptView from '@/views/teacherView/listTemplatePromptView.v
 import { checkRole } from "@/components/Middleware/AuthenticateTeacher";
 import Teacher from '@/components/Teacher/Teacher.vue'
 import StudentCalendar from '@/components/student/StudentCalendar.vue'
-<<<<<<< HEAD
-=======
 // import { component } from 'vue/types/umd'
 import CoursePage from '@/views/CoursePage.vue'
->>>>>>> c2d61b1854d58ab54606929339920670e37a30ff
 
 const routes = [
   {
@@ -68,15 +65,12 @@ const routes = [
     props: true
   },
   {
-<<<<<<< HEAD
-=======
     path:"/coursePage",
     name: "coursePage",
     component: CoursePage,
     props:true
   },
   {
->>>>>>> c2d61b1854d58ab54606929339920670e37a30ff
     path: "/:catchAll(.*)",
     name: 'NotFound',
     component: NotFound
