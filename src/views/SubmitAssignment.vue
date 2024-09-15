@@ -3,14 +3,14 @@
     <!-- Nội dung bài tập -->
     <div class="assignment-container" v-if="assignmentDescription">
       <div class="title-container">
-        <p>{{ assignmentDescription.tenBaiTap }}</p>
+        <p>{{ assignmentDescription.name }}</p>
         <button @click="viewSolution">Xem solution</button>
       </div>
       <div class="assignment-description">
         <div
           ref="description"
           class="description-text"
-          v-html="format(assignmentDescription.moTa)"
+          v-html="format(assignmentDescription.description)"
         ></div>
       </div>
     </div>
@@ -35,12 +35,11 @@
           <span v-if="isLoading">
             <div class="spinner"></div>
           </span>
-          <span v-else>Submit</span>
+          <span v-else>Nộp bài</span>
         </button>
       </div>
     </div>
 
-    <!-- Kết quả -->
     <div class="result-container">
       <div class="result-header">
         <p>Kết quả:</p>
@@ -48,11 +47,13 @@
       </div>
 
       <div v-if="lastResult" class="result-AI-container">
-        <div class="response-AI-text" v-html="format(lastResult)"></div>
+        <div class="time-container">
+          <p>{{ formatDateString(lastResult.createdDate) }}</p>
+        </div>
+        <div class="response-AI-text" v-html="format(lastResult.review)"></div>
       </div>
     </div>
 
-    <!-- Modal Bootstrap -->
     <div
       class="modal fade"
       id="historyModal"
@@ -79,7 +80,8 @@
                 >
                   Lần nộp thứ {{ index + 1 }}
                 </p>
-                <div class="response-AI-text" v-html="format(res)"></div>
+                <p>{{ formatDateString(res.createdDate) }}</p>
+                <div class="response-AI-text" v-html="format(res.review)"></div>
               </div>
             </div>
             <div v-else>
@@ -98,10 +100,9 @@ import axios from "axios";
 import { ref, onMounted } from "vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { useRoute } from "vue-router";
 
-const courseId = "1";
-const chapterId = 1;
-const exerciseId = 1;
+const route = useRoute();
 
 const assignmentDescription = ref(null);
 const githubLink = ref("");
@@ -109,63 +110,42 @@ const result = ref([]);
 const isLoading = ref(false);
 const rootApi = process.env.VUE_APP_ROOT_API;
 const description = ref(null);
-const lastResult = ref("");
-const id = ref("6a1b4eba-fbc6-412b-8219-2a1f84eba567");
-const assignmentId = ref(1);
+const lastResult = ref();
+const id = route.query.userID;
+const assignmentId = route.params.id;
 const isPassed = ref(false);
 
-const openModal = () => {
+const openModal = async () => {
   const modal = new bootstrap.Modal(document.getElementById("historyModal"));
   modal.show();
-};
 
-const fetchReview = async () => {
   try {
     const response = await axios.get(
-      `${rootApi}/api/v1/reviews?id=${id.value}&assignment=${assignmentId.value}`
+      `${rootApi}/api/v1/reviews?id=${id}&assignment=${assignmentId}&pageSize=30`
     );
+    console.log(id + " " + assignmentId);
     response.data.result.items.map((rev, index) => {
-      result.value.push(rev.review);
+      result.value.push(rev);
     });
-    // console.log(result.value);
-  } catch (error) {
-    console.log(error);
-  }
+  } catch (error) {}
 };
 
 const fetchLastResult = async () => {
   try {
     const response = await axios.get(
-      `${rootApi}/api/v1/reviews/${assignmentId.value}?id=${id.value}`
+      `${rootApi}/api/v1/reviews/${assignmentId}?id=${id}`
     );
-    lastResult.value = response.data.result.review;
+    lastResult.value = response.data.result;
     isPassed.value = response.data.result.status === "PASS" ? true : false;
   } catch (error) {}
 };
 
 const fetchAssignments = async () => {
   try {
-    const response = await axios.get("http://localhost:3000/khoahoc");
-    const data = response.data;
-
-    const course = data.find((course) => course.id === courseId);
-    if (course) {
-      const chapter = course.chuong.find((chapter) => chapter.id === chapterId);
-      if (chapter) {
-        const exercise = chapter.baiTap.find(
-          (exercise) => exercise.id === exerciseId
-        );
-        if (exercise) {
-          assignmentDescription.value = exercise;
-        } else {
-          console.error("Bài tập không tìm thấy");
-        }
-      } else {
-        console.error("Chương không tìm thấy");
-      }
-    } else {
-      console.error("Khóa học không tìm thấy");
-    }
+    const response = await axios.get(
+      `${rootApi}/api/v1/assignments/${assignmentId}`
+    );
+    assignmentDescription.value = response.data.result;
   } catch (error) {
     console.error("Lỗi khi lấy dữ liệu:", error);
   }
@@ -174,21 +154,19 @@ const fetchAssignments = async () => {
 const submitAssignment = async () => {
   try {
     isLoading.value = true;
-    console.log(assignmentDescription.value.moTa);
     const response = await axios.post(
       `${rootApi}/api/v1/reviews/fetch-repo-content`,
       {
         github_link: githubLink.value,
         exerciseTitle:
-          assignmentDescription.value.tenBaiTap +
+          assignmentDescription.value.name +
           " yêu cầu: " +
-          assignmentDescription.value.moTa +
+          assignmentDescription.value.description +
           " ",
       }
     );
     const data = response.data;
-    result.value.push(data.result);
-    lastResult.value = data.result;
+    await fetchLastResult();
     isPassed.value = data.result.status === "PASS" ? true : false;
     isLoading.value = false;
   } catch (error) {
@@ -200,9 +178,22 @@ const format = (result) => {
   return result.replace(/\n/g, "<br>");
 };
 
+const formatDateString = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleString("vi-VN", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    hour12: false,
+  });
+};
+
 onMounted(async () => {
   await fetchAssignments();
-  await fetchReview();
   await fetchLastResult();
 });
 </script>
@@ -255,6 +246,7 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 15px;
 }
 .result-header button {
   /* padding: 10px; */
@@ -307,6 +299,12 @@ onMounted(async () => {
 .result-AI-container p {
   font-weight: 600;
   font-size: 16px;
+}
+.time-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 25px;
 }
 .response-AI-text {
   border: 1px solid #d3bfbf;
