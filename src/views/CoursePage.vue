@@ -8,7 +8,8 @@
         :key="index"
         style="width: 18rem"
       >
-        <img :src="course.image" class="card-img-top" alt="..." />
+        <!-- <img :src="course.image" class="card-img-top" alt="..." /> -->
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbOFmjGchTMwQriXqezOovYKqXWK3YXUnFlQ&s" class="card-img-top " alt="..." />
         <div
           class="card-body"
           @click="

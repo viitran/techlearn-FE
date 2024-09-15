@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid ">
     <!-- Nội dung bài tập -->
     <div class="assignment-container" v-if="assignmentDescription">
       <div class="title-container">
@@ -74,7 +74,7 @@
           </div>
           <div class="modal-body">
             <div v-if="result.length > 0">
-              <div v-for="(res, index) in result" :key="index">
+              <!-- <div v-for="(res, index) in result" :key="index">
                 <p
                   style="font-size: 18px; font-weight: 550; margin-bottom: 15px"
                 >
@@ -82,7 +82,30 @@
                 </p>
                 <p>{{ formatDateString(res.createdDate) }}</p>
                 <div class="response-AI-text" v-html="format(res.review)"></div>
-              </div>
+              </div> -->
+              
+              <div class="accordion" id="accordionExample">      
+  <div class="accordion-item"  v-for="(res, index) in result" :key="index">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse' + res.id" aria-expanded="true" :aria-controls="'#collapse' + res.id">
+        <p style="font-size: 18px; font-weight: 550; margin-bottom: 15px">
+          Lần nộp thứ {{ index + 1 }}
+        </p>
+        <p class="ms-3">Thời gian nộp: {{ formatDateString(res.createdDate) }}</p>
+      </button>
+    </h2>
+    <div :id="'collapse' + res.id" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <div class="response-AI-text" v-html="format(res.review)"></div> </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+              
+
             </div>
             <div v-else>
               <p>Chưa có lịch sử nộp bài.</p>
@@ -106,7 +129,7 @@ const route = useRoute();
 
 const assignmentDescription = ref(null);
 const githubLink = ref("");
-const result = ref([]);
+var result = ref([]);
 const isLoading = ref(false);
 const rootApi = process.env.VUE_APP_ROOT_API;
 const description = ref(null);
@@ -118,13 +141,15 @@ const isPassed = ref(false);
 const openModal = async () => {
   const modal = new bootstrap.Modal(document.getElementById("historyModal"));
   modal.show();
-
+  result.value.splice(0, result.value.length);
   try {
     const response = await axios.get(
       `${rootApi}/api/v1/reviews?id=${id}&assignment=${assignmentId}&pageSize=30`
     );
     console.log(id + " " + assignmentId);
+ 
     response.data.result.items.map((rev, index) => {
+     
       result.value.push(rev);
     });
   } catch (error) {}
