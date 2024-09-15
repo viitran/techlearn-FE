@@ -2,24 +2,16 @@
   <div class="container">
     <p class="title">Khóa học của tôi</p>
     <div class="card-container">
-      <div
-        class="card shadow"
-        v-for="(course, index) in courses"
-        :key="index"
-        style="width: 18rem"
-      >
+      <div class="card shadow" v-for="(course, index) in courses" :key="index" style="width: 18rem">
         <!-- <img :src="course.image" class="card-img-top" alt="..." /> -->
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbOFmjGchTMwQriXqezOovYKqXWK3YXUnFlQ&s" class="card-img-top " alt="..." />
-        <div
-          class="card-body"
-          @click="
-            router.push({
-              name: 'assignment',
-              params: { id: course.id },
-              query: { userID: userID },
-            })
-          "
-        >
+        <img :src="course.image" class="card-img-top " alt="..." />
+        <div class="card-body" @click="
+          router.push({
+            name: 'assignment',
+            params: { id: course.id },
+            query: { userID: userID },
+          })
+          ">
           <p>{{ course.name }}</p>
           <p class="card-text">
             {{ course.description }}

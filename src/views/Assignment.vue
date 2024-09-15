@@ -9,35 +9,21 @@
               <div class="search-icon-wrapper">
                 <i class="search-icon fa-solid fa-magnifying-glass"></i>
               </div>
-              <input
-                type="text"
-                class="search-input"
-                placeholder="Tìm kiếm..."
-                v-model="searchQuery"
-                @input="fetchFilteredData"
-              />
+              <input type="text" class="search-input" placeholder="Tìm kiếm..." v-model="searchQuery"
+                @input="fetchFilteredData" />
             </div>
             <div class="d-none d-lg-flex align-items-center ml-2"></div>
-            <select
-              class="filter filter-btn form-select"
-              v-model="selectedFilter"
-              @change="fetchFilteredData"
-            >
+            <select class="filter filter-btn form-select" v-model="selectedFilter" @change="fetchFilteredData">
               <option value="all">Tất cả</option>
-              <option value="unSubmit">Chưa nộp</option>
-              <option value="submitted">Đã nộp</option>
+              <option value="PENDING">Chưa nộp</option>
+              <option value="PASS">Đã nộp</option>
+              <option value="FIX_REVIEW">Sửa review</option>
             </select>
-            <button
-              class="search-btn btn btn-primary ml-2"
-              @click="fetchFilteredData"
-            >
+            <button class="search-btn btn btn-primary ml-2" @click="fetchFilteredData">
               Tìm kiếm
             </button>
           </div>
-          <button
-            class="search-btn btn btn-primary d-lg-none ml-2"
-            @click="fetchFilteredData"
-          >
+          <button class="search-btn btn btn-primary d-lg-none ml-2" @click="fetchFilteredData">
             Tìm kiếm
           </button>
         </div>
@@ -52,47 +38,30 @@
       </div>
       <div class="content-body mt-3">
         <div id="accordion">
-          <div
-            class="card body-wrapper list-chapter"
-            v-for="(chapter, index) in filteredChapters"
-            :key="index"
-          >
+          <div class="card body-wrapper list-chapter" v-for="(chapter, index) in filteredChapters" :key="index">
             <div class="card-header" :id="'heading' + index">
               <h5 class="mb-0">
-                <button
-                  class="btn chapter-title"
-                  type="button"
-                  data-toggle="collapse"
-                  :data-target="'#collapse' + index"
-                  :aria-controls="'collapse' + index"
-                >
-                  <i class="fa-solid fa-angle-down"></i>
-                  {{ chapter.name }}
+                <button class="btn chapter-title" type="button" data-toggle="collapse"
+                  :data-target="'#collapse' + index" :aria-controls="'collapse' + index">
+                  <i class="fas fa-angle-down"></i>&nbsp;
+                  <strong> {{ index + 1 }}.</strong> {{ chapter.name }}
                 </button>
               </h5>
             </div>
-            <div
-              :id="'collapse' + index"
-              :class="index === 0 ? 'collapse show' : 'collapse'"
-              :aria-labelledby="'heading' + index"
-            >
+            <div :id="'collapse' + index" :class="index === 0 ? 'collapse show' : 'collapse'"
+              :aria-labelledby="'heading' + index">
               <div v-for="(item, itemIndex) in assignments">
-                <div
-                  class="card-body assignment-card"
-                  v-if="item.chapter.id === chapter.id"
-                  :key="itemIndex"
-                  @click="
-                    router.push({
-                      name: 'submitAssignment',
-                      params: { id: item.id },
-                      query: { userID: userId },
-                    })
-                  "
-                >
+                <div class="card-body assignment-card" v-if="item.chapter.id === chapter.id" :key="itemIndex" @click="
+                  router.push({
+                    name: 'submitAssignment',
+                    params: { id: item.id },
+                    query: { userID: userId },
+                  })
+                  ">
                   <div class="assignment">
-                    <i class="fa-solid fa-book"></i>
+                    <i class="fa fa-book"></i>
                     <p class="ml-2 assignment-title">
-                      #{{ itemIndex + 1 }} {{ item.name }}
+                      {{ item.name }}
                     </p>
                   </div>
                 </div>
@@ -145,14 +114,14 @@ const fetchAssignment = async () => {
       `${rootApi}/api/v1/assignments?courseId=${courseId}&userId=${userId}`
     );
     assignments.value = response.data.result.items;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const calculateTotalLessons = (chapters) => {
   return chapters ? chapters.length : 0;
 };
 
-const fetchFilteredData = async () => {
+/* const fetchFilteredData = async () => {
   const courseId = route.params.id;
   try {
     const response = await axios.get(`${rootApi}/api/v1/chapters/${courseId}`, {
@@ -167,7 +136,26 @@ const fetchFilteredData = async () => {
   } catch (error) {
     console.error("Error when fetching data (filter):", error);
   }
-};
+}; */
+/* const fetchFilteredData = async () => {
+  const courseId = route.params.id;
+  const userId = route.query.userID;
+  try {
+    const response = await axios.get(`${rootApi}/api/v1/assignments`, {
+      params: {
+        courseId: courseId,
+        userId: userId,  // assuming you have this user ID in your Vuex or state
+        search: searchQuery.value,  // Optional search parameter
+        status: selectedFilter.value  // Optional status parameter (e.g. 'PENDING', 'PASS', 'FIX_REVIEW')
+      },
+    });
+    const data = response.data.result;  // Adjust according to your API response structure
+    filteredChapters.value = data;  // Assuming the assignments are directly returned
+  } catch (error) {
+    console.error("Error when fetching data (filter):", error);
+  }
+}; */
+
 
 onMounted(async () => {
   await fetchCourseData();
@@ -229,7 +217,7 @@ p {
 }
 
 .filter {
-  width: 110px !important;
+  width: 150px !important;
 }
 
 .filter-btn {

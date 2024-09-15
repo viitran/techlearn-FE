@@ -4,14 +4,10 @@
     <div class="assignment-container" v-if="assignmentDescription">
       <div class="title-container">
         <p>{{ assignmentDescription.name }}</p>
-        <button @click="viewSolution">Xem solution</button>
+        <button @click="viewSolution">Xem cách giải</button>
       </div>
       <div class="assignment-description">
-        <div
-          ref="description"
-          class="description-text"
-          v-html="format(assignmentDescription.description)"
-        ></div>
+        <div ref="description" class="description-text" v-html="format(assignmentDescription.description)"></div>
       </div>
     </div>
     <div v-else>
@@ -22,16 +18,8 @@
     <div class="submit-container">
       <p>Nộp bài tập:</p>
       <div class="input-container">
-        <input
-          type="text"
-          placeholder="Thêm link github tại đây"
-          v-model="githubLink"
-        />
-        <button
-          @click="submitAssignment"
-          :disabled="isLoading || isPassed"
-          :class="{ 'button-disabled': isPassed }"
-        >
+        <input type="text" placeholder="Thêm link github tại đây" v-model="githubLink" />
+        <button @click="submitAssignment" :disabled="isLoading || isPassed" :class="{ 'button-disabled': isPassed }">
           <span v-if="isLoading">
             <div class="spinner"></div>
           </span>
@@ -54,21 +42,11 @@
       </div>
     </div>
 
-    <div
-      class="modal fade"
-      id="historyModal"
-      tabindex="-1"
-      aria-labelledby="historyModalLabel"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h5
-              class="modal-title"
-              id="historyModalLabel"
-              style="font-weight: 600; font-size: 25px"
-            >
+            <h5 class="modal-title" id="historyModalLabel" style="font-weight: 600; font-size: 25px">
               Lịch sử nộp bài
             </h5>
           </div>
@@ -83,29 +61,26 @@
                 <p>{{ formatDateString(res.createdDate) }}</p>
                 <div class="response-AI-text" v-html="format(res.review)"></div>
               </div> -->
-              
-              <div class="accordion" id="accordionExample">      
-  <div class="accordion-item"  v-for="(res, index) in result" :key="index">
-    <h2 class="accordion-header">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse' + res.id" aria-expanded="true" :aria-controls="'#collapse' + res.id">
-        <p style="font-size: 18px; font-weight: 550; margin-bottom: 15px">
-          Lần nộp thứ {{ index + 1 }}
-        </p>
-        <p class="ms-3">Thời gian nộp: {{ formatDateString(res.createdDate) }}</p>
-      </button>
-    </h2>
-    <div :id="'collapse' + res.id" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
-      <div class="accordion-body">
-        <div class="response-AI-text" v-html="format(res.review)"></div> </div>
-    </div>
-  </div>
-</div>
 
-
-
-
-              
-
+              <div class="accordion" id="accordionExample">
+                <div class="accordion-item" v-for="(res, index) in result" :key="index">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                      :data-bs-target="'#collapse' + res.id" aria-expanded="true" :aria-controls="'#collapse' + res.id">
+                      <p style="font-size: 18px; font-weight: 550; margin-bottom: 15px">
+                        Lần nộp thứ {{ index + 1 }}
+                      </p>
+                      <p class="ms-3">Thời gian nộp: {{ formatDateString(res.createdDate) }}</p>
+                    </button>
+                  </h2>
+                  <div :id="'collapse' + res.id" class="accordion-collapse collapse "
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                      <div class="response-AI-text" v-html="format(res.review)"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div v-else>
               <p>Chưa có lịch sử nộp bài.</p>
@@ -147,12 +122,12 @@ const openModal = async () => {
       `${rootApi}/api/v1/reviews?id=${id}&assignment=${assignmentId}&pageSize=30`
     );
     console.log(id + " " + assignmentId);
- 
+
     response.data.result.items.map((rev, index) => {
-     
+
       result.value.push(rev);
     });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const fetchLastResult = async () => {
@@ -162,7 +137,7 @@ const fetchLastResult = async () => {
     );
     lastResult.value = response.data.result;
     isPassed.value = response.data.result.status === "PASS" ? true : false;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const fetchAssignments = async () => {
