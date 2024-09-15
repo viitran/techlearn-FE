@@ -48,7 +48,7 @@
 
       <div v-if="lastResult" class="result-AI-container">
         <div class="time-container">
-          <p>{{ formatDateString(lastResult.createdDate) }}</p>
+          <p>Nộp bài {{ formatDateString(lastResult.createdDate) }}</p>
         </div>
         <div class="response-AI-text" v-html="format(lastResult.review)"></div>
       </div>
@@ -202,6 +202,7 @@ onMounted(async () => {
 .container {
   margin: 30px;
 }
+
 .button-disabled {
   background-color: #d8bebe !important;
   color: #999999;
@@ -237,17 +238,20 @@ onMounted(async () => {
   margin-top: 15px;
   margin-bottom: 20px;
 }
+
 .submit-container p,
 .result-container p {
   font-weight: 600;
   font-size: 20px;
 }
+
 .result-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 15px;
 }
+
 .result-header button {
   /* padding: 10px; */
   border-radius: 8px;
@@ -258,6 +262,7 @@ onMounted(async () => {
   margin-right: 30px;
   height: 40px;
 }
+
 .input-container {
   outline: solid 1px #9b9b9b;
   border-radius: 10px;
@@ -266,12 +271,14 @@ onMounted(async () => {
   margin-right: 30px;
   margin-left: 15px;
 }
+
 .input-container input {
   outline: none;
   border: none;
   flex-grow: 1;
   padding: 8px;
 }
+
 .input-container button {
   border: none;
   outline: none;
@@ -281,6 +288,7 @@ onMounted(async () => {
   color: white;
   width: 120px;
 }
+
 .result-container p {
   margin-top: 20px;
 }
@@ -296,16 +304,19 @@ onMounted(async () => {
   overflow-y: hidden;
   margin-left: 15px;
 }
+
 .result-AI-container p {
   font-weight: 600;
   font-size: 16px;
 }
+
 .time-container {
   display: flex;
   justify-content: flex-start;
   align-items: center;
   margin-left: 25px;
 }
+
 .response-AI-text {
   border: 1px solid #d3bfbf;
   border-radius: 10px;
@@ -314,6 +325,7 @@ onMounted(async () => {
   margin-right: 27px;
   margin-bottom: 15px;
 }
+
 .spinner {
   border: 4px solid rgba(0, 0, 0, 0.1);
   border-left: 4px solid white;
@@ -329,6 +341,7 @@ onMounted(async () => {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
