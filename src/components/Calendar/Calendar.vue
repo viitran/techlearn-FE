@@ -55,7 +55,7 @@
         </e-resource>
       </e-resources>
     </ejs-schedule>
-    <div v-if="isLoading" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div v-if="isLoading">
       <div class="loader"></div>
     </div>
   </div>
@@ -84,7 +84,7 @@ import frNumberingSystem from '@syncfusion/ej2-cldr-data/supplemental/numberingS
 const rootApi = process.env.VUE_APP_ROOT_API;
 const props = defineProps(['url', 'id']);
 const isLoading = ref(false);
-
+const isStudentBooking = ref(false);
 setCulture('vi');
 L10n.load(viLocale)
 loadCldr(frNumberData, frtimeZoneData, frGregorian, frNumberingSystem);
@@ -217,16 +217,16 @@ const onActionBegin = async (args) => {
       const isStudentBooking = window.location.href.includes('student');
       // if(prop.url.includes('student'))
       if (isStudentBooking) {
+        isLoading.value = true;
         formattedEventData = {
           ...formattedEventData,
-          UserId: '35313663-6337-3365-2d34-3865642d3432',
+          UserId: 'd8f6a72f-889c-4f2f-b7b7-f8b9e7b77d4b',
           CourseId: "1",
           ChapterId: "1",
           status: "BOOKED"
         };
         await axios.put(`${props.url}/student-calendar/${formattedEventData.Id}`, formattedEventData);
         toast.success('Đặt lịch thành công!Vui lòng kiểm tra gmail để xem chi tiết');
-        isLoading.value = true;
       } else {
         await axios.put(`${props.url}/${formattedEventData.Id}`, formattedEventData);
         toast.success('Cập nhật lịch thành công!');

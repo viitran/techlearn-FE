@@ -16,21 +16,24 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#">Giới thiệu</a>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
-                        class="dropdown-toggle">Trang</a>
-                    <ul class="collapse list-unstyled" id="pageSubmenu">
-                        <li>
                             <router-link to="/student" class="nav-link">Đặt lịch học</router-link>
                         </li>
-                        <li><a href="#">Trang 2</a></li>
-                        <li><a href="#">Trang 3</a></li>
-                    </ul>
+                <li>
+                    <!-- <a href="#">Giới thiệu</a> -->
+                    <!-- <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
+                        class="dropdown-toggle">Trang</a> -->
+                    <!-- <ul class="collapse list-unstyled" id="pageSubmenu"> -->
+                        <!-- <li>
+                            <router-link to="/student" class="nav-link">Đặt lịch học</router-link>
+                        </li> -->
+                        <!-- <li><a href="#">Trang 2</a></li>
+                        <li><a href="#">Trang 3</a></li> -->
+                    <!-- </ul> -->
                 </li>
                 <li> <router-link to="listPrompt">Config Promp chấm điểm </router-link></li>
                 <li> <router-link to="/submitAssignment">Khóa học của tôi </router-link></li>
-                <li><a href="#">Dự án</a></li>
-                <li><a href="#">Liên hệ</a></li>
+                <!-- <li><a href="#">Dự án</a></li>
+                <li><a href="#">Liên hệ</a></li> -->
             </ul>
         </nav>
     </div>
@@ -72,7 +75,7 @@ const handleSelect = (e) => {
 }
 
 .active {
-    background-color: #eee;
+    background-color: #4A4A8E;
     font-weight: bold;
     border-radius: 5px;
 }
