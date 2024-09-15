@@ -6,30 +6,16 @@
       </div>
       <ul class="list-unstyled components">
         <li class="active">
-          <a
-            href="#homeSubmenu"
-            data-toggle="collapse"
-            aria-expanded="false"
-            class="dropdown-toggle"
-            >Trang chủ</a
-          >
+          <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Trang chủ</a>
           <ul class="collapse list-unstyled" id="homeSubmenu">
             <li>
-              <router-link to="/teacher" class="nav-link"
-                >Lịch giảng viên</router-link
-              >
+              <router-link to="/teacher" class="nav-link">Lịch giảng viên</router-link>
             </li>
           </ul>
         </li>
         <li>
           <a href="#">Giới thiệu</a>
-          <a
-            href="#pageSubmenu"
-            data-toggle="collapse"
-            aria-expanded="false"
-            class="dropdown-toggle"
-            >Trang</a
-          >
+          <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Trang</a>
           <ul class="collapse list-unstyled" id="pageSubmenu">
             <li>
               <router-link to="/" class="nav-link">Đặt lịch học</router-link>
@@ -70,6 +56,7 @@ const handleSelect = (e) => {
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 /* .list-item{ */
 /* padding: 5px; */
 /* } */
@@ -92,6 +79,7 @@ const handleSelect = (e) => {
   color: black;
   font-size: 15px;
 }
+
 .wrapper {
   display: flex;
   align-items: stretch;
@@ -137,7 +125,7 @@ const handleSelect = (e) => {
   background: #5b5bad;
 }
 
-#sidebar ul li.active > a,
+#sidebar ul li.active>a,
 a[aria-expanded="true"] {
   background: #5b5bad;
 }
