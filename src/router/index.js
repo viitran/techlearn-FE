@@ -3,12 +3,16 @@ import Students from '@/components/student/Students.vue'
 import StudentUpdate from '@/components/student/StudentUpdate.vue'
 import NotFound from '@/components/NotFound/NotFound.vue'
 import StudentCreate from '@/components/student/StudentCreate.vue'
+
+import Assignment from '@/views/Assignment.vue'
 import ConfigPromptAIView from '@/views/teacherView/ConfigPromptAIView.vue'
 import SubmitAssignment from '@/views/SubmitAssignment.vue'
 import ListTemplatePromptView from '@/views/teacherView/listTemplatePromptView.vue'
 // import Calendar from '@/components/Calendar/Calendar.vue'
 import { checkRole } from "@/components/Middleware/AuthenticateTeacher";
 import Teacher from '@/components/Teacher/Teacher.vue'
+// import { component } from 'vue/types/umd'
+import CoursePage from '@/views/CoursePage.vue'
 
 const routes = [
   {
@@ -48,15 +52,27 @@ const routes = [
     props: true
   },
   {
-    path: "/submitAssignment",
+    path: "/submitAssignment/:id",
     name: "submitAssignment",
     component: SubmitAssignment,
     props: true
   },
   {
+    path:"/coursePage",
+    name: "coursePage",
+    component: CoursePage,
+    props:true
+  },
+  {
     path: "/:catchAll(.*)",
     name: 'NotFound',
     component: NotFound
+  },
+  {
+    path: '/coursePage/:id',
+    name: 'assignment',
+    component: Assignment,
+    props: true
   }
 ]
 

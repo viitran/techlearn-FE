@@ -3,14 +3,14 @@
     <!-- Nội dung bài tập -->
     <div class="assignment-container" v-if="assignmentDescription">
       <div class="title-container">
-        <p>{{ assignmentDescription.tenBaiTap }}</p>
-        <button @click="viewSolution">Xem giải pháp</button>
+        <p>{{ assignmentDescription.name }}</p>
+        <button @click="viewSolution">Xem solution</button>
       </div>
       <div class="assignment-description">
         <div
           ref="description"
           class="description-text"
-          v-html="format(assignmentDescription.moTa)"
+          v-html="format(assignmentDescription.description)"
         ></div>
       </div>
     </div>
@@ -40,7 +40,6 @@
       </div>
     </div>
 
-    <!-- Kết quả -->
     <div class="result-container">
       <div class="result-header">
         <p>Kết quả:</p>
@@ -55,7 +54,6 @@
       </div>
     </div>
 
-    <!-- Modal Bootstrap -->
     <div
       class="modal fade"
       id="historyModal"
@@ -102,10 +100,9 @@ import axios from "axios";
 import { ref, onMounted } from "vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import { useRoute } from "vue-router";
 
-const courseId = "1";
-const chapterId = 1;
-const exerciseId = 1;
+const route = useRoute();
 
 const assignmentDescription = ref(null);
 const githubLink = ref("");
@@ -114,8 +111,8 @@ const isLoading = ref(false);
 const rootApi = process.env.VUE_APP_ROOT_API;
 const description = ref(null);
 const lastResult = ref();
-const id = ref("d8f6a72f-889c-4f2f-b7b7-f8b9e7b77d4b");
-const assignmentId = ref(1);
+const id = route.query.userID;
+const assignmentId = route.params.id;
 const isPassed = ref(false);
 
 const openModal = async () => {
@@ -124,49 +121,31 @@ const openModal = async () => {
 
   try {
     const response = await axios.get(
-      `${rootApi}/api/v1/reviews?id=${id.value}&assignment=${assignmentId.value}`
+      `${rootApi}/api/v1/reviews?id=${id}&assignment=${assignmentId}&pageSize=30`
     );
+    console.log(id + " " + assignmentId);
     response.data.result.items.map((rev, index) => {
       result.value.push(rev);
     });
-    console.log(result.value);
   } catch (error) {}
 };
 
 const fetchLastResult = async () => {
   try {
     const response = await axios.get(
-      `${rootApi}/api/v1/reviews/${assignmentId.value}?id=${id.value}`
+      `${rootApi}/api/v1/reviews/${assignmentId}?id=${id}`
     );
     lastResult.value = response.data.result;
-    // console.log(response.data);
     isPassed.value = response.data.result.status === "PASS" ? true : false;
   } catch (error) {}
 };
 
 const fetchAssignments = async () => {
   try {
-    const response = await axios.get("http://localhost:3000/khoahoc");
-    const data = response.data;
-
-    const course = data.find((course) => course.id === courseId);
-    if (course) {
-      const chapter = course.chuong.find((chapter) => chapter.id === chapterId);
-      if (chapter) {
-        const exercise = chapter.baiTap.find(
-          (exercise) => exercise.id === exerciseId
-        );
-        if (exercise) {
-          assignmentDescription.value = exercise;
-        } else {
-          console.error("Bài tập không tìm thấy");
-        }
-      } else {
-        console.error("Chương không tìm thấy");
-      }
-    } else {
-      console.error("Khóa học không tìm thấy");
-    }
+    const response = await axios.get(
+      `${rootApi}/api/v1/assignments/${assignmentId}`
+    );
+    assignmentDescription.value = response.data.result;
   } catch (error) {
     console.error("Lỗi khi lấy dữ liệu:", error);
   }
@@ -175,20 +154,18 @@ const fetchAssignments = async () => {
 const submitAssignment = async () => {
   try {
     isLoading.value = true;
-    console.log(assignmentDescription.value.moTa);
     const response = await axios.post(
       `${rootApi}/api/v1/reviews/fetch-repo-content`,
       {
         github_link: githubLink.value,
         exerciseTitle:
-          assignmentDescription.value.tenBaiTap +
+          assignmentDescription.value.name +
           " yêu cầu: " +
-          assignmentDescription.value.moTa +
+          assignmentDescription.value.description +
           " ",
       }
     );
     const data = response.data;
-    // result.value.push(data.result);
     await fetchLastResult();
     isPassed.value = data.result.status === "PASS" ? true : false;
     isLoading.value = false;
@@ -269,6 +246,7 @@ onMounted(async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 15px;
 }
 .result-header button {
   /* padding: 10px; */
