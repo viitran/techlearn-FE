@@ -1,61 +1,53 @@
 <template>
+
   <div class="wrapper">
-    <nav id="sidebar" :class="{ active: isSidebarCollapsed }">
+    <nav id="sidebar" :class="{ 'active': isSidebarCollapsed }">
       <div class="sidebar-header">
         <h3>Teachlearn</h3>
       </div>
       <ul class="list-unstyled components">
         <li class="active">
-          <a
-            href="#homeSubmenu"
-            data-toggle="collapse"
-            aria-expanded="false"
-            class="dropdown-toggle"
-            >Trang chủ</a
-          >
+          <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Trang
+            chủ</a>
           <ul class="collapse list-unstyled" id="homeSubmenu">
             <li>
-              <router-link to="/teacher" class="nav-link"
-                >Lịch giảng viên</router-link
-              >
+              <router-link to="/teacher" class="nav-link">Lịch giảng viên</router-link>
             </li>
           </ul>
         </li>
         <li>
-          <a href="#">Giới thiệu</a>
-          <a
-            href="#pageSubmenu"
-            data-toggle="collapse"
-            aria-expanded="false"
-            class="dropdown-toggle"
-            >Trang</a
-          >
-          <ul class="collapse list-unstyled" id="pageSubmenu">
-            <li>
-              <router-link to="/" class="nav-link">Đặt lịch học</router-link>
-            </li>
-            <li><a href="#">Trang 2</a></li>
-            <li><a href="#">Trang 3</a></li>
-          </ul>
+          <router-link to="/student" class="nav-link">Đặt lịch học</router-link>
         </li>
         <li>
-          <router-link to="listPrompt">Config Promp chấm điểm </router-link>
+          <!-- <a href="#">Giới thiệu</a> -->
+          <!-- <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
+                      class="dropdown-toggle">Trang</a> -->
+          <!-- <ul class="collapse list-unstyled" id="pageSubmenu"> -->
+          <!-- <li>
+                          <router-link to="/student" class="nav-link">Đặt lịch học</router-link>
+                      </li> -->
+          <!-- <li><a href="#">Trang 2</a></li>
+                      <li><a href="#">Trang 3</a></li> -->
+          <!-- </ul> -->
         </li>
-        <li>
-          <router-link to="/coursePage">Khóa học của tôi </router-link>
-        </li>
-        <li><a href="#">Dự án</a></li>
-        <li><a href="#">Liên hệ</a></li>
+        <li> <router-link to="listPrompt">Cấu hình AI </router-link></li>
+        <li> <router-link to="/coursePage">Khóa học của tôi </router-link></li>
+        <!-- <li><a href="#">Dự án</a></li>
+              <li><a href="#">Liên hệ</a></li> -->
       </ul>
     </nav>
   </div>
+
+
 </template>
 
+
 <script setup>
+
 import { ref } from "vue";
 
-import { inject } from "vue";
-const isSidebarCollapsed = inject("isSidebarCollapsed");
+import { inject } from 'vue';
+const isSidebarCollapsed = inject('isSidebarCollapsed');
 const selectedItem = ref(0);
 
 const handleSelect = (e) => {
@@ -70,6 +62,7 @@ const handleSelect = (e) => {
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 /* .list-item{ */
 /* padding: 5px; */
 /* } */
@@ -82,7 +75,7 @@ const handleSelect = (e) => {
 }
 
 .active {
-  background-color: #4a4a8e;
+  background-color: #4A4A8E;
   font-weight: bold;
   border-radius: 5px;
 }
@@ -92,6 +85,7 @@ const handleSelect = (e) => {
   color: black;
   font-size: 15px;
 }
+
 .wrapper {
   display: flex;
   align-items: stretch;
@@ -100,7 +94,7 @@ const handleSelect = (e) => {
 #sidebar {
   min-width: 220px;
   max-width: 220px;
-  background: #4a4a8e;
+  background: #4A4A8E;
   color: #ffffff;
   transition: all 0.3s;
 }
@@ -134,13 +128,14 @@ const handleSelect = (e) => {
 }
 
 #sidebar ul li a:hover {
-  background: #5b5bad;
+  background: #5B5BAD;
 }
 
-#sidebar ul li.active > a,
+#sidebar ul li.active>a,
 a[aria-expanded="true"] {
-  background: #5b5bad;
+  background: #5B5BAD;
 }
+
 
 #sidebar.active {
   margin-left: -220px;
@@ -148,7 +143,7 @@ a[aria-expanded="true"] {
 
 .router-link-active,
 .router-link-exact-active {
-  background-color: #5b5bad;
+  background-color: #5B5BAD;
   color: #ffffff;
 }
 
