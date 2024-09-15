@@ -82,7 +82,7 @@ const handleSelect = (e) => {
 }
 
 .active {
-  background-color: #eee;
+  background-color: #4a4a8e;
   font-weight: bold;
   border-radius: 5px;
 }

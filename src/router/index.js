@@ -41,12 +41,12 @@ const routes = [
     name: 'teacher',
     component: Teacher,
     props: true
-  },{
+  }, {
     path: '/configPrompt',
     name: 'configPrompt',
     component: ConfigPromptAIView,
     props: true
-  },{
+  }, {
     path: '/listPrompt',
     name: 'listPrompt',
     component: ListTemplatePromptView,

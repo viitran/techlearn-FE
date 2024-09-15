@@ -67,7 +67,7 @@
                   :aria-controls="'collapse' + index"
                 >
                   <i class="fa-solid fa-angle-down"></i>
-                  Chapter {{ index + 1 }}: {{ chapter.name }}
+                  {{ chapter.name }}
                 </button>
               </h5>
             </div>
