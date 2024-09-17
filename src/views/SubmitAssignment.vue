@@ -105,6 +105,8 @@ const route = useRoute();
 const assignmentDescription = ref(null);
 const githubLink = ref("");
 var result = ref([]);
+const idUser = ref("");
+const idAssignment = ref("");
 const isLoading = ref(false);
 const rootApi = process.env.VUE_APP_ROOT_API;
 const description = ref(null);
@@ -163,6 +165,8 @@ const submitAssignment = async () => {
           " yêu cầu: " +
           assignmentDescription.value.description +
           " ",
+          idUser: id,
+          idAssignment: assignmentId,
       }
     );
     const data = response.data;

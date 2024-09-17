@@ -220,7 +220,7 @@ const onActionBegin = async (args) => {
         isLoading.value = true;
         formattedEventData = {
           ...formattedEventData,
-          UserId: 'd8f6a72f-889c-4f2f-b7b7-f8b9e7b77d4b',
+          UserId: '35313663-6337-3365-2d34-3865642d3432',
           CourseId: "1",
           ChapterId: "1",
           status: "BOOKED"
