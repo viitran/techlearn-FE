@@ -40,7 +40,7 @@ const userID = ref("d8f6a72f-889c-4f2f-b7b7-f8b9e7b77d4b");
 
 const fetchCourses = async () => {
   const response = await axios.get(
-    `${rootApi}/api/v1/courses?id=${userID.value}`
+    `${rootApi}/courses?id=${userID.value}`
   );
   courses.value = response.data.result.items;
 };
