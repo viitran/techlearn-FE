@@ -39,7 +39,7 @@
                             <select class="modify-select" name="chapter" v-model="chapter" :disabled="!course"
                                 @change="onChuongChange">
                                 <option value="" disabled selected hidden>Chọn chương</option>
-                                <option class="modify-option" value="Chương 1">Chương 1</option>
+                                <option class="modify-option" value="Chapter 1">Chương 1</option>
                                 <option class="modify-option" value="Chương 2">Chương 2</option>
                                 <option class="modify-option" value="Chương 3">Chương 3</option>
                             </select>
@@ -53,7 +53,7 @@
                         <div>
                             <select class="modify-select" name="teacher" v-model="teacher" :disabled="!chapter">
                                 <option :value="null" disabled selected hidden>Chọn giảng viên</option>
-                                <option class="modify-option" v-for="teacher in allTeachers" :key="teacher.id"
+                                <option class="modify-option" v-for="teacher in allTeachers" :key="teacher.Id"
                                     :value="teacher">
                                     {{ teacher.OwnerText }}
                                 </option>
@@ -158,6 +158,7 @@ const searchCalendar = handleSubmit(async (formData) => {
                 teacherName, technicalTeacherName, chapterName
             }
         });
+        console.log(res.data);
 
         if (res.status === 200) {
             resetForm();
