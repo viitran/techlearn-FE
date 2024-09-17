@@ -44,7 +44,7 @@ export default {
     try {
       this.paramID = this.$route.query.param;
       console.log(this.paramID);
-      const response = await axios.get(this.rootApi + "/api/v1/admin/review-config/" + this.paramID);
+      const response = await axios.get(this.rootApi + "/admin/review-config/" + this.paramID);
 
       if (response.status == 200) {
         this.promptAI = response.data.result;
@@ -76,7 +76,7 @@ export default {
         this.promptAI.id = null;
         this.promptAI.isActive = false;
         // this.promptAI.isTemplate=false;
-        const response = await axios.post(this.rootApi + "/api/v1/admin/review-config", this.promptAI);
+        const response = await axios.post(this.rootApi + "/admin/review-config", this.promptAI);
         console.log(this.promptAI);
         if (response.status === 200) {
 
@@ -96,7 +96,7 @@ export default {
 
       try {
         const response = await axios.put(
-          this.rootApi + "/api/v1/admin/review-config/" + this.promptAI.id,
+          this.rootApi + "/admin/review-config/" + this.promptAI.id,
           { promptStructure: this.promptAI.promptStructure }
         );
         console.log(this.promptAI.promptStructure);
@@ -116,7 +116,7 @@ export default {
 
     async deletePrompt() {
       try {
-        const response = await axios.delete(this.rootApi + "/api/v1/admin/review-config/" + this.promptAI.id);
+        const response = await axios.delete(this.rootApi + "/admin/review-config/" + this.promptAI.id);
         console.log(response.data);
         if (response.status === 200) {
           this.$router.push("/listPrompt")

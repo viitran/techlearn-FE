@@ -100,7 +100,7 @@ export default {
     async getAllPromt() {
       try {
         const response = await axios.get(
-          this.rootApi + "/api/v1/admin/review-config",
+          this.rootApi + "/admin/review-config",
           { page: 1, pageSize: 10 }
         );
 
@@ -119,7 +119,7 @@ export default {
 
     async activePrompt(idPrompt) {
       try {
-        const response = await axios.patch(this.rootApi + "/api/v1/admin/review-config/" + idPrompt);
+        const response = await axios.patch(this.rootApi + "/admin/review-config/" + idPrompt);
         console.log(response.data);
         if (response.status === 200) {
           this.getAllPromt();
