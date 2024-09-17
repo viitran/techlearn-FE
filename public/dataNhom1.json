@@ -1,0 +1,584 @@
+{
+  "khoahoc": [
+    {
+      "id": "1",
+      "tenKhoaHoc": "Lập trình Java cơ bản",
+      "moTa": "Khóa học giới thiệu các khái niệm cơ bản trong lập trình Java, từ câu lệnh điều kiện đến lập trình hướng đối tượng.",
+      "thoiGian": "3 tháng",
+      "chuong": [
+        {
+          "id": 1,
+          "tenChuong": "Câu lệnh điều kiện (if-else)",
+          "moTa": "Tìm hiểu về câu lệnh điều kiện và cách sử dụng chúng trong Java.",
+          "baiTap": [
+            {
+              "id": 1,
+              "tenBaiTap": "Bài tập sử dụng câu lệnh if-else",
+              "moTa": "Yêu cầu:<br>- Viết một chương trình Java yêu cầu người dùng nhập tuổi của họ.<br>- Sử dụng câu lệnh if-else để kiểm tra:<br>&nbsp;&nbsp;&nbsp;+ Nếu tuổi lớn hơn hoặc bằng 18, in ra: 'Bạn đủ tuổi trưởng thành.'<br>&nbsp;&nbsp;&nbsp;+ Nếu tuổi nhỏ hơn 18, in ra: 'Bạn chưa đủ tuổi trưởng thành.'"
+            },
+            {
+              "id": 2,
+              "tenBaiTap": "Bài tập sử dụng switch-case",
+              "moTa": "Yêu cầu:<br>- Viết một chương trình Java yêu cầu người dùng nhập một số từ 1 đến 7.<br>- Sử dụng câu lệnh switch-case để:<br>&nbsp;&nbsp;&nbsp;+ In ra ngày tương ứng với số đã nhập (1 là Chủ nhật, 2 là Thứ hai,...)<br>&nbsp;&nbsp;&nbsp;+ Nếu số không hợp lệ, hiển thị: 'Số không hợp lệ.'"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "tenChuong": "Lập trình hướng đối tượng với Java",
+          "moTa": "Tìm hiểu về các khái niệm lập trình hướng đối tượng trong Java, bao gồm kế thừa, đa hình và đóng gói.",
+          "baiTap": [
+            {
+              "id": 1,
+              "tenBaiTap": "Thiết kế class động vật (Animal) và kế thừa",
+              "moTa": "Yêu cầu:<br>- Tạo class `Animal` với các thuộc tính: `name`, `age`.<br>- Tạo class `Dog` kế thừa từ `Animal`, có phương thức đặc biệt `bark()`.<br>- Viết chương trình tạo đối tượng của `Dog` và gọi phương thức `bark()` cũng như các phương thức kế thừa từ `Animal`."
+            },
+            {
+              "id": 2,
+              "tenBaiTap": "Xây dựng hệ thống phân cấp lớp học (Class Hierarchy)",
+              "moTa": "Yêu cầu:<br>- Tạo class `Person` với các thuộc tính chung.<br>- Tạo class `Student` và `Teacher`, đều kế thừa từ `Person`.<br>- Mỗi class có các thuộc tính và phương thức riêng.<br>- Viết chương trình tạo đối tượng `Student`, `Teacher` và truy cập các phương thức và thuộc tính thông qua tính kế thừa."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "tenKhoaHoc": "Angular từ cơ bản đến nâng cao",
+      "moTa": "Học cách phát triển ứng dụng web với Angular từ các khái niệm cơ bản đến các kỹ thuật nâng cao.",
+      "thoiGian": "2 tháng",
+      "chuong": [
+        {
+          "id": 1,
+          "tenChuong": "Cơ bản về Angular",
+          "moTa": "Tìm hiểu về cách xây dựng ứng dụng Angular và làm việc với các component.",
+          "baiTap": [
+            {
+              "id": 5,
+              "tenBaiTap": "Tạo component trong Angular",
+              "moTa": "Yêu cầu:<br>- Sử dụng Angular CLI để tạo component `Product`.<br>- Component hiển thị thông tin sản phẩm như tên, giá.<br>- Sử dụng component này để hiển thị danh sách sản phẩm trong ứng dụng Angular."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "baiTap": [
+    {
+      "id": "1",
+      "tenBaiTap": "Bài tập đa hình trong Java OOP",
+      "moTa": "Luyện tập về lập trình hướng đối tượng trong Java.",
+      "idKhoaHoc": 1
+    },
+    {
+      "id": "2",
+      "tenBaiTap": "Bài tập kế thừa trong Java OOP",
+      "moTa": "Luyện tập về lập trình hướng đối tượng trong Java.",
+      "idKhoaHoc": 1
+    },
+    {
+      "id": "3",
+      "tenBaiTap": "Bài tập đóng gói trong Java OOP",
+      "moTa": "Luyện tập về lập trình hướng đối tượng trong Java.",
+      "idKhoaHoc": 1
+    },
+    {
+      "id": "4",
+      "tenBaiTap": "Bài tập trừu tượng Java OOP",
+      "moTa": "Luyện tập về lập trình hướng đối tượng trong Java.",
+      "idKhoaHoc": 1
+    },
+    {
+      "id": "5",
+      "tenBaiTap": "Bài tập Angular Component",
+      "moTa": "Tạo và quản lý các component trong Angular.",
+      "idKhoaHoc": 2
+    },
+    {
+      "id": "6",
+      "tenBaiTap": "Bài tập Python cơ bản",
+      "moTa": "Bài tập dành cho người mới bắt đầu với Python.",
+      "idKhoaHoc": 3
+    },
+    {
+      "id": "7",
+      "tenBaiTap": "Bài tập ReactJS Hooks",
+      "moTa": "Thực hành về Hooks trong ReactJS.",
+      "idKhoaHoc": 4
+    },
+    {
+      "id": "8",
+      "tenBaiTap": "Bài tập về Stack và Queue",
+      "moTa": "Luyện tập về các cấu trúc dữ liệu Stack và Queue.",
+      "idKhoaHoc": 5
+    },
+    {
+      "id": "9",
+      "tenBaiTap": "Bài tập PHP cơ bản",
+      "moTa": "Bài tập PHP cho người mới bắt đầu.",
+      "idKhoaHoc": 6
+    },
+    {
+      "id": "10",
+      "tenBaiTap": "Bài tập NodeJS API",
+      "moTa": "Xây dựng API với NodeJS.",
+      "idKhoaHoc": 7
+    },
+    {
+      "id": "11",
+      "tenBaiTap": "Bài tập SQL nâng cao",
+      "moTa": "Bài tập về SQL và các truy vấn phức tạp.",
+      "idKhoaHoc": 8
+    },
+    {
+      "id": "12",
+      "tenBaiTap": "Bài tập Docker container",
+      "moTa": "Thực hành tạo và quản lý container với Docker.",
+      "idKhoaHoc": 9
+    },
+    {
+      "id": "13",
+      "tenBaiTap": "Bài tập quản lý Git repo",
+      "moTa": "Thực hành quản lý Git repository.",
+      "idKhoaHoc": 10
+    }
+  ],
+  "hocVien": [
+    {
+      "id": "1",
+      "hoTen": "Nguyễn Văn A",
+      "email": "nguyenvana@gmail.com",
+      "idKhoaHoc": 1
+    },
+    {
+      "id": "2",
+      "hoTen": "Trần Thị B",
+      "email": "tranthib@gmail.com",
+      "idKhoaHoc": 2
+    },
+    {
+      "id": "3",
+      "hoTen": "Lê Văn C",
+      "email": "levanc@gmail.com",
+      "idKhoaHoc": 3
+    },
+    {
+      "id": "4",
+      "hoTen": "Phạm Thị D",
+      "email": "phamthid@gmail.com",
+      "idKhoaHoc": 2
+    },
+    {
+      "id": "5",
+      "hoTen": "Hoàng Văn E",
+      "email": "hoangvane@gmail.com",
+      "idKhoaHoc": 3
+    },
+    {
+      "id": "6",
+      "hoTen": "Đỗ Thị F",
+      "email": "dothif@gmail.com",
+      "idKhoaHoc": 4
+    },
+    {
+      "id": "7",
+      "hoTen": "Ngô Văn G",
+      "email": "ngovang@gmail.com",
+      "idKhoaHoc": 5
+    },
+    {
+      "id": "8",
+      "hoTen": "Bùi Thị H",
+      "email": "buithih@gmail.com",
+      "idKhoaHoc": 5
+    },
+    {
+      "id": "9",
+      "hoTen": "Vũ Văn I",
+      "email": "vuvani@gmail.com",
+      "idKhoaHoc": 8
+    },
+    {
+      "id": "10",
+      "hoTen": "Đinh Thị K",
+      "email": "dinhthik@gmail.com",
+      "idKhoaHoc": 10
+    }
+  ],
+  "khoaHocDetail": [
+    {
+      "id": "1",
+      "idKhoaHoc": 1,
+      "idHocVien": 1,
+      "ngayBatDau": "02-02-2002"
+    },
+    {
+      "id": "2",
+      "idKhoaHoc": 1,
+      "idHocVien": 2,
+      "ngayBatDau": "02-02-2002"
+    },
+    {
+      "id": "1",
+      "idKhoaHoc": 1,
+      "idHocVien": 1,
+      "ngayBatDau": "02-02-2002"
+    },
+    {
+      "id": "3",
+      "idKhoaHoc": 1,
+      "idHocVien": 5,
+      "ngayBatDau": "02-02-2002"
+    },
+    {
+      "id": "4",
+      "idKhoaHoc": 1,
+      "idHocVien": 6,
+      "ngayBatDau": "02-02-2002"
+    },
+    {
+      "id": "5",
+      "idKhoaHoc": 4,
+      "idHocVien": 1,
+      "ngayBatDau": "02-02-2002"
+    },
+    {
+      "id": "6",
+      "idKhoaHoc": 2,
+      "idHocVien": 2,
+      "ngayBatDau": "02-02-2002"
+    },
+    {
+      "id": "7",
+      "idKhoaHoc": 2,
+      "idHocVien": 1,
+      "ngayBatDau": "02-02-2002"
+    },
+    {
+      "id": "8",
+      "idKhoaHoc": 2,
+      "idHocVien": 5,
+      "ngayBatDau": "02-02-2002"
+    },
+    {
+      "id": "9",
+      "idKhoaHoc": 2,
+      "idHocVien": 6,
+      "ngayBatDau": "02-02-2002"
+    }
+  ],
+  "baiTapDetail": [
+    {
+      "id": "1",
+      "idHocVien": 1,
+      "idBaiTap": 1,
+      "pass": true,
+      "linkGitHub": "githubAbc.com",
+      "thoiGianNop": "05-08-2024",
+      "deadline": "09-08-2024",
+      "AIComment": ""
+    },
+    {
+      "id": "2",
+      "idHocVien": 2,
+      "idBaiTap": 1,
+      "pass": false,
+      "linkGitHub": "githubAbc.com",
+      "thoiGianNop": "05-08-2024",
+      "deadline": "09-08-2024",
+      "AIComment": "sửa abcdef vị trí xyz"
+    },
+    {
+      "id": "3",
+      "idHocVien": 3,
+      "idBaiTap": 1,
+      "pass": false,
+      "linkGitHub": "githubA324bc.com",
+      "thoiGianNop": "05-08-2024",
+      "deadline": "09-08-2024",
+      "AIComment": "sửa abcdef vị trí xyz"
+    },
+    {
+      "id": "4",
+      "idHocVien": 1,
+      "idBaiTap": 2,
+      "pass": false,
+      "linkGitHub": "githubAbc.com",
+      "thoiGianNop": "05-09-2024",
+      "deadline": "09-09-2024",
+      "AIComment": "sửa abcdef vị trí xyz"
+    },
+    {
+      "id": "5",
+      "idHocVien": 2,
+      "idBaiTap": 2,
+      "pass": false,
+      "linkGitHub": "githubAbc.com",
+      "thoiGianNop": "05-09-2024",
+      "deadline": "09-09-2024",
+      "AIComment": "sửa abcdef vị trí xyz"
+    }
+  ],
+  "prompt": [
+    {
+      "id": "2",
+      "promptStructure": "Bây giờ tôi sẽ gửi cho bạn link github, tôi muốn bạn review bài tập ở link github đó. Đây là link github của tôi: {{githubLink}} Kết quả review được trả lời bằng tiếng Việt. Cấu trúc review sẽ gồm: Nhận xét chi tiết Đánh giá tổng quan Kết quả (chỉ trả lời pass/fail)",
+      "isActive": false,
+      "isTemplate": true
+    },
+    {
+      "id": "3",
+      "promptStructure": "Bây giờ tôi sẽ gửi cho bạn link github, tôi muốn bạn review bài tập ở link github đó. Đây là link github của tôi: {{githubLink}} Kết quả review được trả lời bằng tiếng Việt. Cấu trúc review sẽ gồm: Nhận xét chi tiết Đánh giá tổng quan Kết quả (chỉ trả lời pass/fail)",
+      "isActive": false,
+      "isTemplate": true
+    },
+    {
+      "id": "4",
+      "promptStructure": "Bây giờ tôi sẽ gửi cho bạn link github, tôi muốn bạn review bài tập ở link github đó. Đây là link github của tôi: {{githubLink}} Kết quả review được trả lời bằng tiếng Việt. Cấu trúc review sẽ gồm: Nhận xét chi tiết Đánh giá tổng quan Kết quả (chỉ trả lời pass/fail)",
+      "isActive": false,
+      "isTemplate": true
+    },
+    {
+      "id": "1",
+      "promptStructure": "Bây giờ tôi sẽ gửi cho bạn link github, tôi muốn bạn review bài tập ở link github đó. Đây là link github của tôi: {{githubLink}} Kết quả review được trả lời bằng tiếng Việt. Cấu trúc review sẽ gồm: Nhận xét chi tiết Đánh giá tổng quan Kết quả (chỉ trả lời pass/fail)",
+      "isActive": true,
+      "isTemplate": true
+    }
+  ],
+  "courses": [
+    {
+      "id": 1,
+      "courseName": "Lập trình Java cơ bản",
+      "description": "Khóa học \"Kỹ thuật lập trình nền tảng với Java\" cung cấp kiến thức đa chiều về Java: từ cài đặt môi trường, cú pháp căn bản đến điều kiện, lặp, phương thức, Debugging, xử lý chuỗi, và mảng đến ArrayList. Nền tảng lý thú để xây dựng ứng dụng Java chất lượng.",
+      "duration": "3 tháng",
+      "image": "https://imgs.search.brave.com/Sr3cZn0VfxHk-CBgRb1GwMPqcd4vbEsrq-pHfoBA3z0/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXZlLmNv/bS93cC93cDcyNTAw/MzIucG5n",
+      "chapters": [
+        {
+          "id": 1,
+          "chapterName": "Giới thiệu Java",
+          "description": "Tìm hiểu về ngôn ngữ Java và cấu trúc cơ bản.",
+          "exercises": [
+            {
+              "id": 1,
+              "exerciseName": "Bài tập đa hình trong Java OOP",
+              "description": "Thiết kế class Dog kế thừa từ class Animal"
+            },
+            {
+              "id": 2,
+              "exerciseName": "Bài tập kế thừa trong Java OOP",
+              "description": "Luyện tập về lập trình hướng đối tượng trong Java."
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "chapterName": "Nâng cao Java oop",
+          "description": "Tìm hiểu về ngôn ngữ Java và cấu trúc cơ bản.",
+          "exercises": [
+            {
+              "id": 1,
+              "exerciseName": "Bài tập đa hình trong Java OOP",
+              "description": "Luyện tập về lập trình hướng đối tượng trong Java."
+            },
+            {
+              "id": 2,
+              "exerciseName": "Bài tập kế thừa trong Java OOP",
+              "description": "Luyện tập về lập trình hướng đối tượng trong Java."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "courseName": "Angular từ cơ bản đến nâng cao",
+      "description": "Khóa học ReactJS từ cơ bản tới nâng cao, kết quả của khóa học này là bạn có thể làm hầu hết các dự án thường gặp với ReactJS. Cuối khóa học này bạn sẽ sở hữu một dự án giống website bán hàng, bạn có thể tự tin đi xin việc khi nắm chắc các kiến thức được chia sẻ trong khóa học này.",
+      "duration": "2 tháng",
+      "image": "https://imgs.search.brave.com/ygJJrjsj1wQGU7AZqQwugC4bN-8fDqADSfli591HdTc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXZlLmNv/bS93cC93cDc3MzI5/NjUuanBn",
+      "chapters": [
+        {
+          "id": 1,
+          "chapterName": "Cơ bản về Angular",
+          "description": "Tìm hiểu về Angular và các component cơ bản.",
+          "exercises": [
+            {
+              "id": 5,
+              "exerciseName": "Bài tập Angular Component",
+              "description": "Tạo và quản lý các component trong Angular."
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "students": [
+    {
+      "id": 1,
+      "fullName": "Nguyễn Văn A",
+      "email": "nguyenvana@gmail.com",
+      "courseId": 1
+    },
+    {
+      "id": 2,
+      "fullName": "Trần Thị B",
+      "email": "tranthib@gmail.com",
+      "courseId": 2
+    },
+    {
+      "id": 3,
+      "fullName": "Lê Văn C",
+      "email": "levanc@gmail.com",
+      "courseId": 3
+    },
+    {
+      "id": 4,
+      "fullName": "Phạm Thị D",
+      "email": "phamthid@gmail.com",
+      "courseId": 2
+    },
+    {
+      "id": 5,
+      "fullName": "Hoàng Văn E",
+      "email": "hoangvane@gmail.com",
+      "courseId": 3
+    },
+    {
+      "id": 6,
+      "fullName": "Đỗ Thị F",
+      "email": "dothif@gmail.com",
+      "courseId": 4
+    },
+    {
+      "id": 7,
+      "fullName": "Ngô Văn G",
+      "email": "ngovang@gmail.com",
+      "courseId": 5
+    },
+    {
+      "id": 8,
+      "fullName": "Bùi Thị H",
+      "email": "buithih@gmail.com",
+      "courseId": 5
+    },
+    {
+      "id": 9,
+      "fullName": "Vũ Văn I",
+      "email": "vuvani@gmail.com",
+      "courseId": 8
+    },
+    {
+      "id": 10,
+      "fullName": "Đinh Thị K",
+      "email": "dinhthik@gmail.com",
+      "courseId": 10
+    }
+  ],
+  "courseDetails": [
+    {
+      "id": 1,
+      "courseId": 1,
+      "studentId": 1,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 2,
+      "courseId": 1,
+      "studentId": 2,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 3,
+      "courseId": 1,
+      "studentId": 5,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 4,
+      "courseId": 1,
+      "studentId": 6,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 5,
+      "courseId": 4,
+      "studentId": 1,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 6,
+      "courseId": 2,
+      "studentId": 2,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 7,
+      "courseId": 2,
+      "studentId": 1,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 8,
+      "courseId": 2,
+      "studentId": 5,
+      "startDate": "02-02-2002"
+    },
+    {
+      "id": 9,
+      "courseId": 2,
+      "studentId": 6,
+      "startDate": "02-02-2002"
+    }
+  ],
+  "exerciseDetails": [
+    {
+      "id": 1,
+      "studentId": 1,
+      "exerciseId": 1,
+      "pass": true,
+      "gitHubLink": "githubAbc.com",
+      "submissionTime": "05-08-2024",
+      "deadline": "09-08-2024",
+      "AIComment": ""
+    },
+    {
+      "id": 2,
+      "studentId": 2,
+      "exerciseId": 1,
+      "pass": false,
+      "gitHubLink": "githubAbc.com",
+      "submissionTime": "05-08-2024",
+      "deadline": "09-08-2024",
+      "AIComment": "sửa abcdef vị trí xyz"
+    },
+    {
+      "id": 3,
+      "studentId": 3,
+      "exerciseId": 1,
+      "pass": false,
+      "gitHubLink": "githubA324bc.com",
+      "submissionTime": "05-08-2024",
+      "deadline": "09-08-2024",
+      "AIComment": "sửa abcdef vị trí xyz"
+    },
+    {
+      "id": 4,
+      "studentId": 1,
+      "exerciseId": 2,
+      "pass": false,
+      "gitHubLink": "githubAbc.com",
+      "submissionTime": "05-09-2024",
+      "deadline": "09-09-2024",
+      "AIComment": "sửa abcdef vị trí xyz"
+    },
+    {
+      "id": 5,
+      "studentId": 2,
+      "exerciseId": 2,
+      "pass": false,
+      "gitHubLink": "githubAbc.com",
+      "submissionTime": "05-09-2024",
+      "deadline": "09-09-2024",
+      "AIComment": "sửa abcdef vị trí xyz"
+    }
+  ]
+}
