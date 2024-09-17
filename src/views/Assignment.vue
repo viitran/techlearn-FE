@@ -96,7 +96,7 @@ const fetchCourseData = async () => {
   const courseId = route.params.id;
   try {
     const response = await axios.get(
-      `${rootApi}/api/v1/chapters?idCourse=${courseId}`
+      `${rootApi}/chapters?idCourse=${courseId}`
     );
     courseData.value = response.data.result;
 
@@ -111,7 +111,7 @@ const fetchAssignment = async () => {
   const courseId = route.params.id;
   try {
     const response = await axios.get(
-      `${rootApi}/api/v1/assignments?courseId=${courseId}&userId=${userId}`
+      `${rootApi}/assignments?courseId=${courseId}&userId=${userId}`
     );
     assignments.value = response.data.result.items;
   } catch (error) { }

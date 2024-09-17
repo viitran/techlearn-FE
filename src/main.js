@@ -15,10 +15,10 @@ import BootstrapVue3 from 'bootstrap-vue-3';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue-3/dist/bootstrap-vue-3.css';
 import middleware from "@grafikri/vue-middleware"
-
 import { registerLicense } from "@syncfusion/ej2-base"
 
-registerLicense("Ngo9BigBOggjHTQxAR8/V1NCaF1cWWhIfkx/WmFZfVpgdV9FaFZQRGYuP1ZhSXxXdkxjUH9fc3xUR2lZUkc=")
+const license = process.env.VUE_APP_REGISTER_LICENSE;
+registerLicense(license)
 const app = createApp(App);
 library.add(fas);
 app.component('fa', FontAwesomeIcon)

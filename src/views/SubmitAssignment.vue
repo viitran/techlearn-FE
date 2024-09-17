@@ -121,7 +121,7 @@ const openModal = async () => {
   result.value.splice(0, result.value.length);
   try {
     const response = await axios.get(
-      `${rootApi}/api/v1/reviews?id=${id}&assignment=${assignmentId}&pageSize=30`
+      `${rootApi}/reviews?id=${id}&assignment=${assignmentId}&pageSize=30`
     );
     console.log(id + " " + assignmentId);
 
@@ -135,7 +135,7 @@ const openModal = async () => {
 const fetchLastResult = async () => {
   try {
     const response = await axios.get(
-      `${rootApi}/api/v1/reviews/${assignmentId}?id=${id}`
+      `${rootApi}/reviews/${assignmentId}?id=${id}`
     );
     lastResult.value = response.data.result;
     isPassed.value = response.data.result.status === "PASS" ? true : false;
@@ -145,7 +145,7 @@ const fetchLastResult = async () => {
 const fetchAssignments = async () => {
   try {
     const response = await axios.get(
-      `${rootApi}/api/v1/assignments/${assignmentId}`
+      `${rootApi}/assignments/${assignmentId}`
     );
     assignmentDescription.value = response.data.result;
   } catch (error) {
@@ -157,7 +157,7 @@ const submitAssignment = async () => {
   try {
     isLoading.value = true;
     const response = await axios.post(
-      `${rootApi}/api/v1/reviews/fetch-repo-content`,
+      `${rootApi}/reviews/fetch-repo-content`,
       {
         github_link: githubLink.value,
         exerciseTitle:
