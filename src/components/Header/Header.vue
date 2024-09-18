@@ -19,14 +19,14 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">Profile</a>
-                                <a class="dropdown-item" href="/login">
+                                <a v-if="!accessToken" class="dropdown-item" href="/login">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="15" width="15" viewBox="0 0 512 512">
                                         <path d="M217.9 105.9L340.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L217.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1L32 320c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM352 416l64 0c17.7 0 32-14.3 32-32l0-256c0-17.7-14.3-32-32-32l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32l64 0c53 0 96 43 96 96l0 256c0 53-43 96-96 96l-64 0c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/>
                                     </svg>
                                     Đăng Nhập
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Logout</a>
+                                <p class="dropdown-item"  @click="handlelogout">Logout</p>
                             </div>
                         </li>
                     </ul>
@@ -37,9 +37,29 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import axios from 'axios';
+import { inject, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
 
+const router = useRouter();
 const toggleSidebar = inject('toggleSidebar');
+const accessToken = localStorage.getItem("accessToken");
+const handlelogout = async() => {
+    try{
+        localStorage.clear();
+        router.push("/login").then(()=>{
+        toast.success("Đăng xuất thành công!");
+      })
+        await axios.get("http://localhost:8181/api/v1/auth/logout",{
+            headers:{
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+    }catch(err) {
+        console.log(err);
+    }
+}
 </script>
 
 <style scoped>
