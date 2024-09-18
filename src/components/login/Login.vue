@@ -13,18 +13,20 @@
       <div class="col-12 col-lg-10 col-xl-8">
         <div class="row gy-5 justify-content-center">
           <div class="col-12 col-lg-5">
-            <form action="#!">
+            <form @submit.prevent="onSubmit">
               <div class="row gy-3 overflow-hidden">
                 <div class="col-12">
                   <div class="form-floating mb-3">
-                    <input type="email" class="form-control border-0 border-bottom rounded-0" name="email" id="email" placeholder="name@example.com" required>
+                    <input v-model="email" type="email" class="form-control border-0 border-bottom rounded-0" name="email" id="email" placeholder="name@example.com" >
                     <label for="email" class="form-label">Email</label>
+                    <span class="error-message">{{ emailError }}</span>
                   </div>
                 </div>
                 <div class="col-12">
                   <div class="form-floating mb-3">
-                    <input type="password" class="form-control border-0 border-bottom rounded-0" name="password" id="password" value="" placeholder="Password" required>
+                    <input v-model="password" type="password" class="form-control border-0 border-bottom rounded-0" name="password" id="password" value="" placeholder="Password" >
                     <label for="password" class="form-label">Mật khẩu</label>
+                    <span class="error-message">{{ passwordError }}</span>
                   </div>
                 </div>
                 <div class="col-12">
@@ -84,7 +86,47 @@
 </template>
 
 <script setup>
+import axios from 'axios';
+import { useField, useForm } from 'vee-validate';
+import { toast } from 'vue3-toastify';
+import * as yup from 'yup';
+import { useRouter } from 'vue-router';
 
+const rootApi = process.env.VUE_APP_ROOT_API;
+const router = useRouter();
+const {handleSubmit, resetForm} = useForm({
+  validationSchema: yup.object({
+    email: yup
+    .string()
+    .required("* Hãy email")
+    .matches( /^[a-zA-Z]+[0-9]*@gmail\.com$/, "* Email không đúng định dạng"),
+    password: yup
+    .string()
+    .required('* Hãy password')
+  }),
+})
+
+const { value: email, errorMessage: emailError,setError: setEmailError  } = useField('email');
+const { value: password, errorMessage: passwordError, setError: setPasswordError  } = useField('password');
+
+
+const onSubmit = handleSubmit(async (values) => {
+  try{
+    const res = await axios.post(`${rootApi}/auth/login`, values);
+    if(res.data.status === 200) {
+      const accessToken = res.data.result.accessToken;
+      const refreshToken = res.data.result.refreshToken;
+      localStorage.setItem("accessToken",accessToken);
+      localStorage.setItem("refreshToken",refreshToken);
+      router.push("/").then(()=>{
+        toast.success("Đăng nhập thành công!")
+      })
+    }
+  }catch(err){
+    toast.error("Đăng nhập thất bại!")
+  }
+}
+);
 </script>
 
 <style scoped>
@@ -95,5 +137,10 @@
 
 .container {
     margin: 150px auto
+}
+
+.error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
 }
 </style>
