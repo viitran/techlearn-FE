@@ -37,7 +37,7 @@
                         <div>
                             <select class="modify-select" name="chapter" v-model="chapter" :disabled="!course" @change="onChuongChange">
                                 <option value="" disabled selected hidden>Chọn chương</option>
-                                <option class="modify-option" value="Chương 1">Chương 1</option>
+                                <option class="modify-option" value="Chapter 1">Chương 1</option>
                                 <option class="modify-option" value="Chương 2">Chương 2</option>
                                 <option class="modify-option" value="Chương 3">Chương 3</option>
                             </select>
@@ -51,7 +51,7 @@
                         <div>
                             <select class="modify-select" name="teacher" v-model="teacher" :disabled="!chapter">
                                 <option :value="null" disabled selected hidden>Chọn giảng viên</option>
-                                <option class="modify-option" v-for="teacher in allTeachers" :key="teacher.id" :value="teacher">
+                                <option class="modify-option" v-for="teacher in allTeachers" :key="teacher.Id" :value="teacher">
                                     {{ teacher.OwnerText }}
                                 </option>
                             </select>
@@ -75,14 +75,9 @@
             </button>
         </div>
     </div>
-    <div class="row">
+    <div v-if="stateButtonFormStudent === true" class="row">
         <div class="col" style="margin-top: 60px;">
-            <Calendar v-if="stateButtonFormStudent === true" :url="url" :id="idGV" />
-
-            <div v-else>
-                <h4 class="mb-2">Danh sách lịch đã đặt</h4>
-                <Calendar :url="studentUrl" :id="idGV" />
-            </div>
+            <Calendar :url="url" :id="idGV" />
         </div>
     </div>
 </template>
@@ -125,12 +120,10 @@ const { value: teacher, errorMessage: teacherError } = useField('teacher');
 const allTeachers = ref([]);
 const url = ref("");
 const idGV = ref()
-const studentUrl = ref(`${rootApi}/students?userId=123e4567-e89b-12d3-a456-426614174000`);
 
 
-const getAllCalendars = (newUrl) => {
-    // url.value = `${rootApi}`
-    url.value = newUrl;
+const getAllCalendars = () => {
+    url.value = `${rootApi}`
 }
 
 const getAllTeacher = async () => {
@@ -159,18 +152,13 @@ const searchCalendar = handleSubmit(async (formData) => {
                 teacherName, technicalTeacherName, chapterName
             }
         });
+        console.log(res.data);
 
         if (res.status === 200) {
             resetForm();
             idGV.value = res.data.result;
             getAllTeacher();
         }
-
-        // console.log(teacherName, technicalTeacherName, chapterName);
-
-        // const filterUrl = `${rootApi}/teacher-calendar/find-calendars?teacherName=${teacherName}&technicalTeacherName=${technicalTeacherName}&chapterName=${chapterName}`;
-
-        // getAllCalendars(filterUrl);
     } catch (error) {
         toast.error("Không có khung giờ giảng viên trong ngày hôm nay!");
     }
@@ -188,7 +176,7 @@ const onChuongChange = () => {
 
 onMounted(() => {
     getAllTeacher();
-    // getAllCalendars();
+    getAllCalendars();
 })
 </script>
 
