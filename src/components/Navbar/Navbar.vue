@@ -30,7 +30,7 @@
                       <li><a href="#">Trang 3</a></li> -->
           <!-- </ul> -->
         </li>
-        <li> <router-link to="listPrompt">Cấu hình AI </router-link></li>
+        <li> <router-link to="/listPrompt">Cấu hình AI </router-link></li>
         <li> <router-link to="/coursePage">Khóa học của tôi </router-link></li>
         <!-- <li><a href="#">Dự án</a></li>
               <li><a href="#">Liên hệ</a></li> -->
