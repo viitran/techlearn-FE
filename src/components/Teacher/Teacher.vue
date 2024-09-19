@@ -1,6 +1,6 @@
 <template>
 
-    <Calendar url="http://localhost:8181/api/v1/teacher-calendar" />
+    <Calendar url="http://localhost:8181/api/v1" />
 
 </template>
 

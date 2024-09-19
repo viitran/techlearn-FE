@@ -98,9 +98,8 @@ import * as yup from 'yup';
 import Calendar from '../Calendar/Calendar.vue';
 const rootApi = process.env.VUE_APP_ROOT_API;
 
-
 const stateButtonFormStudent = ref(false);
-
+const accessToken = localStorage.getItem("accessToken");
 const { handleSubmit, resetForm } = useForm({
     initialValues: {
         course: "",
@@ -125,16 +124,21 @@ const { value: chapter, errorMessage: chapterError } = useField('chapter');
 const { value: teacher, errorMessage: teacherError } = useField('teacher');
 const allTeachers = ref([]);
 const url = ref("");
-const idGV = ref()
+const idGV = ref();
 
 
 const getAllCalendars = () => {
     url.value = `${rootApi}`
 }
 
+
 const getAllTeacher = async () => {
     try {
-        const res = await axios.get(`${rootApi}/teachers/`);
+        const res = await axios.get(`${rootApi}/teachers/`,{
+            headers:{
+                Authorization:`Bearer ${accessToken}`
+            }
+        });
         allTeachers.value = res.data;
     } catch (error) {
         console.log(error);
@@ -156,10 +160,11 @@ const searchCalendar = handleSubmit(async (formData) => {
         let res = await axios.get(`${rootApi}/teacher-calendar/find-calendars`, {
             params: {
                 teacherName, technicalTeacherName, chapterName
+            },
+            headers:{
+                'Authorization': `Bearer ${accessToken}`,
             }
         });
-        console.log(res.data);
-
         if (res.status === 200) {
             resetForm();
             idGV.value = res.data.result;

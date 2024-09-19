@@ -17,11 +17,12 @@
 import Header from './components/Header/Header.vue';
 import Sidebar from './components/Navbar/Navbar.vue';
 import Footer from './components/Footer/Footer.vue';
-import { RouterView, useRoute} from 'vue-router';
-import { ref, provide, computed } from 'vue';
+import { RouterView, useRoute, useRouter} from 'vue-router';
+import { ref, provide, computed, onMounted } from 'vue';
 
 const isSidebarCollapsed = ref(false);
 const route = useRoute();
+const router = useRouter();
 const toggleSidebar = () => {
   isSidebarCollapsed.value = !isSidebarCollapsed.value;
 };
@@ -30,6 +31,12 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
 provide('toggleSidebar', toggleSidebar);
 
 const isLoginPage = computed(()=> route.path === "/login" );
+const isLogin = localStorage.getItem("accessToken");
+onMounted(()=>{
+  if(isLogin === null) {
+    router.push("/login") ;
+  }
+})
 </script>
 
 <style scoped>

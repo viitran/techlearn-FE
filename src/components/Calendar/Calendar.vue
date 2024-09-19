@@ -2,7 +2,8 @@
   <div class="relative">
     <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate"
       :eventSettings="eventSettings" :actionBegin="onActionBegin" class="calendar" :editorTemplate="'editorTemplate'"
-      :eventRendered="onEventRendered" :startHour="startHour" :endHour="endHour" :timeScale="timeScale">
+      :eventRendered="onEventRendered" :startHour="startHour" :endHour="endHour" :timeScale="timeScale"
+      >
       <template v-slot:editorTemplate>
         <table class="custom-event-editor" width="100%" cellpadding="5">
           <tbody>
@@ -85,20 +86,27 @@ const rootApi = process.env.VUE_APP_ROOT_API;
 const props = defineProps(['url', 'id']);
 const isLoading = ref(false);
 const isStudentBooking = ref(false);
+const isAdmin = ref(false);
 setCulture('vi');
 L10n.load(viLocale)
 loadCldr(frNumberData, frtimeZoneData, frGregorian, frNumberingSystem);
 provide("schedule", [Day, Week, WorkWeek, Month, Agenda, DragAndDrop]);
+const accessToken = localStorage.getItem("accessToken");
 
 const remoteData = new DataManager({
   // url: 'http://localhost:3000/dataSource',
-  url: `${props.url}`,
+  url: `${props.url}/teacher-calendar`,
   adaptor: new WebApiAdaptor,
-  crossDomain: true
-});
+  crossDomain: true,
+  headers:
+  [{
+    Authorization: `Bearer ${accessToken}`
+  }],
+}
+);
 
 
-
+const userInfor =ref();
 const scheduleObj = ref(null);
 const selectedDate = new Date();
 const ownerDataSource = ref([]);
@@ -120,28 +128,39 @@ const dropListFields = {
   value: "Id"
 }
 
-const getOwnerDataSource = async () => {
-  const res = await axios.get("http://localhost:8181/api/v1/teachers/");
-  ownerDataSource.value = res.data;
+const getInfoUser =async () => {
+  try {
+    const res = await axios.get(`http://localhost:8181/api/v1/users/access-token?accessToken=${accessToken}`,{
+      headers:{
+        Authorization:`Bearer ${accessToken}`
+      }
+    });
+    userInfor.value = res.data;
+    console.log(userInfor.value);
+    checkIsAdmin()
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-
-const getEvent = async () => {
-  try {
-    const res = await axios.get(`${rootApi}/find-by-id/${props.id}`);
-    const filtered = res.data.filter((event) => {
-      return new Date(event.StartTime) >= new Date();
-    })
-    console.log(res.data);
-    eventSettings.value = {
-      dataSource: res.data
-    };
-  } catch (error) {
-    console.error('Error fetching or filtering events:', error);
+const checkIsAdmin= () => {
+  for (let i = 0; i <userInfor.value.result.roles.length; i++) {
+    if(userInfor.value.result.roles[i].name === "ADMIN"){
+      isAdmin.value = true;
+    }
   }
-};
-;
+  console.log(isAdmin.value);
+}
 
+const getOwnerDataSource = async () => {
+  const res = await axios.get("http://localhost:8181/api/v1/teachers/",{
+    headers:{
+       'Authorization': `Bearer ${accessToken}`,
+       "Content-Type": "application/json"
+    }
+  });
+  ownerDataSource.value = res.data;
+}
 
 const onEventRendered = (args) => {
   const ownerId = args.data.OwnerId;
@@ -149,7 +168,7 @@ const onEventRendered = (args) => {
     const owner = ownerDataSource.value.find(owner => owner.Id === ownerId);
     if (owner) {
       const avatarHtml = `<div class="mx-1">
-                            <img width="24" height="24" src="${owner.avatar}" 
+                            <img width="24" height="24" src="${owner.avatar}"
                               class="owner-avatar rounded-circle img-fluid border border-white" />
                           </div>`;
 
@@ -182,17 +201,20 @@ const formatDate = (dateStr) => {
 };
 
 const onActionBegin = async (args) => {
-  if (args.requestType === 'eventCreate') {
+  if (args.requestType === 'eventCreate' && !isAdmin) {
     try {
       const eventData = args.data[0];
-
       const formattedEventData = {
         ...eventData,
         StartTime: formatDate(eventData.StartTime),
         EndTime: formatDate(eventData.EndTime),
         status: 'FREE',
       };
-      await axios.post(`${props.url}`, formattedEventData);
+      await axios.post(`${props.url}/teacher-calendar`, formattedEventData,{
+        headers:{
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
       toast.success('Tạo lịch thành công!');
     } catch (error) {
       console.error('Error adding event:', error);
@@ -200,7 +222,11 @@ const onActionBegin = async (args) => {
     }
   } else if (args.requestType === 'eventRemove') {
     try {
-      await axios.delete(`${props.url}/${args.data[0].Id}`);
+      await axios.delete(`${props.url}/teacher-calendar/${args.data[0].Id}`,{
+        headers:{
+           'Authorization': `Bearer ${accessToken}`
+        }
+      });
       toast.success('Xóa lịch thành công!');
     } catch (error) {
       console.error('Error deleting event:', error);
@@ -220,15 +246,23 @@ const onActionBegin = async (args) => {
         isLoading.value = true;
         formattedEventData = {
           ...formattedEventData,
-          UserId: '6a1b4eba-fbc6-412b-8219-2a1f84eba567',
+          UserId: userInfor.value.result.id,
           CourseId: "1",
           ChapterId: "1",
           status: "BOOKED"
         };
-        await axios.put(`${props.url}/student-calendar/${formattedEventData.Id}`, formattedEventData);
+        await axios.put(`${props.url}/student-calendar/${formattedEventData.Id}`, formattedEventData,{
+          headers:{
+             'Authorization': `Bearer ${accessToken}`
+          }
+        });
         toast.success('Đặt lịch thành công!Vui lòng kiểm tra gmail để xem chi tiết');
       } else {
-        await axios.put(`${props.url}/${formattedEventData.Id}`, formattedEventData);
+        await axios.put(`${props.url}/teacher-calendar/${formattedEventData.Id}`, formattedEventData,{
+          headers:{
+             'Authorization': `Bearer ${accessToken}`
+          }
+        });
         toast.success('Cập nhật lịch thành công!');
       }
     } catch (error) {
@@ -245,7 +279,8 @@ const onActionBegin = async (args) => {
 }
 
 onMounted(() => {
-  getOwnerDataSource()
+  getOwnerDataSource();
+  getInfoUser()
 })
 
 watch(() => props.id, (newId) => {
@@ -271,6 +306,7 @@ watch(() => props.id, (newId) => {
 .relative {
   position: relative;
 }
+
 
 /* HTML: <div class="loader"></div> */
 .loader {

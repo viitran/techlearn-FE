@@ -64,7 +64,7 @@ const handleLogout = async () => {
         router.push("/login").then(() => {
             toast.success("Đăng xuất thành công!");
         });
-        await axios.get("http://localhost:8181/api/v1/auth/logout", {
+        const res = await axios.get("http://localhost:8181/api/v1/auth/logout", {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
