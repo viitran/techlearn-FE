@@ -30,6 +30,7 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
 provide('toggleSidebar', toggleSidebar);
 
 const isLoginPage = computed(()=> route.path === "/login" );
+
 </script>
 
 <style scoped>
