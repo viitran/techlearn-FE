@@ -218,7 +218,7 @@ const onActionBegin = async (args) => {
         // TODO
       }
     } catch (error) {
-      toast.error('Bạn phải thêm lịch vào ngày và giờ lớn hơn ngày và giờ hiện tại!');
+      toast.error('Cập nhật lịch thất bại!');
     }
   } else if (args.requestType === 'eventRemove') {
     try {
