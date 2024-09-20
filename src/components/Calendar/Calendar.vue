@@ -2,7 +2,7 @@
   <div class="relative">
     <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate"
       :eventSettings="eventSettings" :actionBegin="onActionBegin" class="calendar" :editorTemplate="'editorTemplate'"
-      :eventRendered="onEventRendered" :startHour="startHour" :endHour="endHour" :timeScale="timeScale">
+      :eventRendered="onEventRendered" :startHour="startHour" :endHour="endHour" >
       <template v-slot:editorTemplate>
         <table class="custom-event-editor" width="100%" cellpadding="5">
           <tbody>
@@ -113,11 +113,11 @@ const eventSettings = ref({
 
 const startHour = "08:00";
 const endHour = "21:00";
-const timeScale = {
-  enable: true,
-  interval: 10,
-  slotCount: 1
-};
+// const timeScale = {
+//   enable: true,
+//   interval: 10,
+//   slotCount: 1
+// };
 
 const dropListFields = {
   text: "OwnerText",

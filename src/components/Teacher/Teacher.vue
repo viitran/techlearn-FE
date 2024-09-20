@@ -1,6 +1,14 @@
 <template>
-
-    <Calendar url="http://localhost:8181/api/v1/teacher-calendar" />
+    <div>
+        <b-tabs content-class="mt-3">
+            <b-tab title="Lịch rảnh" active>
+                <Calendar url="http://localhost:8181/api/v1/teacher-calendar" />
+            </b-tab>
+            <b-tab title="Lịch bận">
+                <Calendar url="http://localhost:8181/api/v1/teacher-calendar" />
+            </b-tab>
+        </b-tabs>
+    </div>
 
 </template>
 

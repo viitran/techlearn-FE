@@ -35,7 +35,7 @@
                             <span class="error-message">{{ chapterError }}</span>
                         </div>
                         <div>
-                            <select class="modify-select" name="chapter" v-model="chapter" :disabled="!course"
+                            <select class="modify-select" name="chapter" v-model="chapter"
                                 @change="onChuongChange">
                                 <option value="" disabled selected hidden>Chọn chương</option>
                                 <option class="modify-option" value="Chapter 1">Chương 1</option>
@@ -50,7 +50,7 @@
                             <span class="error-message">{{ teacherError }}</span>
                         </div>
                         <div>
-                            <select class="modify-select" name="teacher" v-model="teacher" :disabled="!chapter">
+                            <select class="modify-select" name="teacher" v-model="teacher">
                                 <option :value="null" disabled selected hidden>Chọn giảng viên</option>
                                 <option class="modify-option" v-for="teacher in allTeachers" :key="teacher.Id"
                                     :value="teacher">
@@ -78,6 +78,8 @@
                 style="background-color: rgb(49, 210, 242) ">
                 <span><i class="fas fa-plus"></i> Tạo lịch</span>
             </button>
+
+            <!-- hienn calendar 2url khac nhau -->
         </div>
     </div>
     <div v-if="stateButtonFormStudent === true" class="row">
@@ -197,15 +199,6 @@ const fetchUserData = async () => {
         console.error("Error fetching user data:", error);
     }
 };
-
-const onCourseChange = () => {
-    chapter.value = "";
-    teacher.value = null;
-}
-
-const onChuongChange = () => {
-    teacher.value = null;
-}
 
 
 onMounted(() => {
