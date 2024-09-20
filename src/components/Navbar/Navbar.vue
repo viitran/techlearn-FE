@@ -7,6 +7,7 @@
       <ul class="list-unstyled components">
 
         <li v-if="isTeacher" class="active">
+
         <li>
           <router-link to="/teacher" class="nav-link">Lịch giảng viên</router-link>
         </li>
@@ -15,7 +16,7 @@
         <li v-if="isUser">
           <router-link to="/student" class="nav-link">Đặt lịch học</router-link>
         </li>
-        <li v-if="isUser">
+        <li v-if="isTeacher">
           <router-link to="/listPrompt">Cấu hình AI</router-link>
         </li>
         <li v-if="isUser">
@@ -30,39 +31,24 @@
 <script setup>
 
 import { onMounted, ref, computed } from "vue";
-import axios from "axios";
 import { inject } from 'vue';
+import { useStore } from 'vuex';
+
 const isSidebarCollapsed = inject('isSidebarCollapsed');
-const selectedItem = ref(0);
-const user = ref(null);
-const accessToken = localStorage.getItem("accessToken");
-
-const fetchDataUser = async () => {
-  try {
-    const response = await axios.get('http://localhost:8181/api/v1/users/me', {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    });
-    user.value = response.data.result;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-const handleSelect = (e) => {
-  selectedItem.value = e;
-};
+const store = useStore();
+const user = computed(() => store.getters.user);
 
 onMounted(() => {
-  fetchDataUser();
+  if (!store.getters.isLoggedIn) {
+    store.dispatch('fetchUser');
+  }
 });
 
 const isTeacher = computed(() => user.value?.roles.some(role => role.name === "TEACHER"));
 const isUser = computed(() => user.value?.roles.some(role => role.name === "USER"));
-// const isAdmin = computed(() => user.value?.roles.some(role => role.name === "ADMIN"));
 
 </script>
+
 
 <style scoped>
 .navbar-container {
@@ -72,9 +58,6 @@ const isUser = computed(() => user.value?.roles.some(role => role.name === "USER
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* .list-item{ */
-/* padding: 5px; */
-/* } */
 .item {
   padding: 10px;
   cursor: pointer;

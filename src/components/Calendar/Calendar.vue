@@ -1,8 +1,9 @@
 <template>
   <div class="relative">
-    <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate"
-      :eventSettings="eventSettings" :actionBegin="onActionBegin" class="calendar" :editorTemplate="'editorTemplate'"
-      :eventRendered="onEventRendered" :startHour="startHour" :endHour="endHour">
+
+    <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate" :eventSettings="eventSettings"
+      :actionBegin="onActionBegin" class="calendar" :editorTemplate="'editorTemplate'" :eventRendered="onEventRendered" :startHour="startHour"
+      :endHour="endHour">
       <template v-slot:editorTemplate>
         <table class="custom-event-editor" width="100%" cellpadding="5">
           <tbody>
@@ -51,8 +52,8 @@
         <e-view option="Agenda"></e-view>
       </e-views>
       <e-resources>
-        <e-resource field="OwnerId" title="Owner" name="Owners" :dataSource="ownerDataSource" textField="OwnerText"
-          idField="Id" colorField="OwnerColor">
+        <e-resource field="OwnerId" title="Owner" name="Owners" :dataSource="ownerDataSource" textField="OwnerText" idField="Id"
+          colorField="OwnerColor">
         </e-resource>
       </e-resources>
     </ejs-schedule>
@@ -60,7 +61,8 @@
       <div class="loader"></div>
     </div>
   </div>
-
+  <loading :active="isLoading"
+  :is-full-page="true"/>
 </template>
 
 <script setup>
@@ -82,17 +84,33 @@ import frNumberData from '@syncfusion/ej2-cldr-data/main/vi/numbers.json';
 import frtimeZoneData from '@syncfusion/ej2-cldr-data/main/vi/timeZoneNames.json';
 import frGregorian from '@syncfusion/ej2-cldr-data/main/vi/ca-gregorian.json';
 import frNumberingSystem from '@syncfusion/ej2-cldr-data/supplemental/numberingSystems.json';
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/css/index.css';
 const rootApi = process.env.VUE_APP_ROOT_API;
-const props = defineProps(['url', 'id']);
+
+// const props = defineProps(['url', 'id']);
+const props = defineProps({
+  url: {
+    type: String,
+    required: true
+  },
+  id: {
+    type: String,
+    required: false
+  }
+});
+
 const isLoading = ref(false);
 const isStudentBooking = ref(false);
+const isSuppoter = localStorage.getItem("isSuppoter");
 setCulture('vi');
 L10n.load(viLocale)
 loadCldr(frNumberData, frtimeZoneData, frGregorian, frNumberingSystem);
 provide("schedule", [Day, Week, WorkWeek, Month, Agenda, DragAndDrop]);
 const accessToken = localStorage.getItem("accessToken");
+
 const remoteData = new DataManager({
-  // url: 'http://localhost:3000/dataSource',
+
   url: `${props.url}`,
   adaptor: new WebApiAdaptor,
   crossDomain: true,
@@ -100,61 +118,59 @@ const remoteData = new DataManager({
     Authorization: `Bearer ${accessToken}`
   }]
 });
-
-
-
 const scheduleObj = ref(null);
 const selectedDate = new Date();
 const ownerDataSource = ref([]);
 const eventSettings = ref({
-
   dataSource: remoteData
 });
 
 const startHour = "08:00";
 const endHour = "21:00";
-// const timeScale = {
-//   enable: true,
-//   interval: 10,
-//   slotCount: 1
-// };
 
 const dropListFields = {
   text: "OwnerText",
   value: "Id"
 }
 
+const getUserInfo = async () => {
+        try {
+            const response = await axios.get("http://localhost:8181/api/v1/users/me", {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            userInfor.value = response.data.result;
+        } catch (error) {
+            console.error( error);
+        }
+};
 const getOwnerDataSource = async () => {
+
   const res = await axios.get("http://localhost:8181/api/v1/teachers/", {
     headers: {
       'Authorization': `Bearer ${accessToken}`
+
     }
   });
   ownerDataSource.value = res.data;
 }
 
 
-
 const getEvent = async () => {
   try {
-    const res = await axios.get(`${rootApi}/find-by-id/${props.id}`, {
+    const res = await axios.get(props.url, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
     });
-    const filtered = res.data.filter((event) => {
-      return new Date(event.StartTime) >= new Date();
-    })
-    console.log(res.data);
     eventSettings.value = {
       dataSource: res.data
     };
   } catch (error) {
-    console.error('Error fetching or filtering events:', error);
+    console.error('Error fetching events:', error);
   }
 };
-;
-
 
 const onEventRendered = (args) => {
   const ownerId = args.data.OwnerId;
@@ -162,7 +178,7 @@ const onEventRendered = (args) => {
     const owner = ownerDataSource.value.find(owner => owner.Id === ownerId);
     if (owner) {
       const avatarHtml = `<div class="mx-1">
-                            <img width="24" height="24" src="${owner.avatar}" 
+                            <img width="24" height="24" src="${owner.avatar}"
                               class="owner-avatar rounded-circle img-fluid border border-white" />
                           </div>`;
 
@@ -195,28 +211,41 @@ const formatDate = (dateStr) => {
 };
 
 const onActionBegin = async (args) => {
-  if (args.requestType === 'eventCreate') {
+  if (args.requestType === 'eventCreate' && isSuppoter) {
     try {
       const eventData = args.data[0];
-
       const formattedEventData = {
         ...eventData,
         StartTime: formatDate(eventData.StartTime),
         EndTime: formatDate(eventData.EndTime),
-        status: 'FREE',
+        StartTimezone: 'Asia/Bangkok',
+        EndTimezone: 'Asia/Bangkok',
       };
-      await axios.post(`${props.url}`, formattedEventData, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`
-        }
-      });
-      toast.success('Tạo lịch thành công!');
+
+
+      if (props.url.includes('teacher')) {
+        const data = {
+          ...formattedEventData,
+          status: "BUSY"
+        };
+
+        await axios.post(`${props.url}`, data, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        });
+
+        toast.success('Cập nhật lịch thành công!');
+      } else if (props.url.includes('student')) {
+        // TODO
+      }
+
     } catch (error) {
-      console.error('Error adding event:', error);
-      toast.error('Bạn phải thêm lịch vào ngày và giờ lớn hơn ngày và giờ hiện tại!');
+      toast.error('Cập nhật lịch thất bại!');
     }
   } else if (args.requestType === 'eventRemove') {
     try {
+
       await axios.delete(`${props.url}/${args.data[0].Id}`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`
@@ -241,18 +270,23 @@ const onActionBegin = async (args) => {
         isLoading.value = true;
         formattedEventData = {
           ...formattedEventData,
-          UserId: '6a1b4eba-fbc6-412b-8219-2a1f84eba567',
+          UserId: userInfor.value.id,
           CourseId: "1",
           ChapterId: "1",
           status: "BOOKED"
         };
-        await axios.put(`${props.url}/student-calendar/${formattedEventData.Id}`, formattedEventData, {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`
+        isLoading.value=true;
+          setTimeout(() => {
+              isLoading.value= false
+          }, 5000)
+        await axios.put(`${props.url}/student-calendar/${formattedEventData.Id}`, formattedEventData,{
+          headers:{
+             'Authorization': `Bearer ${accessToken}`
           }
         });
         toast.success('Đặt lịch thành công!Vui lòng kiểm tra gmail để xem chi tiết');
       } else {
+
         await axios.put(`${props.url}/${formattedEventData.Id}`, formattedEventData, {
           headers: {
             'Authorization': `Bearer ${accessToken}`
@@ -261,7 +295,6 @@ const onActionBegin = async (args) => {
         toast.success('Cập nhật lịch thành công!');
       }
     } catch (error) {
-      console.error('Error updating event:', error);
       toast.error('Cập nhật lịch thất bại!');
     } finally {
       isLoading.value = false;
@@ -274,8 +307,19 @@ const onActionBegin = async (args) => {
 }
 
 onMounted(() => {
-  getOwnerDataSource()
-})
+  getOwnerDataSource();
+
+  if (props.url) {
+    getEvent();
+  }
+});
+
+watch(() => props.url, (newUrl) => {
+  if (newUrl) {
+    getEvent();
+  }
+});
+
 
 watch(() => props.id, (newId) => {
   if (newId) {
@@ -300,6 +344,7 @@ watch(() => props.id, (newId) => {
 .relative {
   position: relative;
 }
+
 
 /* HTML: <div class="loader"></div> */
 .loader {

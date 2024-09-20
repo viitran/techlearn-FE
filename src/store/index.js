@@ -1,23 +1,50 @@
-import { createStore } from "vuex";
+import { createStore } from 'vuex';
+import axios from 'axios';
 
-export default createStore({
+const store = createStore({
   state: {
-    user: {
-      role: "",
-    },
-  },
-  getters: {
-    getUserRole: (state) => state.user.role,
+    user: null,
+    isLoggedIn: false,
   },
   mutations: {
-    SET_USER_ROLE(state, role) {
-      state.user.role = role;
+    setUser(state, user) {
+      state.user = user;
+    },
+    setLoggedIn(state, isLoggedIn) {
+      state.isLoggedIn = isLoggedIn;
     },
   },
   actions: {
-    setUserRole({ commit }, role) {
-      commit("SET_USER_ROLE", role);
+    async fetchUser({ commit }) {
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+        commit('setLoggedIn', true);
+        try {
+          const response = await axios.get("http://localhost:8181/api/v1/users/me", {
+            headers: {
+              'Authorization': `Bearer ${accessToken}`
+            }
+          });
+
+          if (response && response.data && response.data.result) {
+            commit('setUser', response.data.result);
+          } else {
+            commit('setUser', null);
+          }
+        } catch (error) {
+          commit('setUser', null);
+          commit('setLoggedIn', false);
+        }
+      } else {
+        commit('setLoggedIn', false);
+        commit('setUser', null);
+      }
     },
   },
-  modules: {},
+  getters: {
+    user: state => state.user,
+    isLoggedIn: state => state.isLoggedIn,
+  },
 });
+
+export default store;
