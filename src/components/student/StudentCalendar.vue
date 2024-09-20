@@ -2,10 +2,7 @@
     <div class="row d-md-flex justify-content-between nav-student">
         <div class="col col-md-3 d-md-flex justify-content-start align-items-center">
             <div class="img-avatar">
-                <<<<<<< HEAD <img class="rounded-circle" :src="user.avatar" alt="my-avatar">
-                    =======
-                    <img class="rounded-circle" src="https://i.pinimg.com/564x/0b/2b/52/0b2b527a5d4ad76e7ee6115e895afac2.jpg" alt="my-avatar">
-                    >>>>>>> 5f37f24 (change student calendar)
+                <img class="rounded-circle" :src="user.avatar" alt="my-avatar">
             </div>
             <div class="ms-2 d-flex flex-column align-items-center m-0">
                 <div class="font-weight-bold name-color">{{ user.name }}</div>
@@ -78,14 +75,9 @@
             </button>
         </div>
     </div>
-    <div class="row">
+    <div v-if="stateButtonFormStudent === true" class="row">
         <div class="col" style="margin-top: 60px;">
-            <Calendar v-if="stateButtonFormStudent === true" :url="url" :id="idGV" />
-
-            <div v-else>
-                <h4 class="mb-2">Danh sách lịch đã đặt</h4>
-                <Calendar :url="studentUrl" :id="idGV" />
-            </div>
+            <Calendar :url="url" :id="idGV" />
         </div>
     </div>
 </template>
@@ -134,11 +126,9 @@ const user = ref({
     avatar: '',
     email: ''
 });
-const studentUrl = ref(`${rootApi}/students?userId=123e4567-e89b-12d3-a456-426614174000`);
 
-const getAllCalendars = (newUrl) => {
-    // url.value = `${rootApi}`
-    url.value = newUrl;
+const getAllCalendars = () => {
+    url.value = `${rootApi}`
 }
 
 const getAllTeacher = async () => {
@@ -181,12 +171,6 @@ const searchCalendar = handleSubmit(async (formData) => {
             idGV.value = res.data.result;
             getAllTeacher();
         }
-
-        // console.log(teacherName, technicalTeacherName, chapterName);
-
-        // const filterUrl = `${rootApi}/teacher-calendar/find-calendars?teacherName=${teacherName}&technicalTeacherName=${technicalTeacherName}&chapterName=${chapterName}`;
-
-        // getAllCalendars(filterUrl);
     } catch (error) {
         toast.error("Không có khung giờ giảng viên trong ngày hôm nay!");
     }

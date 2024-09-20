@@ -5,8 +5,8 @@
                 <button @click="toggleSidebar" type="button" id="sidebarCollapse" class="btn btn-info">
                     <i class="fas fa-align-left text-white"></i>
                 </button>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -22,10 +22,9 @@
                         </li>
                         <li v-else class="nav-item dropdown">
                             <link class="name-color">{{ user.fullName }}</link>
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img :src="user.avatar"
-                                    class="rounded-circle avatar" alt="User Avatar">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <img :src="user.avatar" class="rounded-circle avatar" alt="User Avatar">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">Thông tin cá nhân</a>
@@ -49,7 +48,7 @@ import { toast } from 'vue3-toastify';
 const router = useRouter();
 const toggleSidebar = inject('toggleSidebar');
 const isLoggedIn = ref(false);
-const user = ref({ fullName: '',avatar: '' });
+const user = ref({ fullName: '', avatar: '' });
 
 onMounted(() => {
     checkLoginStatus();
@@ -68,7 +67,7 @@ const checkLoginStatus = async () => {
             });
             user.value = response.data.result;
         } catch (error) {
-            console.error( error);
+            console.error(error);
         }
     }
 };
