@@ -20,7 +20,7 @@
                                 Đăng Nhập
                             </a>
                         </li>
-                        <li v-else class="nav-item dropdown">
+                        <li v-else class="nav-item dropdown" v-if="user">
                             <link class="name-color">{{ user.fullName }}</link>
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
@@ -40,38 +40,24 @@
 </template>
 
 <script setup>
-import axios from 'axios';
 import { inject, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import { toast } from 'vue3-toastify';
+import { computed } from 'vue';
 
 const router = useRouter();
 const toggleSidebar = inject('toggleSidebar');
-const isLoggedIn = ref(false);
 
-const user = ref({ fullName: '', avatar: '' });
+const store = useStore();
+const isLoggedIn = computed(() => store.getters.isLoggedIn);
+const user = computed(() => store.getters.user);
 
 onMounted(() => {
-    checkLoginStatus();
-});
-
-const checkLoginStatus = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    isLoggedIn.value = !!accessToken;
-
-    if (isLoggedIn.value) {
-        try {
-            const response = await axios.get("http://localhost:8181/api/v1/users/me", {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            });
-            user.value = response.data.result;
-        } catch (error) {
-            console.error(error);
-        }
+    if (!isLoggedIn.value) {
+        store.dispatch('fetchUser');
     }
-};
+});
 
 const handleLogout = async () => {
     try {
@@ -82,12 +68,13 @@ const handleLogout = async () => {
                 autoClose: 1200
             });
         });
+        store.commit('setLoggedIn', false);
+        store.commit('setUser', null);
         await axios.get("http://localhost:8181/api/v1/auth/logout", {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
         });
-        isLoggedIn.value = false;
     } catch (err) {
         console.log(err);
     }

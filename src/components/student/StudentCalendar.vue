@@ -92,8 +92,11 @@ import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 import * as yup from 'yup';
 import Calendar from '../Calendar/Calendar.vue';
-const rootApi = process.env.VUE_APP_ROOT_API;
+import { useStore } from 'vuex';
+import { computed } from 'vue';
 
+const rootApi = process.env.VUE_APP_ROOT_API;
+const store = useStore();
 
 const stateButtonFormStudent = ref(false);
 
@@ -121,23 +124,18 @@ const { value: chapter, errorMessage: chapterError } = useField('chapter');
 const { value: teacher, errorMessage: teacherError } = useField('teacher');
 const allTeachers = ref([]);
 const url = ref("");
-const idGV = ref()
-const accessToken = localStorage.getItem("accessToken");
-const user = ref({
-    fullName: '',
-    avatar: '',
-    email: ''
-});
+const idGV = ref();
+const user = computed(() => store.getters.user);
 
 const getAllCalendars = () => {
-    url.value = `${rootApi}`
+    url.value = `${rootApi}`;
 }
 
 const getAllTeacher = async () => {
     try {
         const res = await axios.get(`${rootApi}/teachers/`, {
             headers: {
-                'Authorization': `Bearer ${accessToken}`
+                'Authorization': `Bearer ${store.state.accessToken}`
             }
         });
         allTeachers.value = res.data;
@@ -162,9 +160,9 @@ const searchCalendar = handleSubmit(async (formData) => {
             params: {
                 teacherName, technicalTeacherName, chapterName
             },
-            headers: [{
-                'Authorization': `Bearer ${accessToken}`
-            }]
+            headers: {
+                'Authorization': `Bearer ${store.state.accessToken}`
+            }
         });
         console.log(res.data);
 
@@ -178,27 +176,13 @@ const searchCalendar = handleSubmit(async (formData) => {
     }
 });
 
-const fetchUserData = async () => {
-    try {
-        const response = await axios.get("http://localhost:8181/api/v1/users/me", {
-            headers: {
-                Authorization: `Bearer ${accessToken}`
-            }
-        });
-        user.value = {
-            name: response.data.result.fullName,
-            avatar: response.data.result.avatar || 'https://i.pinimg.com/564x/0b/2b/52/0b2b527a5d4ad76e7ee6115e895afac2.jpg',
-            email: response.data.result.email
-        };
-    } catch (error) {
-        console.error("Error fetching user data:", error);
-    }
-};
 onMounted(() => {
     getAllTeacher();
     getAllCalendars();
-    fetchUserData();
-})
+    if (!store.getters.isLoggedIn) {
+        store.dispatch('fetchUser');
+    }
+});
 </script>
 
 <style scoped>
