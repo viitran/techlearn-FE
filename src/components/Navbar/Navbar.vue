@@ -1,58 +1,67 @@
 <template>
-
   <div class="wrapper">
     <nav id="sidebar" :class="{ 'active': isSidebarCollapsed }">
       <div class="sidebar-header">
         <h3>TechLearn</h3>
       </div>
       <ul class="list-unstyled components">
-        <li class="active">
-          <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Trang
-            chủ</a>
-          <ul class="collapse list-unstyled" id="homeSubmenu">
-            <li>
-              <router-link to="/teacher" class="nav-link">Lịch giảng viên</router-link>
-            </li>
-          </ul>
-        </li>
+
+        <li v-if="isTeacher" class="active">
         <li>
+          <router-link to="/teacher" class="nav-link">Lịch giảng viên</router-link>
+        </li>
+        </li>
+
+        <li v-if="isUser">
           <router-link to="/student" class="nav-link">Đặt lịch học</router-link>
         </li>
-        <li>
-          <!-- <a href="#">Giới thiệu</a> -->
-          <!-- <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
-                      class="dropdown-toggle">Trang</a> -->
-          <!-- <ul class="collapse list-unstyled" id="pageSubmenu"> -->
-          <!-- <li>
-                          <router-link to="/student" class="nav-link">Đặt lịch học</router-link>
-                      </li> -->
-          <!-- <li><a href="#">Trang 2</a></li>
-                      <li><a href="#">Trang 3</a></li> -->
-          <!-- </ul> -->
+        <li v-if="isUser">
+          <router-link to="/listPrompt">Cấu hình AI</router-link>
         </li>
-        <li> <router-link to="/listPrompt">Cấu hình AI </router-link></li>
-        <li> <router-link to="/coursePage">Khóa học của tôi </router-link></li>
-        <!-- <li><a href="#">Dự án</a></li>
-              <li><a href="#">Liên hệ</a></li> -->
+        <li v-if="isUser">
+          <router-link to="/coursePage">Khóa học của tôi</router-link>
+        </li>
       </ul>
     </nav>
   </div>
-
-
 </template>
 
 
 <script setup>
 
-import { ref } from "vue";
-
+import { onMounted, ref, computed } from "vue";
+import axios from "axios";
 import { inject } from 'vue';
 const isSidebarCollapsed = inject('isSidebarCollapsed');
 const selectedItem = ref(0);
+const user = ref(null);
+const accessToken = localStorage.getItem("accessToken");
+
+const fetchDataUser = async () => {
+  try {
+    const response = await axios.get('http://localhost:8181/api/v1/users/me', {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+    user.value = response.data.result;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 const handleSelect = (e) => {
   selectedItem.value = e;
 };
+
+onMounted(() => {
+  fetchDataUser();
+});
+
+const isTeacher = computed(() => user.value?.roles.some(role => role.name === "TEACHER"));
+const isUser = computed(() => user.value?.roles.some(role => role.name === "USER"));
+// const isAdmin = computed(() => user.value?.roles.some(role => role.name === "ADMIN"));
+
 </script>
 
 <style scoped>
