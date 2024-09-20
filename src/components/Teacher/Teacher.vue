@@ -1,6 +1,6 @@
 <template>
 
-    <div>
+    <div class="teacher-tab">
         <b-tabs content-class="mt-3">
             <b-tab title="Lịch rảnh" active>
                 <Calendar url="http://localhost:8181/api/v1/teacher-calendar" />
