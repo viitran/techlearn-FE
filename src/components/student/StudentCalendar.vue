@@ -83,7 +83,7 @@
     </div>
     <div v-if="stateButtonFormStudent === true" class="row">
         <div class="col" style="margin-top: 60px;">
-            <Calendar :url="url" :id="idGV" />
+            <Calendar :url="url" :id="idGV" :course="course" :chapter="chapter"/>
         </div>
     </div>
 </template>
@@ -97,7 +97,6 @@ import { toast } from 'vue3-toastify';
 import * as yup from 'yup';
 import Calendar from '../Calendar/Calendar.vue';
 const rootApi = process.env.VUE_APP_ROOT_API;
-
 const stateButtonFormStudent = ref(false);
 const accessToken = localStorage.getItem("accessToken");
 const { handleSubmit, resetForm } = useForm({
@@ -124,11 +123,10 @@ const { value: chapter, errorMessage: chapterError } = useField('chapter');
 const { value: teacher, errorMessage: teacherError } = useField('teacher');
 const allTeachers = ref([]);
 const url = ref("");
-const idGV = ref();
 
 
 const getAllCalendars = () => {
-    url.value = `${rootApi}`
+    url.value = `${rootApi}/student-calendar`
 }
 
 
@@ -147,6 +145,7 @@ const getAllTeacher = async () => {
 
 const changeOfStateButtonStudent = () => {
     stateButtonFormStudent.value = !stateButtonFormStudent.value;
+
 }
 
 const searchCalendar = handleSubmit(async (formData) => {

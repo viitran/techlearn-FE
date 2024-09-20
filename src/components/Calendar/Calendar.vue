@@ -60,7 +60,8 @@
       <div class="loader"></div>
     </div>
   </div>
-
+  <loading :active="isLoading"
+  :is-full-page="true"/>
 </template>
 
 <script setup>
@@ -82,11 +83,13 @@ import frNumberData from '@syncfusion/ej2-cldr-data/main/vi/numbers.json';
 import frtimeZoneData from '@syncfusion/ej2-cldr-data/main/vi/timeZoneNames.json';
 import frGregorian from '@syncfusion/ej2-cldr-data/main/vi/ca-gregorian.json';
 import frNumberingSystem from '@syncfusion/ej2-cldr-data/supplemental/numberingSystems.json';
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/css/index.css';
 const rootApi = process.env.VUE_APP_ROOT_API;
-const props = defineProps(['url', 'id']);
+const props = defineProps(['url', 'id', 'course', 'chapter']);
 const isLoading = ref(false);
 const isStudentBooking = ref(false);
-const isAdmin = ref(false);
+const isSuppoter = localStorage.getItem("isSuppoter");
 setCulture('vi');
 L10n.load(viLocale)
 loadCldr(frNumberData, frtimeZoneData, frGregorian, frNumberingSystem);
@@ -105,6 +108,8 @@ const remoteData = new DataManager({
 }
 );
 
+console.log(props.course);
+console.log(props.chapter);
 
 const userInfor =ref();
 const scheduleObj = ref(null);
@@ -128,30 +133,18 @@ const dropListFields = {
   value: "Id"
 }
 
-const getInfoUser =async () => {
-  try {
-    const res = await axios.get(`http://localhost:8181/api/v1/users/access-token?accessToken=${accessToken}`,{
-      headers:{
-        Authorization:`Bearer ${accessToken}`
-      }
-    });
-    userInfor.value = res.data;
-    console.log(userInfor.value);
-    checkIsAdmin()
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-const checkIsAdmin= () => {
-  for (let i = 0; i <userInfor.value.result.roles.length; i++) {
-    if(userInfor.value.result.roles[i].name === "ADMIN"){
-      isAdmin.value = true;
-    }
-  }
-  console.log(isAdmin.value);
-}
-
+const getUserInfo = async () => {
+        try {
+            const response = await axios.get("http://localhost:8181/api/v1/users/me", {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            userInfor.value = response.data.result;
+        } catch (error) {
+            console.error( error);
+        }
+};
 const getOwnerDataSource = async () => {
   const res = await axios.get("http://localhost:8181/api/v1/teachers/",{
     headers:{
@@ -201,7 +194,7 @@ const formatDate = (dateStr) => {
 };
 
 const onActionBegin = async (args) => {
-  if (args.requestType === 'eventCreate' && !isAdmin) {
+  if (args.requestType === 'eventCreate' && isSuppoter) {
     try {
       const eventData = args.data[0];
       const formattedEventData = {
@@ -246,11 +239,15 @@ const onActionBegin = async (args) => {
         isLoading.value = true;
         formattedEventData = {
           ...formattedEventData,
-          UserId: userInfor.value.result.id,
+          UserId: userInfor.value.id,
           CourseId: "1",
           ChapterId: "1",
           status: "BOOKED"
         };
+        isLoading.value=true;
+          setTimeout(() => {
+              isLoading.value= false
+          }, 5000)
         await axios.put(`${props.url}/student-calendar/${formattedEventData.Id}`, formattedEventData,{
           headers:{
              'Authorization': `Bearer ${accessToken}`
@@ -280,7 +277,7 @@ const onActionBegin = async (args) => {
 
 onMounted(() => {
   getOwnerDataSource();
-  getInfoUser()
+  getUserInfo();
 })
 
 watch(() => props.id, (newId) => {

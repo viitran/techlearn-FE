@@ -104,11 +104,11 @@ const { handleSubmit, resetForm } = useForm({
   validationSchema: yup.object({
     email: yup
       .string()
-      .required("* Hãy email")
+      .required("* Hãy nhập email")
       .matches(/^[a-zA-Z]+[0-9]*@gmail\.com$/, "* Email không đúng định dạng"),
     password: yup
       .string()
-      .required('* Hãy password')
+      .required('* Hãy nhập password')
   }),
 })
 
@@ -125,11 +125,15 @@ const onSubmit = handleSubmit(async (values) => {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
       router.push("/").then(() => {
-        toast.success("Đăng nhập thành công!")
+        toast.success("Đăng nhập thành công!",{
+          autoClose:1200
+        })
       })
     }
   } catch (err) {
-    toast.error("Đăng nhập thất bại!")
+    toast.error("Đăng nhập thất bại!",{
+      autoClose:1200
+    })
   }
 }
 );

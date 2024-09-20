@@ -32,9 +32,13 @@ provide('toggleSidebar', toggleSidebar);
 
 const isLoginPage = computed(()=> route.path === "/login" );
 const isLogin = localStorage.getItem("accessToken");
+const isSuppoter = localStorage.getItem("isSuppoter");
 onMounted(()=>{
   if(isLogin === null) {
     router.push("/login") ;
+  }
+  if(!isSuppoter && window.location.href.includes("/teacher")) {
+    router.push("/404")
   }
 })
 </script>

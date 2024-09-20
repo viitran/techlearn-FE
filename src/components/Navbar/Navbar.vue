@@ -9,7 +9,7 @@
         <li class="active">
           <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Trang
             chủ</a>
-          <ul class="collapse list-unstyled" id="homeSubmenu">
+          <ul v-if="isSuppoter" class="collapse list-unstyled" id="homeSubmenu">
             <li>
               <router-link to="/teacher" class="nav-link">Lịch giảng viên</router-link>
             </li>
@@ -44,15 +44,41 @@
 
 <script setup>
 
-import { ref } from "vue";
-
-import { inject } from 'vue';
+import { ref } from 'vue';
+import { inject, onMounted } from 'vue';
+import axios from 'axios';
 const isSidebarCollapsed = inject('isSidebarCollapsed');
-const selectedItem = ref(0);
+const accessToken = localStorage.getItem("accessToken")
+const isSuppoter = ref(false);
+const userInfor = ref();
+const getInfoUser =async () => {
+  try {
+    const res = await axios.get(`http://localhost:8181/api/v1/users/access-token?accessToken=${accessToken}`,{
+      headers:{
+        Authorization:`Bearer ${accessToken}`
+      }
+    });
+    userInfor.value = res.data;
+    checkisSuppoter()
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-const handleSelect = (e) => {
-  selectedItem.value = e;
-};
+const checkisSuppoter= () => {
+  for (let i = 0; i <userInfor.value.result.roles.length; i++) {
+    if(userInfor.value.result.roles[i].name === "ADMIN" || userInfor.value.result.roles[i].name === "TEACHER" || userInfor.value.result.roles[i].name === "MENTOR" ){
+      isSuppoter.value = true;
+      localStorage.setItem("isSuppoter", true)
+      break;
+    }
+  }
+  console.log(isSuppoter.value);
+  
+}
+onMounted(()=>{
+  getInfoUser();
+})
 </script>
 
 <style scoped>
@@ -63,9 +89,6 @@ const handleSelect = (e) => {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* .list-item{ */
-/* padding: 5px; */
-/* } */
 .item {
   padding: 10px;
   cursor: pointer;
