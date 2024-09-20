@@ -1,4 +1,5 @@
 <template>
+
     <div class="teacher-tab">
         <b-tabs content-class="mt-3">
             <b-tab title="Lịch bận" active>
@@ -9,6 +10,7 @@
             </b-tab>
         </b-tabs>
     </div>
+
 </template>
 
 <script setup>

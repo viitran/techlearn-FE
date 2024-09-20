@@ -7,6 +7,7 @@
       <ul class="list-unstyled components">
 
         <li v-if="isTeacher" class="active">
+
         <li>
           <router-link to="/teacher" class="nav-link">Lịch giảng viên</router-link>
         </li>
@@ -28,6 +29,7 @@
 
 
 <script setup>
+
 import { onMounted, ref, computed } from "vue";
 import { inject } from 'vue';
 import { useStore } from 'vuex';
@@ -44,6 +46,7 @@ onMounted(() => {
 
 const isTeacher = computed(() => user.value?.roles.some(role => role.name === "TEACHER"));
 const isUser = computed(() => user.value?.roles.some(role => role.name === "USER"));
+
 </script>
 
 
@@ -55,9 +58,6 @@ const isUser = computed(() => user.value?.roles.some(role => role.name === "USER
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-/* .list-item{ */
-/* padding: 5px; */
-/* } */
 .item {
   padding: 10px;
   cursor: pointer;

@@ -79,7 +79,7 @@
     </div>
     <div v-if="stateButtonFormStudent === true" class="row">
         <div class="col" style="margin-top: 60px;">
-            <Calendar :url="url" :id="idGV" />
+            <Calendar :url="url" :id="idGV" :course="course" :chapter="chapter"/>
         </div>
     </div>
 </template>
@@ -92,6 +92,7 @@ import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 import * as yup from 'yup';
 import Calendar from '../Calendar/Calendar.vue';
+
 import { useStore } from 'vuex';
 import { computed } from 'vue';
 
@@ -99,7 +100,7 @@ const rootApi = process.env.VUE_APP_ROOT_API;
 const store = useStore();
 
 const stateButtonFormStudent = ref(false);
-
+const accessToken = localStorage.getItem("accessToken");
 const { handleSubmit, resetForm } = useForm({
     initialValues: {
         course: "",
@@ -124,12 +125,14 @@ const { value: chapter, errorMessage: chapterError } = useField('chapter');
 const { value: teacher, errorMessage: teacherError } = useField('teacher');
 const allTeachers = ref([]);
 const url = ref("");
+
 const idGV = ref();
 const user = computed(() => store.getters.user);
 
 const getAllCalendars = () => {
     url.value = `${rootApi}`;
 }
+
 
 const getAllTeacher = async () => {
     try {
@@ -146,6 +149,7 @@ const getAllTeacher = async () => {
 
 const changeOfStateButtonStudent = () => {
     stateButtonFormStudent.value = !stateButtonFormStudent.value;
+
 }
 
 const searchCalendar = handleSubmit(async (formData) => {
@@ -160,12 +164,11 @@ const searchCalendar = handleSubmit(async (formData) => {
             params: {
                 teacherName, technicalTeacherName, chapterName
             },
+
             headers: {
                 'Authorization': `Bearer ${store.state.accessToken}`
             }
         });
-        console.log(res.data);
-
         if (res.status === 200) {
             resetForm();
             idGV.value = res.data.result;

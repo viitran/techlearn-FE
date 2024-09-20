@@ -17,6 +17,7 @@
 import Header from './components/Header/Header.vue';
 import Sidebar from './components/Navbar/Navbar.vue';
 import Footer from './components/Footer/Footer.vue';
+
 import { RouterView } from 'vue-router';
 import { ref, provide ,computed} from 'vue';
 
@@ -30,6 +31,19 @@ provide('isSidebarCollapsed', isSidebarCollapsed);
 provide('toggleSidebar', toggleSidebar);
 
 const isLoginPage = computed(()=> route.path === "/login" );
+
+
+
+const isLogin = localStorage.getItem("accessToken");
+const isSuppoter = localStorage.getItem("isSuppoter");
+onMounted(()=>{
+  if(isLogin === null) {
+    router.push("/login") ;
+  }
+  if(!isSuppoter && window.location.href.includes("/teacher")) {
+    router.push("/404")
+  }
+})
 
 </script>
 

@@ -106,7 +106,9 @@ const { handleSubmit, resetForm } = useForm({
       .matches(/^[a-zA-Z]+[0-9]*@gmail\.com$/, "* Email không đúng định dạng"),
     password: yup
       .string()
+
       .required('* Hãy nhập mật khẩu')
+
   }),
 })
 
@@ -124,8 +126,10 @@ const onSubmit = handleSubmit(async (values) => {
       localStorage.setItem("refreshToken", refreshToken);
 
       router.push("/").then(() => {
+
         toast.success("Đăng nhập thành công!", {
           autoClose: 1200
+
         })
       })
     }
