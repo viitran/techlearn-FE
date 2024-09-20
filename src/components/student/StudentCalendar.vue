@@ -2,13 +2,12 @@
     <div class="row d-md-flex justify-content-between nav-student">
         <div class="col col-md-3 d-md-flex justify-content-start align-items-center">
             <div class="img-avatar">
-                <img class="rounded-circle"
-                    src="https://i.pinimg.com/564x/0b/2b/52/0b2b527a5d4ad76e7ee6115e895afac2.jpg" alt="my-avatar">
+                <img class="rounded-circle" :src="user.avatar" alt="my-avatar">
             </div>
             <div class="ms-2 d-flex flex-column align-items-center m-0">
-                <div class="font-weight-bold name-color">Huang Phan</div>
+                <div class="font-weight-bold name-color">{{ user.name }}</div>
                 <div class="info-student">Học viên</div>
-                <div class="info-student">hoang@gmail.com</div>
+                <div class="info-student">{{ user.email }}</div>
             </div>
         </div>
         <div v-if="stateButtonFormStudent === true" class="col col-md-9 d-flex align-items-center p-0">
@@ -36,7 +35,7 @@
                             <span class="error-message">{{ chapterError }}</span>
                         </div>
                         <div>
-                            <select class="modify-select" name="chapter" v-model="chapter" :disabled="!course"
+                            <select class="modify-select" name="chapter" v-model="chapter"
                                 @change="onChuongChange">
                                 <option value="" disabled selected hidden>Chọn chương</option>
                                 <option class="modify-option" value="Chapter 1">Chương 1</option>
@@ -51,7 +50,7 @@
                             <span class="error-message">{{ teacherError }}</span>
                         </div>
                         <div>
-                            <select class="modify-select" name="teacher" v-model="teacher" :disabled="!chapter">
+                            <select class="modify-select" name="teacher" v-model="teacher">
                                 <option :value="null" disabled selected hidden>Chọn giảng viên</option>
                                 <option class="modify-option" v-for="teacher in allTeachers" :key="teacher.Id"
                                     :value="teacher">
@@ -79,6 +78,8 @@
                 style="background-color: rgb(49, 210, 242) ">
                 <span><i class="fas fa-plus"></i> Tạo lịch</span>
             </button>
+
+            <!-- hienn calendar 2url khac nhau -->
         </div>
     </div>
     <div v-if="stateButtonFormStudent === true" class="row">
@@ -126,7 +127,12 @@ const { value: teacher, errorMessage: teacherError } = useField('teacher');
 const allTeachers = ref([]);
 const url = ref("");
 const idGV = ref()
-
+const accessToken = localStorage.getItem("accessToken");
+const user = ref({
+    fullName: '',
+    avatar: '',
+    email: ''
+});
 
 const getAllCalendars = () => {
     url.value = `${rootApi}`
@@ -134,7 +140,11 @@ const getAllCalendars = () => {
 
 const getAllTeacher = async () => {
     try {
-        const res = await axios.get(`${rootApi}/teachers/`);
+        const res = await axios.get(`${rootApi}/teachers/`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
         allTeachers.value = res.data;
     } catch (error) {
         console.log(error);
@@ -156,7 +166,10 @@ const searchCalendar = handleSubmit(async (formData) => {
         let res = await axios.get(`${rootApi}/teacher-calendar/find-calendars`, {
             params: {
                 teacherName, technicalTeacherName, chapterName
-            }
+            },
+            headers: [{
+                'Authorization': `Bearer ${accessToken}`
+            }]
         });
         console.log(res.data);
 
@@ -170,19 +183,28 @@ const searchCalendar = handleSubmit(async (formData) => {
     }
 });
 
-const onCourseChange = () => {
-    chapter.value = "";
-    teacher.value = null;
-}
-
-const onChuongChange = () => {
-    teacher.value = null;
-}
+const fetchUserData = async () => {
+    try {
+        const response = await axios.get("http://localhost:8181/api/v1/users/me", {
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+        user.value = {
+            name: response.data.result.fullName,
+            avatar: response.data.result.avatar || 'https://i.pinimg.com/564x/0b/2b/52/0b2b527a5d4ad76e7ee6115e895afac2.jpg',
+            email: response.data.result.email
+        };
+    } catch (error) {
+        console.error("Error fetching user data:", error);
+    }
+};
 
 
 onMounted(() => {
     getAllTeacher();
     getAllCalendars();
+    fetchUserData();
 })
 </script>
 

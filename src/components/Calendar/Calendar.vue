@@ -2,7 +2,7 @@
   <div class="relative">
     <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate"
       :eventSettings="eventSettings" :actionBegin="onActionBegin" class="calendar" :editorTemplate="'editorTemplate'"
-      :eventRendered="onEventRendered" :startHour="startHour" :endHour="endHour" :timeScale="timeScale">
+      :eventRendered="onEventRendered" :startHour="startHour" :endHour="endHour" >
       <template v-slot:editorTemplate>
         <table class="custom-event-editor" width="100%" cellpadding="5">
           <tbody>
@@ -12,14 +12,14 @@
                 <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
               </td>
             </tr>
-            <tr>
+            <!-- <tr>
               <td class="e-textlabel">Giảng viên</td>
               <td colspan="4">
                 <ejsDropdownlist id='OwnerId' name="OwnerId" class="e-field" placeholder='Choose status'
                   :dataSource='ownerDataSource' :fields="dropListFields">
                 </ejsDropdownlist>
               </td>
-            </tr>
+            </tr> -->
             <tr>
               <td class="e-textlabel">Giờ bắt đầu</td>
               <td colspan="4">
@@ -33,6 +33,7 @@
               </td>
             </tr>
             <tr>
+              <!-- thay ckeditor -->
               <td class="e-textlabel">Mô tả</td>
               <td colspan="4">
                 <textarea id="Description" class="e-field e-input" name="Description" rows="3" cols="50"
@@ -89,12 +90,15 @@ setCulture('vi');
 L10n.load(viLocale)
 loadCldr(frNumberData, frtimeZoneData, frGregorian, frNumberingSystem);
 provide("schedule", [Day, Week, WorkWeek, Month, Agenda, DragAndDrop]);
-
+const accessToken = localStorage.getItem("accessToken");
 const remoteData = new DataManager({
   // url: 'http://localhost:3000/dataSource',
   url: `${props.url}`,
   adaptor: new WebApiAdaptor,
-  crossDomain: true
+  crossDomain: true,
+  headers: [{
+    Authorization: `Bearer ${accessToken}`
+  }]
 });
 
 
@@ -109,11 +113,11 @@ const eventSettings = ref({
 
 const startHour = "08:00";
 const endHour = "21:00";
-const timeScale = {
-  enable: true,
-  interval: 10,
-  slotCount: 1
-};
+// const timeScale = {
+//   enable: true,
+//   interval: 10,
+//   slotCount: 1
+// };
 
 const dropListFields = {
   text: "OwnerText",
@@ -121,14 +125,23 @@ const dropListFields = {
 }
 
 const getOwnerDataSource = async () => {
-  const res = await axios.get("http://localhost:8181/api/v1/teachers/");
+  const res = await axios.get("http://localhost:8181/api/v1/teachers/", {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`
+    }
+  });
   ownerDataSource.value = res.data;
 }
 
 
+
 const getEvent = async () => {
   try {
-    const res = await axios.get(`${rootApi}/find-by-id/${props.id}`);
+    const res = await axios.get(`${rootApi}/find-by-id/${props.id}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
     const filtered = res.data.filter((event) => {
       return new Date(event.StartTime) >= new Date();
     })
@@ -192,7 +205,11 @@ const onActionBegin = async (args) => {
         EndTime: formatDate(eventData.EndTime),
         status: 'FREE',
       };
-      await axios.post(`${props.url}`, formattedEventData);
+      await axios.post(`${props.url}`, formattedEventData, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
       toast.success('Tạo lịch thành công!');
     } catch (error) {
       console.error('Error adding event:', error);
@@ -200,7 +217,11 @@ const onActionBegin = async (args) => {
     }
   } else if (args.requestType === 'eventRemove') {
     try {
-      await axios.delete(`${props.url}/${args.data[0].Id}`);
+      await axios.delete(`${props.url}/${args.data[0].Id}`, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
       toast.success('Xóa lịch thành công!');
     } catch (error) {
       console.error('Error deleting event:', error);
@@ -225,10 +246,18 @@ const onActionBegin = async (args) => {
           ChapterId: "1",
           status: "BOOKED"
         };
-        await axios.put(`${props.url}/student-calendar/${formattedEventData.Id}`, formattedEventData);
+        await axios.put(`${props.url}/student-calendar/${formattedEventData.Id}`, formattedEventData, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        });
         toast.success('Đặt lịch thành công!Vui lòng kiểm tra gmail để xem chi tiết');
       } else {
-        await axios.put(`${props.url}/${formattedEventData.Id}`, formattedEventData);
+        await axios.put(`${props.url}/${formattedEventData.Id}`, formattedEventData, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
+        });
         toast.success('Cập nhật lịch thành công!');
       }
     } catch (error) {

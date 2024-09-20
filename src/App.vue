@@ -18,7 +18,7 @@ import Header from './components/Header/Header.vue';
 import Sidebar from './components/Navbar/Navbar.vue';
 import Footer from './components/Footer/Footer.vue';
 import { RouterView } from 'vue-router';
-import { ref, provide } from 'vue';
+import { ref, provide ,computed} from 'vue';
 
 const isSidebarCollapsed = ref(false);
 
@@ -28,6 +28,8 @@ const toggleSidebar = () => {
 
 provide('isSidebarCollapsed', isSidebarCollapsed);
 provide('toggleSidebar', toggleSidebar);
+
+const isLoginPage = computed(()=> route.path === "/login" );
 
 </script>
 
