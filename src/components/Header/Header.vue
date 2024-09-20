@@ -24,7 +24,7 @@
                             <link class="name-color">{{ user.fullName }}</link>
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="https://i.pinimg.com/564x/0b/2b/52/0b2b527a5d4ad76e7ee6115e895afac2.jpg"
+                                <img :src="user.avatar"
                                     class="rounded-circle avatar" alt="User Avatar">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
@@ -49,7 +49,7 @@ import { toast } from 'vue3-toastify';
 const router = useRouter();
 const toggleSidebar = inject('toggleSidebar');
 const isLoggedIn = ref(false);
-const user = ref({ fullName: '' });
+const user = ref({ fullName: '',avatar: '' });
 
 onMounted(() => {
     checkLoginStatus();
