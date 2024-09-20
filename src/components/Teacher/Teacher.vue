@@ -23,7 +23,7 @@ import Calendar from '../Calendar/Calendar.vue';
     color: black !important;
 }
 
-.teacher-tab .active{
+.teacher-tab .active {
     color: #E3165B !important;
 }
 </style>

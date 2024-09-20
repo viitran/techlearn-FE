@@ -1,8 +1,8 @@
 <template>
   <div class="relative">
-    <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate"
-      :eventSettings="eventSettings" :actionBegin="onActionBegin" class="calendar" :editorTemplate="'editorTemplate'"
-      :eventRendered="onEventRendered" :startHour="startHour" :endHour="endHour" >
+    <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate" :eventSettings="eventSettings"
+      :actionBegin="onActionBegin" class="calendar" :editorTemplate="'editorTemplate'" :eventRendered="onEventRendered" :startHour="startHour"
+      :endHour="endHour">
       <template v-slot:editorTemplate>
         <table class="custom-event-editor" width="100%" cellpadding="5">
           <tbody>
@@ -51,8 +51,8 @@
         <e-view option="Agenda"></e-view>
       </e-views>
       <e-resources>
-        <e-resource field="OwnerId" title="Owner" name="Owners" :dataSource="ownerDataSource" textField="OwnerText"
-          idField="Id" colorField="OwnerColor">
+        <e-resource field="OwnerId" title="Owner" name="Owners" :dataSource="ownerDataSource" textField="OwnerText" idField="Id"
+          colorField="OwnerColor">
         </e-resource>
       </e-resources>
     </ejs-schedule>
