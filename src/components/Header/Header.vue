@@ -5,8 +5,8 @@
                 <button @click="toggleSidebar" type="button" id="sidebarCollapse" class="btn btn-info">
                     <i class="fas fa-align-left text-white"></i>
                 </button>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -20,12 +20,12 @@
                                 Đăng Nhập
                             </a>
                         </li>
-                        <li v-else class="nav-item dropdown">
+
+                        <li v-else class="nav-item dropdown" v-if="user">
                             <link class="name-color">{{ user.fullName }}</link>
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="https://i.pinimg.com/564x/0b/2b/52/0b2b527a5d4ad76e7ee6115e895afac2.jpg"
-                                    class="rounded-circle avatar" alt="User Avatar">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+                                aria-expanded="false">
+                                <img :src="user.avatar" class="rounded-circle avatar" alt="User Avatar">
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">Thông tin cá nhân</a>
@@ -41,37 +41,26 @@
 </template>
 
 <script setup>
-import axios from 'axios';
 import { inject, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import { toast } from 'vue3-toastify';
+import { computed } from 'vue';
 
 const router = useRouter();
 const toggleSidebar = inject('toggleSidebar');
-const isLoggedIn = ref(false);
-const user = ref({ fullName: '' });
+
+const store = useStore();
+const isLoggedIn = computed(() => store.getters.isLoggedIn);
+const user = computed(() => store.getters.user);
+
 
 onMounted(() => {
-    checkLoginStatus();
+    if (!isLoggedIn.value) {
+        store.dispatch('fetchUser');
+    }
 });
 
-const checkLoginStatus = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    isLoggedIn.value = !!accessToken;
-
-    if (isLoggedIn.value) {
-        try {
-            const response = await axios.get("http://localhost:8181/api/v1/users/me", {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            });
-            user.value = response.data.result;
-        } catch (error) {
-            console.error( error);
-        }
-    }
-};
 
 const handleLogout = async () => {
     try {
@@ -82,12 +71,13 @@ const handleLogout = async () => {
                 autoClose: 1200
             });
         });
+        store.commit('setLoggedIn', false);
+        store.commit('setUser', null);
         await axios.get("http://localhost:8181/api/v1/auth/logout", {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
         });
-        isLoggedIn.value = false;
     } catch (err) {
         console.log(err);
     }
