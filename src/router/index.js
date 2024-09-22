@@ -14,6 +14,7 @@ import Teacher from '@/components/Teacher/Teacher.vue'
 import StudentCalendar from '@/components/student/StudentCalendar.vue'
 // import { component } from 'vue/types/umd'
 import CoursePage from '@/views/CoursePage.vue'
+import Login from '@/components/login/Login.vue'
 
 const routes = [
   {
@@ -65,10 +66,10 @@ const routes = [
     props: true
   },
   {
-    path:"/coursePage",
+    path: "/coursePage",
     name: "coursePage",
     component: CoursePage,
-    props:true
+    props: true
   },
   {
     path: "/:catchAll(.*)",
@@ -80,6 +81,11 @@ const routes = [
     name: 'assignment',
     component: Assignment,
     props: true
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login,
   }
 ]
 
