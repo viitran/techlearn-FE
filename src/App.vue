@@ -1,9 +1,9 @@
 <template>
   <div class="wrapper">
     <div class="d-flex">
-      <Sidebar />
+      <Sidebar v-if="!isLoginPage" />
       <div class="flex-grow-1">
-        <Header />
+        <Header v-if="!isLoginPage"/>
         <div class="content p-4">
           <RouterView />
         </div>
@@ -18,9 +18,9 @@ import Header from './components/Header/Header.vue';
 import Sidebar from './components/Navbar/Navbar.vue';
 import Footer from './components/Footer/Footer.vue';
 
-import { RouterView } from 'vue-router';
+import { RouterView, useRoute, useRouter } from 'vue-router';
 import { ref, provide ,computed} from 'vue';
-
+import { onMounted } from 'vue';
 const isSidebarCollapsed = ref(false);
 
 const toggleSidebar = () => {
@@ -29,11 +29,10 @@ const toggleSidebar = () => {
 
 provide('isSidebarCollapsed', isSidebarCollapsed);
 provide('toggleSidebar', toggleSidebar);
+const router = useRouter();
+const route = useRoute()
 
 const isLoginPage = computed(()=> route.path === "/login" );
-
-
-
 const isLogin = localStorage.getItem("accessToken");
 const isSuppoter = localStorage.getItem("isSuppoter");
 onMounted(()=>{

@@ -126,7 +126,6 @@ const onSubmit = handleSubmit(async (values) => {
       localStorage.setItem("refreshToken", refreshToken);
 
       router.push("/").then(() => {
-
         toast.success("Đăng nhập thành công!", {
           autoClose: 1200
 

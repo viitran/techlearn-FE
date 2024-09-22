@@ -14,12 +14,18 @@ import Teacher from '@/components/Teacher/Teacher.vue'
 import StudentCalendar from '@/components/student/StudentCalendar.vue'
 // import { component } from 'vue/types/umd'
 import CoursePage from '@/views/CoursePage.vue'
+import Login from '@/components/login/Login.vue'
 
 const routes = [
   {
     path: '/',
     name: 'StudentList',
     component: Students
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: Login
   },
   {
     path: '/student/:id',
