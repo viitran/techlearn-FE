@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
-    <div class="d-flex">
-      <Sidebar v-if="!isLoginPage" />
+    <div class="d-flex" v-if="!isLoginPage">
+      <Sidebar />
       <div class="flex-grow-1">
         <Header v-if="!isLoginPage"/>
         <div class="content p-4">
@@ -9,6 +9,9 @@
         </div>
         <!-- <Footer /> -->
       </div>
+    </div>
+    <div v-else>
+      <RouterView />
     </div>
   </div>
 </template>
@@ -18,9 +21,10 @@ import Header from './components/Header/Header.vue';
 import Sidebar from './components/Navbar/Navbar.vue';
 import Footer from './components/Footer/Footer.vue';
 
-import { RouterView, useRoute, useRouter } from 'vue-router';
-import { ref, provide ,computed} from 'vue';
-import { onMounted } from 'vue';
+import { RouterView, useRoute, useRouter, useRoute } from 'vue-router';
+import { ref, provide, computed, onMounted } from 'vue';
+import { onMounted } from 'vue';import router from './router';
+
 const isSidebarCollapsed = ref(false);
 
 const toggleSidebar = () => {
@@ -33,17 +37,19 @@ const router = useRouter();
 const route = useRoute()
 
 const isLoginPage = computed(()=> route.path === "/login" );
+
+
+
 const isLogin = localStorage.getItem("accessToken");
 const isSuppoter = localStorage.getItem("isSuppoter");
-onMounted(()=>{
-  if(isLogin === null) {
-    router.push("/login") ;
+onMounted(() => {
+  if (isLogin === null) {
+    router.push("/login");
   }
-  if(!isSuppoter && window.location.href.includes("/teacher")) {
+  if (!isSuppoter && window.location.href.includes("/teacher")) {
     router.push("/404")
   }
-})
-
+});
 </script>
 
 <style scoped>

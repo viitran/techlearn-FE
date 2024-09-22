@@ -95,6 +95,9 @@ import { useField, useForm } from 'vee-validate';
 import { toast } from 'vue3-toastify';
 import * as yup from 'yup';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+
+const store = useStore();
 
 const rootApi = process.env.VUE_APP_ROOT_API;
 const router = useRouter();
@@ -106,9 +109,7 @@ const { handleSubmit, resetForm } = useForm({
       .matches(/^[a-zA-Z]+[0-9]*@gmail\.com$/, "* Email không đúng định dạng"),
     password: yup
       .string()
-
       .required('* Hãy nhập mật khẩu')
-
   }),
 })
 
@@ -125,10 +126,12 @@ const onSubmit = handleSubmit(async (values) => {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
+      store.commit('setLoggedIn', true);
+      await store.dispatch('fetchUser');
+
       router.push("/").then(() => {
         toast.success("Đăng nhập thành công!", {
           autoClose: 1200
-
         })
       })
     }
