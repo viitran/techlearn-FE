@@ -145,7 +145,7 @@ const onSubmit = handleSubmit(async (values) => {
 <style scoped>
 .section-container {
   background-color: #f8f9fa;
-  height: 94vh;
+  height: 100vh;
 }
 
 .container {

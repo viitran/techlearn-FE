@@ -2,12 +2,12 @@
     <div class="row d-md-flex justify-content-between nav-student">
         <div class="col col-md-3 d-md-flex justify-content-start align-items-center">
             <div class="img-avatar">
-                <img class="rounded-circle" :src="user.avatar" alt="my-avatar">
+                <img class="rounded-circle" :src="user?.avatar" alt="my-avatar">
             </div>
             <div class="ms-2 d-flex flex-column align-items-center m-0">
-                <div class="font-weight-bold name-color">{{ user.name }}</div>
+                <div class="font-weight-bold name-color">{{ user?.name }}</div>
                 <div class="info-student">Học viên</div>
-                <div class="info-student">{{ user.email }}</div>
+                <div class="info-student">{{ user?.email }}</div>
             </div>
         </div>
         <div v-if="stateButtonFormStudent === true" class="col col-md-9 d-flex align-items-center p-0">

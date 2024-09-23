@@ -61,8 +61,7 @@
       <div class="loader"></div>
     </div>
   </div>
-  <loading :active="isLoading"
-  :is-full-page="true"/>
+  <loading :active="isLoading" :is-full-page="true" />
 </template>
 
 <script setup>
@@ -97,6 +96,11 @@ const props = defineProps({
   id: {
     type: String,
     required: false
+  },
+  scheduleType: {
+    type: String,
+    required: true,
+    validator: (value) => ['busy', 'free'].includes(value)
   }
 });
 
@@ -133,18 +137,6 @@ const dropListFields = {
   value: "Id"
 }
 
-const getUserInfo = async () => {
-        try {
-            const response = await axios.get("http://localhost:8181/api/v1/users/me", {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            });
-            userInfor.value = response.data.result;
-        } catch (error) {
-            console.error( error);
-        }
-};
 const getOwnerDataSource = async () => {
 
   const res = await axios.get("http://localhost:8181/api/v1/teachers/", {
@@ -211,7 +203,7 @@ const formatDate = (dateStr) => {
 };
 
 const onActionBegin = async (args) => {
-  if (args.requestType === 'eventCreate' && isSuppoter) {
+  if (args.requestType === 'eventCreate') {
     try {
       const eventData = args.data[0];
       const formattedEventData = {
@@ -220,16 +212,11 @@ const onActionBegin = async (args) => {
         EndTime: formatDate(eventData.EndTime),
         StartTimezone: 'Asia/Bangkok',
         EndTimezone: 'Asia/Bangkok',
+        status: props.scheduleType === 'busy' ? "BUSY" : "FREE" 
       };
 
-
       if (props.url.includes('teacher')) {
-        const data = {
-          ...formattedEventData,
-          status: "BUSY"
-        };
-
-        await axios.post(`${props.url}`, data, {
+        await axios.post(`${props.url}`,formattedEventData, {
           headers: {
             'Authorization': `Bearer ${accessToken}`
           }
@@ -275,13 +262,13 @@ const onActionBegin = async (args) => {
           ChapterId: "1",
           status: "BOOKED"
         };
-        isLoading.value=true;
-          setTimeout(() => {
-              isLoading.value= false
-          }, 5000)
-        await axios.put(`${props.url}/student-calendar/${formattedEventData.Id}`, formattedEventData,{
-          headers:{
-             'Authorization': `Bearer ${accessToken}`
+        isLoading.value = true;
+        setTimeout(() => {
+          isLoading.value = false
+        }, 5000)
+        await axios.put(`${props.url}/student-calendar/${formattedEventData.Id}`, formattedEventData, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
           }
         });
         toast.success('Đặt lịch thành công!Vui lòng kiểm tra gmail để xem chi tiết');
