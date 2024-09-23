@@ -52,7 +52,7 @@ onMounted(() => {
 <style scoped>
 .wrapper {
   min-height: 100vh;
-  display: flex;
+  /* display: flex; */
   flex-direction: row;
 }
 

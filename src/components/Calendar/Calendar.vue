@@ -2,8 +2,8 @@
   <div class="relative">
 
     <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate" :eventSettings="eventSettings"
-      :actionBegin="onActionBegin" class="calendar" :editorTemplate="'editorTemplate'" :eventRendered="onEventRendered" :startHour="startHour"
-      :endHour="endHour">
+      :actionBegin="onActionBegin" class="calendar" :editorTemplate="'editorTemplate'" :eventRendered="onEventRendered" :popupOpen="popupOpen"
+      :startHour="startHour" :endHour="endHour">
       <template v-slot:editorTemplate>
         <table class="custom-event-editor" width="100%" cellpadding="5">
           <tbody>
@@ -61,8 +61,7 @@
       <div class="loader"></div>
     </div>
   </div>
-  <loading :active="isLoading"
-  :is-full-page="true"/>
+  <loading :active="isLoading" :is-full-page="true" />
 </template>
 
 <script setup>
@@ -110,7 +109,6 @@ provide("schedule", [Day, Week, WorkWeek, Month, Agenda, DragAndDrop]);
 const accessToken = localStorage.getItem("accessToken");
 
 const remoteData = new DataManager({
-
   url: `${props.url}`,
   adaptor: new WebApiAdaptor,
   crossDomain: true,
@@ -133,18 +131,6 @@ const dropListFields = {
   value: "Id"
 }
 
-const getUserInfo = async () => {
-        try {
-            const response = await axios.get("http://localhost:8181/api/v1/users/me", {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`
-                }
-            });
-            userInfor.value = response.data.result;
-        } catch (error) {
-            console.error( error);
-        }
-};
 const getOwnerDataSource = async () => {
 
   const res = await axios.get("http://localhost:8181/api/v1/teachers/", {
@@ -211,7 +197,7 @@ const formatDate = (dateStr) => {
 };
 
 const onActionBegin = async (args) => {
-  if (args.requestType === 'eventCreate' && isSuppoter) {
+  if (args.requestType === 'eventCreate') {
     try {
       const eventData = args.data[0];
       const formattedEventData = {
@@ -222,14 +208,11 @@ const onActionBegin = async (args) => {
         EndTimezone: 'Asia/Bangkok',
       };
 
-
       if (props.url.includes('teacher')) {
-        const data = {
+        await axios.post(`${props.url}`, {
           ...formattedEventData,
           status: "BUSY"
-        };
-
-        await axios.post(`${props.url}`, data, {
+        }, {
           headers: {
             'Authorization': `Bearer ${accessToken}`
           }
@@ -275,13 +258,13 @@ const onActionBegin = async (args) => {
           ChapterId: "1",
           status: "BOOKED"
         };
-        isLoading.value=true;
-          setTimeout(() => {
-              isLoading.value= false
-          }, 5000)
-        await axios.put(`${props.url}/student-calendar/${formattedEventData.Id}`, formattedEventData,{
-          headers:{
-             'Authorization': `Bearer ${accessToken}`
+        isLoading.value = true;
+        setTimeout(() => {
+          isLoading.value = false
+        }, 5000)
+        await axios.put(`${props.url}/student-calendar/${formattedEventData.Id}`, formattedEventData, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
           }
         });
         toast.success('Đặt lịch thành công!Vui lòng kiểm tra gmail để xem chi tiết');
@@ -328,6 +311,31 @@ watch(() => props.id, (newId) => {
     };
   }
 });
+
+watch(() => props.url, (newUrl) => {
+  eventSettings.value = {
+    dataSource: new DataManager({
+      url: newUrl,
+      adaptor: new WebApiAdaptor(),
+      crossDomain: true,
+      headers: [{
+        Authorization: `Bearer ${accessToken}`
+      }]
+    })
+  };
+});
+
+const popupOpen = function (args) {
+  if (args.type === 'QuickInfo' || args.type === 'Editor') {
+    if (props.url.includes('teacher')) {
+      var scheduleObj = this;
+      var isBlocked = scheduleObj.getEvents(args.data.StartTime, args.data.EndTime).length > 0;
+      if (isBlocked) {
+        args.cancel = true;
+      }
+    }
+  }
+}
 
 </script>
 
