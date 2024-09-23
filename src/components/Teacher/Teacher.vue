@@ -3,10 +3,10 @@
     <div class="teacher-tab">
         <b-tabs content-class="mt-3">
             <b-tab title="Lịch bận" active>
-                <Calendar v-if="url" :url="url" :key="url" />
+                <Calendar v-if="url" :url="url" :key="url" calendarType="mine" />
             </b-tab>
             <b-tab title="Lịch rảnh">
-                <Calendar v-if="url" :url="url" :key="url" />
+                <Calendar v-if="url" :url="url" :key="url" calendarType="mine" />
             </b-tab>
         </b-tabs>
     </div>

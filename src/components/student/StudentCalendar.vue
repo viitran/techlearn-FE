@@ -28,9 +28,9 @@
                                 <div class="row g-3 align-items-end">
                                     <div class="col-md-4">
                                         <label class="form-label" for="course">Khóa học</label>
-                                        <select class="form-select" id="course" v-model="course" @change="onCourseChange">
-                                            <option value="" disabled selected>Chọn Khóa học</option>
-                                            <option v-for="course in courses" :key="course.id" :value="course.name">
+                                        <select class="form-select" name="course" v-model="course" @change="onCourseChange">
+                                            <option :value="null" disabled selected hidden>Chọn Khóa học</option>
+                                            <option class="modify-option" v-for="course in listCourse" :key="course.id" :value="course">
                                                 {{ course.name }}
                                             </option>
                                         </select>
@@ -39,8 +39,8 @@
                                     <div class="col-md-3">
                                         <label class="form-label" for="chapter">Chương</label>
                                         <select class="form-select" id="chapter" v-model="chapter" @change="onChuongChange">
-                                            <option value="" disabled selected>Chọn chương</option>
-                                            <option v-if="chapters" v-for="chapter in chapters" :key="chapter.id" :value="chapter.name">
+                                            <option :value="null" disabled selected hidden>Chọn chương</option>
+                                            <option class="modify-option" v-for="chapter in listChapters" :key="chapter.id" :value="chapter">
                                                 {{ chapter.name }}
                                             </option>
                                         </select>
@@ -50,7 +50,7 @@
                                         <label class="form-label" for="teacher">Mentor</label>
                                         <select class="form-select" id="teacher" v-model="teacher">
                                             <option :value="null" disabled selected>Chọn giảng viên</option>
-                                            <option v-for="teacher in allTeachers" :key="teacher.Id" :value="teacher">
+                                            <option class="modify-option" v-for="teacher in teachers" :key="teacher.Id" :value="teacher">
                                                 {{ teacher.OwnerText }}
                                             </option>
                                         </select>
@@ -71,7 +71,8 @@
                             <h5 class="card-title mb-4">
                                 {{ !stateButtonFormStudent ? 'Lịch học' : 'Lịch giảng viên / Người hướng dẫn' }}
                             </h5>
-                            <Calendar :url="stateButtonFormStudent ? url : urlCalendarOfStudent" :id="idGV" />
+                            <Calendar :url="stateButtonFormStudent ? url : urlCalendarOfStudent"
+                                :calendarType="stateButtonFormStudent ? 'other' : 'mine'" />
                         </div>
                     </div>
                 </div>
@@ -92,32 +93,37 @@ import { useStore } from 'vuex';
 const rootApi = process.env.VUE_APP_ROOT_API;
 const store = useStore();
 
-const courses = ref([]);
-const chapters = ref([]);
 const stateButtonFormStudent = ref(false);
 const accessToken = localStorage.getItem("accessToken");
 
 const { handleSubmit, resetForm } = useForm({
     initialValues: {
-        course: "",
-        chapter: "",
+        course: null,
+        chapter: null,
         teacher: null,
     },
     validationSchema: yup.object({
-        course: yup.string().required('Vui lòng chọn khóa học'),
-        chapter: yup.string().required('Vui lòng chọn chương'),
-        teacher: yup.object().nullable().required('Vui lòng chọn giảng viên')
+        course: yup
+            .object().nullable()
+            .required('*bắt buộc'),
+        chapter: yup
+            .object().nullable()
+            .required('*bắt buộc'),
+        teacher: yup
+            .object().nullable()
+            .required('*bắt buộc')
     }),
 });
 
 const { value: course, errorMessage: courseError } = useField('course');
 const { value: chapter, errorMessage: chapterError } = useField('chapter');
 const { value: teacher, errorMessage: teacherError } = useField('teacher');
-
-const allTeachers = ref([]);
 const url = ref("");
 const urlCalendarOfStudent = ref("");
+const teachers = ref([]);
 const idGV = ref();
+const listCourse = ref([]);
+const listChapters = ref([]);
 const user = computed(() => store.getters.user);
 
 const toggleCalendarForm = () => {
@@ -133,12 +139,32 @@ const getAllCalendars = () => {
     urlCalendarOfStudent.value = `${rootApi}/student/${user.value.id}/calendar`;
 };
 
-const getAllTeacher = async () => {
+const onCourseChange = async () => {
+    await getChapters();
+    await getTeachers();
+}
+
+const getChapters = async () => {
     try {
-        const res = await axios.get(`${rootApi}/teachers/`, {
-            headers: { 'Authorization': `Bearer ${accessToken}` }
+        const res = await axios.get(`${rootApi}/chapters?idCourse=${course._value.id}`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
         });
-        allTeachers.value = res.data;
+        listChapters.value = res.data.result.listChapter;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const getTeachers = async () => {
+    try {
+        const res = await axios.get(`${rootApi}/teachers/course/${course.value.id}`, {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+        teachers.value = res.data.result;
     } catch (error) {
         console.error("Error fetching teachers:", error);
         toast.error("Không thể lấy danh sách giảng viên");
@@ -146,25 +172,28 @@ const getAllTeacher = async () => {
 };
 
 const searchCalendar = handleSubmit(async (formData) => {
+
     try {
         const { course, chapter, teacher } = formData;
-        const res = await axios.get(`${rootApi}/teacher-calendar/find-calendars`, {
-            params: {
-                teacherName: teacher?.OwnerText,
-                technicalTeacherName: course,
-                chapterName: chapter
-            },
-            headers: { 'Authorization': `Bearer ${accessToken}` }
-        });
 
+        const teacherName = teacher ? teacher.OwnerText : null;
+        const technicalTeacherName = course;
+        const chapterName = chapter;
+
+        let res = await axios.get(`${rootApi}/teacher/find-calendars`, {
+            params: {
+                teacherName, technicalTeacherName, chapterName
+            },
+
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
         if (res.status === 200) {
             resetForm();
-            idGV.value = res.data.result;
-            getAllTeacher();
-            toast.success("Tìm kiếm lịch thành công");
+            getTeachers();
         }
     } catch (error) {
-        console.error("Error searching calendar:", error);
         toast.error("Không có khung giờ giảng viên trong ngày hôm nay!");
     }
 });
@@ -177,7 +206,7 @@ const fetchCoursesByUser = async () => {
         });
 
         if (res.status === 200) {
-            courses.value = res.data.result.items;
+            listCourse.value = res.data.result.items;
         } else {
             console.error("Error fetching courses");
             toast.error("Không thể lấy danh sách khóa học");
@@ -196,7 +225,7 @@ const fetchChaptersByCourseId = async (courseId) => {
         });
 
         if (res.status === 200) {
-            chapters.value = res.data.result.listChapter;
+            listChapters.value = res.data.result.listChapter;
         } else {
             console.error("Error fetching chapters");
             toast.error("Không thể lấy danh sách chương");
@@ -209,7 +238,7 @@ const fetchChaptersByCourseId = async (courseId) => {
 
 watch(course, (newCourse) => {
     if (newCourse) {
-        const selectedCourse = courses.value.find(c => c.name === newCourse);
+        const selectedCourse = listCourse.value.find(c => c.name === newCourse);
         if (selectedCourse) {
             fetchChaptersByCourseId(selectedCourse.id);
         }
@@ -233,6 +262,7 @@ onMounted(() => {
         }
     }, { immediate: true });
 });
+
 </script>
 
 <style scoped>
