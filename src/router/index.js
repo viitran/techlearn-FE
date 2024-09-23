@@ -23,6 +23,11 @@ const routes = [
     component: Students
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
     path: '/student/:id',
     name: 'StudentDetail',
     component: StudentUpdate,

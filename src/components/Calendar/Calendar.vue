@@ -97,11 +97,11 @@ const props = defineProps({
     type: String,
     required: false
   },
-  scheduleType: {
-    type: String,
-    required: true,
-    validator: (value) => ['busy', 'free'].includes(value)
-  }
+  //scheduleType: {
+    //type: String,
+    //required: true,
+   // validator: (value) => ['busy', 'free'].includes(value)
+ // }
 });
 
 const isLoading = ref(false);
@@ -212,11 +212,14 @@ const onActionBegin = async (args) => {
         EndTime: formatDate(eventData.EndTime),
         StartTimezone: 'Asia/Bangkok',
         EndTimezone: 'Asia/Bangkok',
-        status: props.scheduleType === 'busy' ? "BUSY" : "FREE" 
+        // status: props.scheduleType === 'busy' ? "BUSY" : "FREE" 
       };
 
       if (props.url.includes('teacher')) {
-        await axios.post(`${props.url}`,formattedEventData, {
+        await axios.post(`${props.url}`, {
+          ...formattedEventData,
+          status: "BUSY"
+        }, {
           headers: {
             'Authorization': `Bearer ${accessToken}`
           }
