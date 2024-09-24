@@ -5,10 +5,8 @@
                 <div class="col-md-3 mb-4">
                     <div class="card student-info">
                         <div class="card-body d-flex flex-column align-items-center">
-                            <img class="rounded-circle mb-3"
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuRDPL-ilJiALdTZrZuxx2V50RIvKMz34CBA&s"
-                                alt="Student avatar" width="100" height="100">
-                            <h5 class="card-title mb-1">{{ user?.name }}</h5>
+                            <img class="rounded-circle mb-3" :src="user?.avatar" alt="Student avatar" width="100" height="100">
+                            <h5 class="card-title mb-1">{{ user?.fullName }}</h5>
                             <p class="card-text text-muted mb-2">Học viên</p>
                             <p class="card-text text-muted small mb-3">{{ user?.email }}</p>
                             <button @click="toggleCalendarForm" :class="['btn', 'w-100', stateButtonFormStudent ? 'btn-danger' : 'btn-primary']">
@@ -72,7 +70,7 @@
                                 {{ !stateButtonFormStudent ? 'Lịch học' : 'Lịch giảng viên / Người hướng dẫn' }}
                             </h5>
                             <Calendar :url="stateButtonFormStudent ? url : urlCalendarOfStudent"
-                                :calendarType="stateButtonFormStudent ? 'other' : 'mine'" />
+                                :calendarType="stateButtonFormStudent ? 'other' : 'mine'" :ownerId="stateButtonFormStudent ? ownerId : ''" />
                         </div>
                     </div>
                 </div>
@@ -121,18 +119,13 @@ const { value: teacher, errorMessage: teacherError } = useField('teacher');
 const url = ref("");
 const urlCalendarOfStudent = ref("");
 const teachers = ref([]);
-const idGV = ref();
+const ownerId = ref();
 const listCourse = ref([]);
 const listChapters = ref([]);
 const user = computed(() => store.getters.user);
 
 const toggleCalendarForm = () => {
     stateButtonFormStudent.value = !stateButtonFormStudent.value;
-
-    if (stateButtonFormStudent.value) {
-        // tạm thời để test, sau sẽ thay thế bằng lấy lịch của giảng viên và lọc
-        url.value = `${rootApi}/teacher/5bb75f1d-7956-11ef-8bc5-005056c00001/calendar`;
-    }
 };
 
 const getAllCalendars = () => {
@@ -176,23 +169,8 @@ const searchCalendar = handleSubmit(async (formData) => {
     try {
         const { course, chapter, teacher } = formData;
 
-        const teacherName = teacher ? teacher.OwnerText : null;
-        const technicalTeacherName = course;
-        const chapterName = chapter;
-
-        let res = await axios.get(`${rootApi}/teacher/find-calendars`, {
-            params: {
-                teacherName, technicalTeacherName, chapterName
-            },
-
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
-        if (res.status === 200) {
-            resetForm();
-            getTeachers();
-        }
+        url.value = `${rootApi}/teacher/${teacher.Id}/calendar`;
+        ownerId.value = teacher.Id;
     } catch (error) {
         toast.error("Không có khung giờ giảng viên trong ngày hôm nay!");
     }
@@ -274,20 +252,31 @@ onMounted(() => {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.btn-primary {
-    background-color: #31D2F2;
-    border-color: #31D2F2;
-}
-
-.btn-primary:hover {
-    background-color: #28b8d8;
-    border-color: #28b8d8;
-}
-
 .form-select:focus,
 .form-control:focus {
     border-color: #31D2F2;
     box-shadow: 0 0 0 0.2rem rgba(49, 210, 242, 0.25);
+}
+
+.calendar-search-form .row {
+    position: relative;
+}
+
+.calendar-search-form .text-danger {
+    position: absolute;
+    top: 100%;
+    left: 0;
+}
+
+.calendar-search-form .col-md-4,
+.calendar-search-form .col-md-3,
+.calendar-search-form .col-md-2 {
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar-search-form .col-md-2 {
+    justify-content: flex-end;
 }
 
 @media (max-width: 767.98px) {
