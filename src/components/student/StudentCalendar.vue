@@ -6,7 +6,7 @@
                     <div class="card student-info">
                         <div class="card-body d-flex flex-column align-items-center">
                             <img class="rounded-circle mb-3"
-                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuRDPL-ilJiALdTZrZuxx2V50RIvKMz34CBA&s"
+                                :src="user?.avatar"
                                 alt="Student avatar" width="100" height="100">
                             <h5 class="card-title mb-1">{{ user?.name }}</h5>
                             <p class="card-text text-muted mb-2">Học viên</p>
@@ -131,7 +131,7 @@ const toggleCalendarForm = () => {
 
     if (stateButtonFormStudent.value) {
         // tạm thời để test, sau sẽ thay thế bằng lấy lịch của giảng viên và lọc
-        url.value = `${rootApi}/teacher/5bb75f1d-7956-11ef-8bc5-005056c00001/calendar`;
+        url.value = `${rootApi}/teacher/1d77214a-7a10-11ef-93c4-047c16ae2b88/calendar`;
     }
 };
 
@@ -295,4 +295,25 @@ onMounted(() => {
         margin-bottom: 2rem;
     }
 }
+.calendar-search-form .row {
+  position: relative;
+}
+
+.calendar-search-form .text-danger {
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+
+.calendar-search-form .col-md-4, 
+.calendar-search-form .col-md-3, 
+.calendar-search-form .col-md-2 {
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-search-form .col-md-2 {
+  justify-content: flex-end;
+}
+
 </style>

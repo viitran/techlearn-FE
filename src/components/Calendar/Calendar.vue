@@ -216,7 +216,6 @@ const onActionBegin = async (args) => {
         EndTime: formatDate(eventData.EndTime),
         StartTimezone: 'Asia/Bangkok',
         EndTimezone: 'Asia/Bangkok',
-        // status: props.scheduleType === 'busy' ? "BUSY" : "FREE" 
       };
 
       if (window.location.href.includes('student')) {
@@ -225,7 +224,7 @@ const onActionBegin = async (args) => {
             ...formattedEventData,
             UserId: user.value.id,
             status: "BOOKED",
-            OwnerId: '5bb75f1d-7956-11ef-8bc5-005056c00001' // để tạm, sẽ được lấy theo id teacher được chọn
+            OwnerId: '1d77214a-7a10-11ef-93c4-047c16ae2b88' // để tạm, sẽ được lấy theo id teacher được chọn
           },
           {
             headers: {
@@ -234,7 +233,9 @@ const onActionBegin = async (args) => {
           }
         );
 
-        toast.success('Đặt lịch thành công! Vui lòng kiểm tra gmail để xem chi tiết');
+        toast.success('Đặt lịch thành công! Vui lòng kiểm tra gmail để xem chi tiết',{
+          autoClose: 1200
+        });
 
         return;
       }
@@ -248,10 +249,14 @@ const onActionBegin = async (args) => {
           }
         });
 
-        toast.success('Cập nhật lịch thành công!');
+        toast.success('Cập nhật lịch thành công!',{
+          autoClose: 1200
+        });
       }
     } catch (error) {
-      toast.error('Cập nhật lịch thất bại!');
+      toast.error('Cập nhật lịch thất bại!',{
+          autoClose: 1200
+        });
     }
   } else if (args.requestType === 'eventRemove') {
     try {
@@ -261,10 +266,14 @@ const onActionBegin = async (args) => {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      toast.success('Xóa lịch thành công!');
+      toast.success('Xóa lịch thành công!',{
+          autoClose: 1200
+        });
     } catch (error) {
       console.error('Error deleting event:', error);
-      toast.error('Không thể xóa sự kiện!');
+      toast.error('Không thể xóa sự kiện!',{
+          autoClose: 1200
+        });
     }
   } else if (args.requestType === 'eventChange') {
     try {
@@ -278,9 +287,13 @@ const onActionBegin = async (args) => {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      toast.success('Xóa lịch thành công!');
+      toast.success('Xóa lịch thành công!',{
+          autoClose: 1200
+        });
     } catch (error) {
-      toast.error('Xóa lịch thất bại!');
+      toast.error('Xóa lịch thất bại!',{
+          autoClose: 1200
+        });
     } finally {
       isLoading.value = false;
     }
@@ -329,7 +342,9 @@ watch(() => props.url, (newUrl) => {
 
 const popupOpen = function (args) {
   const isOtherType = props.calendarType === 'other';
+  const isOtherTypeAndTeacher = props.calendarType === 'other' && props.url.includes('teacher');
   const isMineTypeAndStudent = props.calendarType === 'mine' && window.location.href.includes('student');
+  const isMineAndTeacher = props.calendarType === 'mine' && props.url.includes('teacher');
   const isStudentBooking = window.location.href.includes('student') && props.calendarType === 'other';
 
   if (args.type === 'QuickInfo') {
@@ -341,16 +356,32 @@ const popupOpen = function (args) {
       if (!hasEvents) {
         args.cancel = true;
       }
+    } else if (isMineAndTeacher) {
+      args.cancel = false;
+    } else if (isOtherTypeAndTeacher) {
+      const scheduleObj = this;
+      const hasEvents = scheduleObj.getEvents(args.data.StartTime, args.data.EndTime).length > 0;
+      if (hasEvents) {
+        args.cancel = false;
+      } else {
+        args.cancel = true;
+      }
     }
   } else if (args.type === 'Editor') {
     if (isStudentBooking) {
-      args.cancel = false;
-    } else {
+      const scheduleObj = this;
+      const hasEvents = scheduleObj.getEvents(args.data.StartTime, args.data.EndTime).length > 0;
+
+      if (hasEvents) {
+        args.cancel = true;
+      } else {
+        args.cancel = false;
+      }
+    } else if (isMineTypeAndStudent) {
       args.cancel = true;
     }
   }
 }
-
 </script>
 
 <style scoped>
