@@ -13,14 +13,13 @@
                 <input id="Subject" class="e-field e-input" type="text" value="" name="Subject" style="width: 100%" />
               </td>
             </tr>
-            <!-- <tr>
+            <tr v-if="isStudentBooking">
               <td class="e-textlabel">Giảng viên</td>
               <td colspan="4">
-                <ejsDropdownlist id='OwnerId' name="OwnerId" class="e-field" placeholder='Choose status'
-                  :dataSource='ownerDataSource' :fields="dropListFields">
-                </ejsDropdownlist>
+                <ejs-dropdownlist id="dropdown" :value="props.ownerId" :dataSource="ownerDataSource" :fields="dropListFields"
+                  placeholder="Select an owner" @change="onOwnerChange"></ejs-dropdownlist>
               </td>
-            </tr> -->
+            </tr>
             <tr>
               <td class="e-textlabel">Giờ bắt đầu</td>
               <td colspan="4">
@@ -88,8 +87,6 @@ import 'vue-loading-overlay/dist/css/index.css';
 import { useStore } from "vuex";
 import { computed } from "vue";
 
-axios.defaults.batch = false;
-
 const rootApi = process.env.VUE_APP_ROOT_API;
 
 const props = defineProps({
@@ -97,7 +94,7 @@ const props = defineProps({
     type: String,
     required: true
   },
-  id: {
+  ownerId: {
     type: String,
     required: false
   },
@@ -108,8 +105,8 @@ const props = defineProps({
 });
 
 const isLoading = ref(false);
-const isStudentBooking = ref(false);
-const isSuppoter = localStorage.getItem("isSuppoter");
+const selectedOwnerId = ref(null);
+
 setCulture('vi');
 L10n.load(viLocale)
 loadCldr(frNumberData, frtimeZoneData, frGregorian, frNumberingSystem);
@@ -124,6 +121,7 @@ const remoteData = new DataManager({
     Authorization: `Bearer ${accessToken}`
   }]
 });
+
 const scheduleObj = ref(null);
 const selectedDate = new Date();
 const ownerDataSource = ref([]);
@@ -133,6 +131,7 @@ const eventSettings = ref({
 
 const store = useStore();
 const user = computed(() => store.getters.user);
+const isStudentBooking = ref(false);
 
 const startHour = "08:00";
 const endHour = "21:00";
@@ -152,6 +151,10 @@ const getOwnerDataSource = async () => {
   });
   ownerDataSource.value = res.data;
 }
+
+const onOwnerChange = (event) => {
+  selectedOwnerId.value = event.value;
+};
 
 const getEvent = async () => {
   try {
@@ -218,24 +221,26 @@ const onActionBegin = async (args) => {
         EndTimezone: 'Asia/Bangkok',
       };
 
-      if (window.location.href.includes('student')) {
-        await axios.post(`${rootApi}/student/${user.value.id}/calendar`,
-          {
-            ...formattedEventData,
-            UserId: user.value.id,
-            status: "BOOKED",
-            OwnerId: '1d77214a-7a10-11ef-93c4-047c16ae2b88' // để tạm, sẽ được lấy theo id teacher được chọn
-          },
-          {
-            headers: {
-              'Authorization': `Bearer ${accessToken}`
-            }
-          }
-        );
+      if (window.location.href.includes('student') && props.calendarType === 'other') {
+        isLoading.value = true;
+        isStudentBooking.value = true;
 
-        toast.success('Đặt lịch thành công! Vui lòng kiểm tra gmail để xem chi tiết',{
-          autoClose: 1200
+        await axios.post(`${rootApi}/student/${user.value.id}/calendar`, {
+          ...formattedEventData,
+          UserId: user.value.id,
+          status: "BOOKED",
+          OwnerId: props.ownerId
+        }, {
+          headers: {
+            'Authorization': `Bearer ${accessToken}`
+          }
         });
+
+        toast.success('Đặt lịch thành công! Vui lòng kiểm tra gmail để xem chi tiết');
+
+        await nextTick();
+        isLoading.value = false;
+        isStudentBooking.value = false;
 
         return;
       }
@@ -249,31 +254,27 @@ const onActionBegin = async (args) => {
           }
         });
 
-        toast.success('Cập nhật lịch thành công!',{
-          autoClose: 1200
-        });
+        toast.success('Cập nhật lịch thành công!');
+
+        return;
       }
     } catch (error) {
-      toast.error('Cập nhật lịch thất bại!',{
-          autoClose: 1200
-        });
+      toast.error('Cập nhật lịch thất bại!');
+      console.log(error);
+      isStudentBooking.value = false;
+      isLoading.value = false;
     }
   } else if (args.requestType === 'eventRemove') {
     try {
-
       await axios.delete(`${props.url}/${args.data[0].Id}`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      toast.success('Xóa lịch thành công!',{
-          autoClose: 1200
-        });
+      toast.success('Xóa lịch thành công!');
     } catch (error) {
       console.error('Error deleting event:', error);
-      toast.error('Không thể xóa sự kiện!',{
-          autoClose: 1200
-        });
+      toast.error('Không thể xóa sự kiện!');
     }
   } else if (args.requestType === 'eventChange') {
     try {
@@ -287,15 +288,12 @@ const onActionBegin = async (args) => {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      toast.success('Xóa lịch thành công!',{
-          autoClose: 1200
-        });
+      toast.success('Cập nhật lịch thành công!');
     } catch (error) {
-      toast.error('Xóa lịch thất bại!',{
-          autoClose: 1200
-        });
+      toast.error('Cập nhật lịch thất bại!');
     } finally {
       isLoading.value = false;
+      isStudentBooking.value = false;
     }
   }
 
@@ -315,6 +313,10 @@ onMounted(() => {
 watch(() => props.url, (newUrl) => {
   if (newUrl) {
     getEvent();
+  }
+
+  if (window.location.href.includes('student') && props.calendarType === 'other') {
+    isStudentBooking.value = true;
   }
 });
 
@@ -382,6 +384,7 @@ const popupOpen = function (args) {
     }
   }
 }
+
 </script>
 
 <style scoped>
