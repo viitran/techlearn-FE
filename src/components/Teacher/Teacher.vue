@@ -1,14 +1,14 @@
 <template>
-    <div class="teacher-tab">
-        <b-tabs content-class="mt-3">
-            <b-tab title="Lịch bận" active>
-                <Calendar v-if="url" :url="url" :key="url" calendarType="mine" />
-            </b-tab>
-            <b-tab title="Lịch rảnh">
-                <Calendar v-if="url" :url="url" :key="url" calendarType="mine" />
-            </b-tab>
-        </b-tabs>
-    </div>
+  <div class="teacher-tab">
+    <b-tabs content-class="mt-3">
+      <b-tab title="Lịch bận" active>
+        <Calendar v-if="url" :url="url" :key="url" calendarType="mine" clickable="true" />
+      </b-tab>
+      <b-tab title="Lịch rảnh">
+        <Calendar v-if="url" :url="url" :key="url" calendarType="mine" clickable="true" />
+      </b-tab>
+    </b-tabs>
+  </div>
 
 </template>
 
@@ -24,25 +24,25 @@ const user = computed(() => store.getters.user);
 const url = ref('');
 
 const updateUrl = () => {
-    if (user.value) {
-        url.value = `${rootApi}/teacher/${user.value.id}/calendar`;
-    }
-  };
-  
-  onMounted(async () => {
-    await store.dispatch('fetchUser');
-    updateUrl();
-  });
-  
-  watch(user, updateUrl);
-  </script>
-  
-  <style>
-  .teacher-tab .nav-link {
-    color: black !important;
+  if (user.value) {
+    url.value = `${rootApi}/teacher/${user.value.id}/calendar`;
   }
-  
-  .teacher-tab .active {
-    color: #E3165B !important;
-  }
-  </style>
+};
+
+onMounted(async () => {
+  await store.dispatch('fetchUser');
+  updateUrl();
+});
+
+watch(user, updateUrl);
+</script>
+
+<style>
+.teacher-tab .nav-link {
+  color: black !important;
+}
+
+.teacher-tab .active {
+  color: #E3165B !important;
+}
+</style>

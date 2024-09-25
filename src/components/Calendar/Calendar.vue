@@ -101,6 +101,10 @@ const props = defineProps({
   calendarType: {
     type: String,
     required: true
+  },
+  clickable: {
+    type: Boolean,
+    default: false
   }
 });
 
@@ -133,8 +137,8 @@ const store = useStore();
 const user = computed(() => store.getters.user);
 const isStudentBooking = ref(false);
 
-const startHour = "08:00";
-const endHour = "21:00";
+const startHour = "00:00";
+const endHour = "23:59";
 
 const dropListFields = {
   text: "OwnerText",
@@ -236,9 +240,11 @@ const onActionBegin = async (args) => {
           }
         });
 
-        toast.success('Đặt lịch thành công! Vui lòng kiểm tra gmail để xem chi tiết',{
+        toast.success('Đặt lịch thành công! Vui lòng kiểm tra gmail để xem chi tiết', {
           autoClose: 1500
         });
+
+        store.dispatch('fetchSupportPoints', user.value.id);
 
         await nextTick();
         isLoading.value = false;
@@ -256,16 +262,16 @@ const onActionBegin = async (args) => {
           }
         });
 
-        toast.success('Tạo lịch thành công!',{
+        toast.success('Tạo lịch thành công!', {
           autoClose: 1200
         });
-        
+
         scheduleObj.value.refreshEvents();
-        
+
         return;
       }
     } catch (error) {
-      toast.error('Tạo lịch thất bại!',{
+      toast.error('Tạo lịch thất bại!', {
         autoClose: 1200
       });
       console.log(error);
@@ -274,19 +280,29 @@ const onActionBegin = async (args) => {
     }
   } else if (args.requestType === 'eventRemove') {
     try {
+      isLoading.value = true;
       await axios.delete(`${props.url}/${args.data[0].Id}`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      toast.success('Xóa lịch thành công!',{
+
+      toast.success('Xóa lịch thành công!', {
         autoClose: 1200
       });
+
+      if (window.location.href.includes('student') && props.calendarType === 'mine') {
+        store.dispatch('fetchSupportPoints', user.value.id);
+      }
+
+      isLoading.value = false;
     } catch (error) {
       console.error('Error deleting event:', error);
-      toast.error('Không thể xóa sự kiện!',{
+      toast.error('Không thể xóa sự kiện!', {
         autoClose: 1200
       });
+
+      isLoading.value = false;
     }
   } else if (args.requestType === 'eventChange') {
     try {
@@ -300,11 +316,11 @@ const onActionBegin = async (args) => {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      toast.success('Cập nhật lịch thành công!',{
+      toast.success('Cập nhật lịch thành công!', {
         autoClose: 1200
       });
     } catch (error) {
-      toast.error('Cập nhật lịch thất bại!',{
+      toast.error('Cập nhật lịch thất bại!', {
         autoClose: 1200
       });
     } finally {
@@ -359,6 +375,13 @@ watch(() => props.url, (newUrl) => {
 });
 
 const popupOpen = function (args) {
+
+  if (!props.clickable) {
+    args.cancel = true;
+
+    return;
+  }
+
   const isOtherType = props.calendarType === 'other';
   const isOtherTypeAndTeacher = props.calendarType === 'other' && props.url.includes('teacher');
   const isMineTypeAndStudent = props.calendarType === 'mine' && window.location.href.includes('student');
