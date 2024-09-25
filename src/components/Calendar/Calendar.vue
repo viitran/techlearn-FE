@@ -256,14 +256,16 @@ const onActionBegin = async (args) => {
           }
         });
 
-        toast.success('Cập nhật lịch thành công!',{
+        toast.success('Tạo lịch thành công!',{
           autoClose: 1200
         });
-
+        
+        scheduleObj.value.refreshEvents();
+        
         return;
       }
     } catch (error) {
-      toast.error('Cập nhật lịch thất bại!',{
+      toast.error('Tạo lịch thất bại!',{
         autoClose: 1200
       });
       console.log(error);
