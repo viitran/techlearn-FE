@@ -47,12 +47,11 @@
                                     <div class="col-md-3">
                                         <label class="form-label" for="teacher">Mentor</label>
                                         <select class="form-select" id="teacher" v-model="teacher">
-                                            <option :value="null" disabled selected>Chọn giảng viên</option>
+                                            <option :value="null" selected>Chọn giảng viên</option>
                                             <option class="modify-option" v-for="teacher in teachers" :key="teacher.Id" :value="teacher">
                                                 {{ teacher.OwnerText }}
                                             </option>
                                         </select>
-                                        <small class="text-danger">{{ teacherError }}</small>
                                     </div>
                                     <div class="col-md-2">
                                         <button type="submit" class="btn btn-primary w-100">
@@ -69,7 +68,7 @@
                             <h5 class="card-title mb-4">
                                 {{ !stateButtonFormStudent ? 'Lịch học' : 'Lịch giảng viên / Người hướng dẫn' }}
                             </h5>
-                            <Calendar :url="stateButtonFormStudent ? url : urlCalendarOfStudent"
+                            <Calendar :url="stateButtonFormStudent ? url : urlCalendarOfStudent" :clickable="isFilterApplied"
                                 :calendarType="stateButtonFormStudent ? 'other' : 'mine'" :ownerId="stateButtonFormStudent ? ownerId : ''" />
                         </div>
                     </div>
@@ -107,9 +106,6 @@ const { handleSubmit, resetForm } = useForm({
         chapter: yup
             .object().nullable()
             .required('*bắt buộc'),
-        teacher: yup
-            .object().nullable()
-            .required('*bắt buộc')
     }),
 });
 
@@ -123,6 +119,7 @@ const ownerId = ref();
 const listCourse = ref([]);
 const listChapters = ref([]);
 const user = computed(() => store.getters.user);
+const isFilterApplied = ref(false);
 
 const toggleCalendarForm = () => {
     stateButtonFormStudent.value = !stateButtonFormStudent.value;
@@ -167,12 +164,19 @@ const getTeachers = async () => {
 const searchCalendar = handleSubmit(async (formData) => {
 
     try {
+        isFilterApplied.value = true;
         const { course, chapter, teacher } = formData;
 
-        url.value = `${rootApi}/teacher/${teacher.Id}/calendar`;
-        ownerId.value = teacher.Id;
+        if (teacher === null) {
+            url.value = `${rootApi}/teacher/calendar/${course.id}/chapter/${chapter.id}/`;
+        } else {
+            url.value = `${rootApi}/teacher/${teacher.Id}/calendar`;
+            ownerId.value = teacher.Id;
+        }
+
     } catch (error) {
-        toast.error("Không có khung giờ giảng viên trong ngày hôm nay!");
+        isFilterApplied.value = false;
+        toast.error("Không có khung giờ giảng viên!");
     }
 });
 
@@ -284,25 +288,25 @@ onMounted(() => {
         margin-bottom: 2rem;
     }
 }
+
 .calendar-search-form .row {
-  position: relative;
+    position: relative;
 }
 
 .calendar-search-form .text-danger {
-  position: absolute;
-  top: 100%;
-  left: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
 }
 
-.calendar-search-form .col-md-4, 
-.calendar-search-form .col-md-3, 
+.calendar-search-form .col-md-4,
+.calendar-search-form .col-md-3,
 .calendar-search-form .col-md-2 {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .calendar-search-form .col-md-2 {
-  justify-content: flex-end;
+    justify-content: flex-end;
 }
-
 </style>

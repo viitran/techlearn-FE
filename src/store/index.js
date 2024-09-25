@@ -1,10 +1,13 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
 
+const rootApi = process.env.VUE_APP_ROOT_API;
+
 const store = createStore({
   state: {
     user: null,
     isLoggedIn: false,
+    supportPoints: 0
   },
   mutations: {
     setUser(state, user) {
@@ -13,6 +16,9 @@ const store = createStore({
     setLoggedIn(state, isLoggedIn) {
       state.isLoggedIn = isLoggedIn;
     },
+    setSupportPoints(state, points) {
+      state.supportPoints = points;
+    }
   },
   actions: {
     async fetchUser({ commit }) {
@@ -20,7 +26,7 @@ const store = createStore({
       if (accessToken) {
         commit('setLoggedIn', true);
         try {
-          const response = await axios.get("http://localhost:8181/api/v1/users/me", {
+          const response = await axios.get(`${rootApi}/users/me`, {
             headers: {
               'Authorization': `Bearer ${accessToken}`
             }
@@ -40,10 +46,27 @@ const store = createStore({
         commit('setUser', null);
       }
     },
+    async fetchSupportPoints({ commit }, userId) {
+      const accessToken = localStorage.getItem("accessToken");
+
+      const response = await axios.get(`${rootApi}/users/points`, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        },
+        params: {
+          idUser: userId
+        }
+      });
+
+      if (response && response.data && response.data.result) {
+        commit('setSupportPoints', response.data.result.points);
+      }
+    }
   },
   getters: {
     user: state => state.user,
     isLoggedIn: state => state.isLoggedIn,
+    supportPoints: state => state.supportPoints
   },
 });
 
