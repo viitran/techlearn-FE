@@ -236,7 +236,9 @@ const onActionBegin = async (args) => {
           }
         });
 
-        toast.success('Đặt lịch thành công! Vui lòng kiểm tra gmail để xem chi tiết');
+        toast.success('Đặt lịch thành công! Vui lòng kiểm tra gmail để xem chi tiết',{
+          autoClose: 1500
+        });
 
         await nextTick();
         isLoading.value = false;
@@ -254,12 +256,16 @@ const onActionBegin = async (args) => {
           }
         });
 
-        toast.success('Cập nhật lịch thành công!');
+        toast.success('Cập nhật lịch thành công!',{
+          autoClose: 1200
+        });
 
         return;
       }
     } catch (error) {
-      toast.error('Cập nhật lịch thất bại!');
+      toast.error('Cập nhật lịch thất bại!',{
+        autoClose: 1200
+      });
       console.log(error);
       isStudentBooking.value = false;
       isLoading.value = false;
@@ -271,10 +277,14 @@ const onActionBegin = async (args) => {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      toast.success('Xóa lịch thành công!');
+      toast.success('Xóa lịch thành công!',{
+        autoClose: 1200
+      });
     } catch (error) {
       console.error('Error deleting event:', error);
-      toast.error('Không thể xóa sự kiện!');
+      toast.error('Không thể xóa sự kiện!',{
+        autoClose: 1200
+      });
     }
   } else if (args.requestType === 'eventChange') {
     try {
@@ -288,9 +298,13 @@ const onActionBegin = async (args) => {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      toast.success('Cập nhật lịch thành công!');
+      toast.success('Cập nhật lịch thành công!',{
+        autoClose: 1200
+      });
     } catch (error) {
-      toast.error('Cập nhật lịch thất bại!');
+      toast.error('Cập nhật lịch thất bại!',{
+        autoClose: 1200
+      });
     } finally {
       isLoading.value = false;
       isStudentBooking.value = false;
