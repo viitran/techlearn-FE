@@ -199,7 +199,7 @@ const onActionBegin = async (args) => {
 
       console.log(formattedEventData);
 
-      await axios.put(`${props.url}/${formattedEventData.Id}`, formattedEventData);
+      await axios.put(`${props.url}//${formattedEventData.Id}`, formattedEventData);
       toast.success('Cập nhật lại lịch thành công!');
     } catch (error) {
       console.error('Error updating event:', error);
