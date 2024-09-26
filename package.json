@@ -28,6 +28,7 @@
     "@syncfusion/ej2-vue-schedule": "^26.2.14",
     "axios": "^1.7.5",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "bootstrap-vue": "^2.23.1",
     "bootstrap-vue-3": "^0.5.1",
     "ckeditor5": "^43.1.0",
