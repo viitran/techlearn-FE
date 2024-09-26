@@ -3,7 +3,7 @@
 
     <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate" :eventSettings="eventSettings"
       :actionBegin="onActionBegin" class="calendar" :editorTemplate="'editorTemplate'" :eventRendered="onEventRendered" :popupOpen="popupOpen"
-      :startHour="startHour" :endHour="endHour">
+      :startHour="startHour" :endHour="endHour" :timeScale="timeScale">
       <template v-slot:editorTemplate>
         <table class="custom-event-editor" width="100%" cellpadding="5">
           <tbody>
@@ -139,6 +139,11 @@ const isStudentBooking = ref(false);
 
 const startHour = "00:00";
 const endHour = "23:59";
+const timeScale = {
+  enable: true,
+  interval: 10,
+  slotCount: 1
+};
 
 const dropListFields = {
   text: "OwnerText",
@@ -246,7 +251,6 @@ const onActionBegin = async (args) => {
 
         store.dispatch('fetchSupportPoints', user.value.id);
 
-        await nextTick();
         isLoading.value = false;
         isStudentBooking.value = false;
 
@@ -376,7 +380,7 @@ watch(() => props.url, (newUrl) => {
 
 const popupOpen = function (args) {
 
-  if (!props.clickable) {
+  if (!props.clickable && props.calendarType !== 'mine') {
     args.cancel = true;
 
     return;
