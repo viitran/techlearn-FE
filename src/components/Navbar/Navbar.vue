@@ -7,10 +7,7 @@
       <ul class="list-unstyled components">
 
         <li v-if="isTeacher" class="active">
-
-        <li>
           <router-link to="/teacher" class="nav-link">Lịch giảng viên</router-link>
-        </li>
         </li>
 
         <li v-if="isUser">
@@ -26,7 +23,6 @@
     </nav>
   </div>
 </template>
-
 
 <script setup>
 
