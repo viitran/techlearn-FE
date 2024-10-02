@@ -67,7 +67,7 @@ const toggleSidebar = inject('toggleSidebar');
 const store = useStore();
 const isLoggedIn = computed(() => store.getters.isLoggedIn);
 const user = computed(() => store.getters.user);
-const isUserModalOpen = ref(false);//
+const isUserModalOpen = ref(false);
 const points = ref(0);
 const isUser = computed(() => {
     return user.value?.roles?.some(role => role.name === "USER") || false;
@@ -88,7 +88,7 @@ onMounted(() => {
 });
 
 const showUserModal = () => {
-    isUserModalOpen.value = true; // Mở modal khi nhấn vào "Thông tin cá nhân"
+    isUserModalOpen.value = true; 
 };
 const handleLogout = async () => {
     try {
