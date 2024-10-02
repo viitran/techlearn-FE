@@ -1,13 +1,16 @@
-
 <template>
-   <div class="container">
+  <div class="p-2">
     <div class="button-container">
-      <button class="btn btn-primary">
+      <!-- <button class="btn btn-primary">
         <router-link :to="{ name: 'StudentCreate' }" class="link-text">
           Add +
         </router-link>
-      </button>
+      </button> -->
     </div>
+
+    <!-- <div>
+      <FormStudent />
+    </div> -->
 
     <table v-if="list.length" class="styled-table">
       <thead>
@@ -48,11 +51,7 @@
       </button>
     </div>
 
-    <Modal
-      @confirm="handleDelete(seletedObject)"
-      @close="closeModal"
-      class="custom-modal"
-    ></Modal>
+    <Modal @confirm="handleDelete(seletedObject)" @close="closeModal" class="custom-modal"></Modal>
   </div>
 </template>
 
@@ -60,7 +59,10 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
-import Modal from '../Modal/Modal.vue';
+
+// import Modal from '../Modal/Modal.vue';
+import { useStore } from 'vuex';
+import FormStudent from './StudentCalendar.vue';
 
 const list = ref([]);
 const seletedObject = ref(null);
@@ -71,9 +73,13 @@ const totalPage = ref(0);
 const pageSize = ref(2);
 const pagesToShow = ref([]);
 
+// create store
+const store = useStore();
+
 onMounted(() => {
   myModal.value = new bootstrap.Modal(document.getElementById("exampleModal"));
-  fetchStudents();
+  // fetchStudents();
+  takeUser();
 });
 
 const fetchStudents = async (page = 1) => {
@@ -90,6 +96,17 @@ const fetchStudents = async (page = 1) => {
     updatePagesToShow();
   } catch (error) {
     console.error('Error fetching students:', error);
+  }
+};
+
+//temp data user and push role to store
+const takeUser = async () => {
+  try {
+    const response = await axios.get(`http://localhost:3000/users`);
+    const resRole = response.data[0].role;
+    store.dispatch('setUserRole', resRole);
+  } catch (error) {
+    console.error('Error: ', error);
   }
 };
 
@@ -129,7 +146,6 @@ const handleDelete = async (data) => {
       currentPage.value--;
     }
     fetchStudents(currentPage.value);
-    
     closeModal();
   } catch (error) {
     console.error('Error deleting student:', error);
