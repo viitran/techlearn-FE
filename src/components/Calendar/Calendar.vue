@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
 
-    <ejs-schedule height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate" :eventSettings="eventSettings"
+    <ejs-schedule id="Schedule" height="750px" width="100%" ref='scheduleObj' :selectedDate="selectedDate" :eventSettings="eventSettings"
       :actionBegin="onActionBegin" class="calendar" :editorTemplate="'editorTemplate'" :eventRendered="onEventRendered" :popupOpen="popupOpen"
       :startHour="startHour" :endHour="endHour" :timeScale="timeScale">
       <template v-slot:editorTemplate>
@@ -401,6 +401,19 @@ const popupOpen = function (args) {
       if (!hasEvents) {
         args.cancel = true;
       }
+
+      const meetingUrl = args.data.MeetingUrl || 'Không có link học trực tuyến';
+
+      const popupElement = document.querySelector('.e-event-popup');
+
+      if (popupElement) {
+        const timezoneElement = popupElement.querySelector('.e-time-zone-details');
+
+        if (timezoneElement) {
+          timezoneElement.innerHTML = `<a href="${meetingUrl}" target="_blank">${meetingUrl}</a>`;
+        }
+      }
+
     } else if (isMineAndTeacher) {
       args.cancel = false;
     } else if (isOtherTypeAndTeacher) {
