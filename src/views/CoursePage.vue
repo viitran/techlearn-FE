@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <p class="title">Khóa học của tôi</p>
     <div class="card-container">
       <div class="card shadow" v-for="(course, index) in courses" :key="index" style="width: 18rem">
         <img :src="course.image" class="card-img-top" alt="..." />
@@ -100,11 +99,16 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  justify-content: center;
+}
+
 .card-container {
   margin-top: 20px;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
 }
 
 .card-container img {
