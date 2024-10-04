@@ -13,6 +13,7 @@ import { checkRole } from "@/components/Middleware/AuthenticateTeacher";
 import Teacher from '@/components/Teacher/Teacher.vue'
 import StudentCalendar from '@/components/student/StudentCalendar.vue'
 // import { component } from 'vue/types/umd'
+import MyCourse from '@/views/MyCourse.vue'
 import CoursePage from '@/views/CoursePage.vue'
 import Login from '@/components/login/Login.vue'
 
@@ -77,12 +78,18 @@ const routes = [
     props:true
   },
   {
+    path:"/myCourse",
+    name: "myCourse",
+    component: MyCourse,
+    props:true
+  },
+  {
     path: "/:catchAll(.*)",
     name: 'NotFound',
     component: NotFound
   },
   {
-    path: '/coursePage/:id',
+    path: '/myCourse/:id',
     name: 'assignment',
     component: Assignment,
     props: true
