@@ -186,6 +186,7 @@ onMounted(async () => {
   text-align: center;
   font-size: 12px;
   font-weight: 400;
+  transition: background-color 0.1s ease;
 }
 
 .btn-try {
@@ -193,8 +194,18 @@ onMounted(async () => {
   color: rgba(0, 0, 0, 1);
 }
 
+.btn-try:hover {
+  background-color: rgba(3, 125, 255, 0.568);
+  color: rgba(0, 0, 0, 1);
+}
+
 .btn-buy{
-  background-color: rgba(203, 51, 104, 0.42);
+  background-color: rgba(219, 41, 104, 0.42);
+  color: rgba(0, 0, 0, 1);
+}
+
+.btn-buy:hover {
+  background-color: rgba(190, 47, 47, 0.651);
   color: rgba(0, 0, 0, 1);
 }
 
