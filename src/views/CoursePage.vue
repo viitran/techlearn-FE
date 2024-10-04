@@ -161,7 +161,6 @@ onMounted(async () => {
   background-color: white;
 }
 
-
 .avatar {
   object-fit: cover;
 }
@@ -177,30 +176,26 @@ onMounted(async () => {
   opacity: 50%;
 }
 
+.btn {
+  width: 115px;
+  height: 29px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 400;
+}
+
 .btn-try {
-  width: 115px;
-  height: 29px;
   background-color: rgba(99, 151, 206, 0.42);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  text-align: center;
   color: rgba(0, 0, 0, 1);
-  font-size: 12px;
-  font-weight: 400;
 }
+
 .btn-buy{
-  width: 115px;
-  height: 29px;
   background-color: rgba(203, 51, 104, 0.42);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  text-align: center;
   color: rgba(0, 0, 0, 1);
-  font-size: 12px;
-  font-weight: 400;
 }
+
 </style>
