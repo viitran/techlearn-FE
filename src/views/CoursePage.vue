@@ -200,7 +200,7 @@ onMounted(async () => {
 }
 
 .btn-buy{
-  background-color: rgba(219, 41, 104, 0.42);
+  background-color: rgba(212, 28, 37, 0.541);
   color: rgba(0, 0, 0, 1);
 }
 
