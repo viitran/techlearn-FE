@@ -1,28 +1,28 @@
 <template>
   <div class="container">
-    <div class="card-container">
-      <div class="card shadow" v-for="(course, index) in courses" :key="index" style="width: 18rem">
-        <img :src="course.image" class="card-img-top" alt="..." />
-        <div class="card-body" @click="
-          router.push({
-            name: 'assignment',
-            params: { id: course.id },
-            query: { userID: userID },
-          })
-          ">
-          <p class="card-name">{{ course.name }}</p>
-          <p class="card-total-exercises">{{ course.totalExercises }}</p>
-          <p class="card-text">
-            {{ course.description }}
-          </p>
-        </div>
-        <div class="c-footer pb-2">
-          <img class="avatar" :src="course.teachers[0].avatar" alt="" />
-          <p class="my-auto">{{ course.teachers[0].name }}</p>
-        </div>
-        <div class="d-flex gap-2 justify-content-center pb-3">
-          <button type="button" class="btn btn-primary btn-buy" >Mua</button>
-          <button type="button" class="btn btn-primary btn-try" >Học Thử</button>
+    <div class="row">
+      <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4" v-for="(course, index) in courses" :key="index">
+        <div class="card shadow mx-2 d-flex flex-column" style="width: 100%">
+          <img :src="course.thumbnailUrl" class="card-img-top" alt="..." />
+          <div class="card-body d-flex flex-column flex-grow-1"
+            @click="router.push({ name: 'assignment', params: { id: course.id }, query: { userID: userID } })">
+            <p class="card-name">{{ course.name }}</p>
+            <p class="card-total-exercises">{{ course.totalExercises }}</p>
+            <p class="card-text flex-grow-1">{{ course.description }}</p>
+          </div>
+          <div class="c-footer pb-2" v-if="course.teacher.length > 0">
+            <img class="avatar" :src="course.teacher[0].avatar" alt="" />
+            <p class="my-auto">{{ course.teachers[0].name }}</p>
+          </div>
+
+          <div class="d-flex gap-2 justify-content-center pb-3 container">
+            <button v-if="isTrial(course.id)" type="button" class="btn btn-primary btn-buy-only px-2">Mua</button>
+            <button v-else-if="isPaid(course.id)" type="button" class="btn btn-primary btn-learn-only">Học</button>
+            <div v-else class="d-flex gap-2 justify-content-center w-100">
+              <button type="button" class="btn btn-primary btn-buy w-40">Mua</button>
+              <button type="button" class="btn btn-primary btn-try w-40">Học Thử</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -41,60 +41,33 @@ const store = useStore();
 
 const rootApi = process.env.VUE_APP_ROOT_API;
 const courses = ref([]);
-const userID = ref(store.getters.user.id);
-
-const sampleTeachers = [
-  {
-    id: "550e8400-e29b-41d4-a716-446655440000",
-    name: "Nguyễn Ngọc Quang",
-    color: "#FF5733",
-    avatar: "https://th.bing.com/th?id=OIP.saT9t5OzLzOOUIxWQjZiXAHaJh&w=220&h=283&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2",
-    email: "teacher1@example.com",
-    teacherCalendars: [],
-    courses: []
-  },
-  {
-    id: "550e8400-e29b-41d4-a716-446655440001",
-    name: "Lê Duy Linh",
-    color: "#33FF57",
-    avatar: "https://th.bing.com/th/id/OIP.iru-gBK48nlq2bcwxa3orAHaE7?rs=1&pid=ImgDetMain",
-    email: "teacher2@example.com",
-    teacherCalendars: [],
-    courses: []
-  },
-];
-
-const sampleCourses = [];
-
-for (let i = 1; i <= 5; i++) {
-  const course = {
-    id: i,
-    name: `KỸ THUẬT LẬP TRÌNH NỀN TẢNG VỚI JAVA ${i}`,
-    image: `https://s3-alpha-sig.figma.com/img/5da8/716d/a6fdf4ee3dd38cbccbc9e963cdfa9137?Expires=1728864000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ZqPV8eDshGSrxVvwRQkOBZfq2n4JUHMbPge63yYKDlQ5i72P-0ZGFtWYSWN3wzgJ-BWfCqfi1Mpo2-QHJsG5RoTFSUDl5TUGXyAKcWlu98kQWdIAg3cGspUtWk6eEVyaJ065MytQpPuRdW6WP8vW3LZgegb5VPMSslq~BSVgjBEDuoXjl9qf~WzwbQmapBVEOzVYgs1TGEzASRXN9-3A~N2xzx2dr3H8dc6vRFDTR05k-ud4CsjB81syU2EjWBhJfHOzUFzV-zhMnXY0OrCXgMdmg5YH6VxigWmeLsyVq7l0901ySjIcUosLK4aymqP-ZgGKEU~xgPme9XgsPYeWrA__`,
-    description: `Khóa học "Kỹ thuật lập trình nền tảng với Java" cung cấp kiến thức đa chiều về Java: từ cài đặt môi trường, cú pháp căn bản đến điều kiện, lặp, phương thức, Debugging, xử lý chuỗi, và mảng đến ArrayList. Nền tảng lý thú để xây dựng ứng dụng Java chất lượng.`,
-    time: `${10 + i}:00`,
-    points: 10 * i,
-    isDeleted: false,
-    listChapter: [],
-    userEntities: [],
-    teachers: [sampleTeachers[i % sampleTeachers.length]],
-    totalExercises: 10 + i * 11
-  };
-
-
-  sampleTeachers[i % sampleTeachers.length].courses.push(course);
-
-  sampleCourses.push(course);
-}
+const studentCourses = ref([]);
+const userID = ref(store.getters.user?.id);
 
 const fetchCourses = async () => {
-  // const response = await axios.get(`${rootApi}/courses?id=${userID.value}`);
-  // courses.value = response.data.result.items.data;
-  courses.value = sampleCourses;
+  const response = await axios.get(`${rootApi}/courses`);
+  courses.value = response?.data?.result?.data?.items;
+};
+
+const fetchStudentCourses = async () => {
+  const response = await axios.get(`${rootApi}/student-courses?id=${userID.value}`);
+  studentCourses.value = response.result
+  // studentCourses.value = [{ point: null, idCourse: 1, status: "TRIAL" }, { point: null, idCourse: 3, status: "PAID" }]
+};
+
+const isTrial = (courseId) => {
+  const studentCourse = studentCourses.value?.find(sc => sc.idCourse === courseId);
+  return studentCourse && studentCourse.status === "TRIAL";
+};
+
+const isPaid = (courseId) => {
+  const studentCourse = studentCourses.value?.find(sc => sc.idCourse === courseId);
+  return studentCourse && studentCourse.status === "PAID";
 };
 
 onMounted(async () => {
   await fetchCourses();
+  await fetchStudentCourses();
 });
 </script>
 
@@ -111,9 +84,14 @@ onMounted(async () => {
   gap: 30px;
 }
 
-.card-container img {
+.w-40 {
+  width: 50%;
+}
+
+.card-img-top {
   width: 100%;
   height: 150px;
+  object-fit: cover;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
@@ -131,6 +109,9 @@ onMounted(async () => {
 .card {
   cursor: pointer;
   border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
 }
 
 .quantity-exercise {
@@ -177,7 +158,7 @@ onMounted(async () => {
 }
 
 .btn {
-  width: 115px;
+  width: 100%;
   height: 29px;
   display: flex;
   justify-content: center;
@@ -199,14 +180,31 @@ onMounted(async () => {
   color: rgba(0, 0, 0, 1);
 }
 
-.btn-buy{
+.btn-buy {
   background-color: rgba(212, 28, 37, 0.541);
   color: rgba(0, 0, 0, 1);
 }
 
-.btn-buy:hover {
-  background-color: rgba(190, 47, 47, 0.651);
+.btn-buy-only {
+  background-color: rgba(212, 28, 37, 0.541);
+  color: rgba(0, 0, 0, 1);
+  width: 100%;
+}
+
+.btn-learn-only {
+  width: 100%;
+  background-color: #00e3cc;
   color: rgba(0, 0, 0, 1);
 }
 
+.btn-learn-only:hover {
+  background-color: #03b3a1;
+  color: rgba(0, 0, 0, 1);
+}
+
+
+.btn-buy:hover , .btn-buy-only:hover {
+  background-color: rgba(190, 47, 47, 0.651);
+  color: rgba(0, 0, 0, 1);
+}
 </style>
