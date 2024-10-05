@@ -52,7 +52,6 @@ const fetchCourses = async () => {
 const fetchStudentCourses = async () => {
   const response = await axios.get(`${rootApi}/student-courses?id=${userID.value}`);
   studentCourses.value = response.result
-  // studentCourses.value = [{ point: null, idCourse: 1, status: "TRIAL" }, { point: null, idCourse: 3, status: "PAID" }]
 };
 
 const isTrial = (courseId) => {
