@@ -4,7 +4,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="userModalLabel">Thông tin cá nhân</h5>
+            <h5 class="modal-title" id="userModalLabel"></h5>
             <button type="button" class="close" @click="closeModal">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -15,46 +15,66 @@
                 <img :src="userInfo.avatar" alt="Avatar" class="img-fluid rounded-circle mb-3" />
               </div>           
 
-            <div class="user-info">
-  <div class="label"><strong>Tên:</strong></div>
-  <div class="value">{{ userInfo.fullName }}</div>
-  
-  <div class="label"><strong>Email:</strong></div>
-  <div class="value">{{ userInfo.email }}</div>
-  
-  <div class="label"><strong>Tuổi:</strong></div>
-  <div class="value">{{ userInfo.age }}</div>
+              <div class="user-info">
+                <div class="label"><strong>Tên:</strong></div>
+                <div class="value">{{ userInfo.fullName }}</div>
+              </div>
+            
+              <div class="user-info">
+                <div class="label"><strong>Email:</strong></div>
+                <div class="value">{{ userInfo.email }}</div>
+              </div>
 
-  <div class="label"><strong>Vai trò:</strong></div>
-  <div class="value">{{ userInfo.roles.map(role => role.name).join(', ') }}</div>
-  
-  <div class="label"><strong>Điểm:</strong></div>
-  <div class="value">{{ userInfo.points }}</div>
-  
-  <!-- <div class="label"><strong>Là Mentor:</strong></div>
-  <div class="value">{{ userInfo.isMentor ? 'Có' : 'Không' }}</div>
-  
-  <div class="label"><strong>Là Giáo viên:</strong></div>
-  <div class="value">{{ userInfo.isTeacher ? 'Có' : 'Không' }}</div> -->
-</div>
+              <div class="user-info">
+                <div class="label"><strong>Tuổi:</strong></div>
+                <div class="value">{{ userInfo.age }}</div>
+              </div>
+              <div class="user-info">
+                <div class="label"><strong>Vai trò:</strong></div>
+                <div class="value">{{ userInfo.roles.map(role => role.name).join(', ') }}</div>
+              </div>
+              <div class="user-info">
+                <div class="label" v-if="!isMentorOrTeacher"><strong>Điểm:</strong></div>
+                <div class="value" v-if="!isMentorOrTeacher">{{ userInfo.points }}</div>
+              </div>
 
+              <div class="user-info" v-if="userInfo.courses">
+                <div class="label"><strong>Các khóa học:</strong></div>
+                <div class="value">{{ userInfo.courses.map(course =>course.name).join(', ') }}</div>
+              </div>
+              
+              <div class="user-info" v-if="isMentorOrTeacher && userInfo.chapters">
+                <div class="label"><strong>Các chương:</strong></div>
+                <div class="value">{{ userInfo.chapters.map(chapter =>chapter.name).join(', ') }}</div>
+              </div>
+          
         </div>
             <div v-else>
               <p>Đang tải thông tin người dùng...</p>
             </div>
           </div>
           <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="openUpdateModal">Cập nhật</button>
             <button type="button" class="btn btn-secondary" @click="closeModal">Đóng</button>
           </div>
         </div>
       </div>
+      
+<UpdateUserModal 
+  :isOpen="isUpdateModalOpen" 
+  :userInfo="userInfo" 
+  @update:isOpen="isUpdateModalOpen = false" 
+  @update:userInfo="userInfo = $event" 
+/>
     </div>
   </template>
   
   <script>
-  import { ref, watch } from 'vue';
+  import { ref, watch,computed } from 'vue';
   import axios from 'axios';
-  
+  import UpdateUserModal from './UpdateUserModal.vue';
+  import { toast } from 'vue3-toastify';
+
   export default {
     props: {
       isOpen: {
@@ -62,9 +82,12 @@
         default: false
       }
     },
+    components: {
+    UpdateUserModal
+  },
     setup(props, { emit }) {
       const userInfo = ref(null);
-  
+      const isUpdateModalOpen = ref(false);
       const fetchUserInfo = async () => {
         try {
           const response = await axios.get(`${process.env.VUE_APP_ROOT_API}/users/me`, {
@@ -75,30 +98,41 @@
           userInfo.value = response.data.result;
         } catch (error) {
           console.error("Error fetching user info", error);
-          alert("Không thể tải thông tin người dùng");
+          toast.error("Không thể tải thông tin người dùng!");
         }
       };
   
+    const openUpdateModal = () => {
+  isUpdateModalOpen.value = true;  
+};
+
+      const isMentorOrTeacher = computed(() => {
+      if (!userInfo.value) return false;
+      
+      return userInfo.value.roles.some(role => role.name === 'MENTOR' || role.name === 'TEACHER' );
+    });
+    
       watch(() => props.isOpen, (newVal) => {
         if (newVal) {
           fetchUserInfo();
         }
       });
-  
       const closeModal = () => {
         emit('update:isOpen', false);
       };
-  
       return {
         userInfo,
-        closeModal
+        closeModal,
+        openUpdateModal,
+        isMentorOrTeacher,
+        isUpdateModalOpen
       };
     }
   };
   </script>
   
   <style scoped>
- 
+
   .custom-modal {
   position: fixed;
   top: 0;
@@ -114,7 +148,7 @@
 .modal-dialog {
   position: relative;
   margin: 5% auto;
-  max-width: 400px; 
+  max-width: 600px; 
   width: 90%;
 }
 
@@ -141,7 +175,6 @@
   text-align: right;
 }
 
-
 .modal-title {
   font-size: 1.25rem; 
   font-weight: 600;
@@ -159,7 +192,7 @@ button.close {
 }
 
 .img-fluid {
-  max-width: 80px; 
+  max-width: 100px; 
   border-radius: 50%; 
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
   transition: transform 0.2s ease-in-out;
@@ -168,7 +201,6 @@ button.close {
 .img-fluid:hover {
   transform: scale(1.05); 
 }
-
 
 button.btn {
   font-size: 0.9rem; 
@@ -190,13 +222,15 @@ button.btn-secondary {
   line-height: 1.5;
 }
 
+
 .label {
   text-align: left; 
-  padding-right: 10px; 
+  width: 100px;
 }
 
 .value {
   text-align: left; 
+  flex-grow: 1;
 }
 
 
@@ -204,34 +238,22 @@ button.btn-secondary {
   display: contents; 
 }
 
-
 .info-item strong {
   font-weight: 600; 
   text-align: left; 
 }
 
-
 .info-item span {
   text-align: left; 
-}
-
-
-.img-fluid {
-  max-width: 80px; 
-  border-radius: 50%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease-in-out;
 }
 
 .img-fluid:hover {
   transform: scale(1.05);
 }
 
-
 .modal-footer {
   text-align: right;
 }
-
 
 button.close {
   border: none;
@@ -249,7 +271,6 @@ button.btn-secondary {
   background-color: #6c757d;
   border-color: #6c757d;
 }
-
 
   </style>
   
