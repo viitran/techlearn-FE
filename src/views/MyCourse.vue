@@ -41,14 +41,10 @@ const router = useRouter();
 const store = useStore();
 
 const rootApi = process.env.VUE_APP_ROOT_API;
-const adminApi = process.env.VUE_APP_ROOT_ADMIN_API;
 const courses = ref([]);
 const student_courses = ref([]);
-const assignments = ref([]);
 const assignmentCounts = ref({});
 const userID = ref(store.getters.user.id);
-
-console.log(adminApi);
 
 
 const fetchStudentCourses = async () => {
@@ -66,12 +62,12 @@ const getCourseDetails = (idCourse) => {
 };
 
 const fetchAssignmentsForCourse = async (courseId) => {
-    const chapters = await axios.get(`${adminApi}/courses/${courseId}/chapters`);
+    const chapters = await axios.get(`${rootApi}/chapters?idCourse=${courseId}`);
     let totalAssignments = 0;
 
-    for (const chapter of chapters.data.data) {
-        const res = await axios.get(`${adminApi}/chapters/${chapter.id}/assignment`);
-        totalAssignments += res.data.data.length;
+    for (const chapter of chapters.data.result.items.data) {
+        const res = await axios.get(`${rootApi}/lessons?idChapter=${chapter.id}`);
+        totalAssignments += res.data.result.data.items.length;
     }
     assignmentCounts.value[courseId] = totalAssignments;
 };
