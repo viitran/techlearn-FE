@@ -71,10 +71,10 @@ const routes = [
     props: true
   },
   {
-    path:"/coursePage",
+    path: "/coursePage",
     name: "coursePage",
     component: CoursePage,
-    props:true
+    props: true
   },
   {
     path: "/:catchAll(.*)",
