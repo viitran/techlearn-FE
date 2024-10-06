@@ -48,7 +48,7 @@ const courses = ref([]);
 const userID = ref(store.getters.user.id);
 
 const fetchCourses = async () => {
-  const response = await axios.get(`${rootApi}/courses?id=${userID.value}`);
+  const response = await axios.get(`${rootApi}/courses/user?id=${userID.value}`);
   courses.value = response.data.result.items.data;
 };
 
