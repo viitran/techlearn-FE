@@ -9,10 +9,6 @@
                     <img :src="getCourseDetails(studentCourse.idCourse).thumbnailUrl" class="card-img-top" alt="..." />
                     <div class="card-body p-3" @click="navigateToAssignment(studentCourse.idCourse)">
                         <h5>{{ getCourseDetails(studentCourse.idCourse).name }}</h5>
-                        <p class="lesson-number mb-1">
-                            {{ assignmentCounts[studentCourse.idCourse] || 0 }}
-                            bài tập
-                        </p>
                         <p class="course-des card-text">
                             {{ getCourseDetails(studentCourse.idCourse).description }}
                         </p>
@@ -63,31 +59,16 @@ const getCourseDetails = (idCourse) => {
     return courses.value.find(course => course.id === idCourse);
 };
 
-const fetchAssignmentsForCourse = async (courseId) => {
-    const chapters = await axios.get(`${rootApi}/chapters?idCourse=${courseId}`);
-    let totalAssignments = 0;
-
-    for (const chapter of chapters.data.result.items.data) {
-        const res = await axios.get(`${rootApi}/lessons?idChapter=${chapter.id}`);
-        totalAssignments += res.data.result.data.items.length;
-    }
-    assignmentCounts.value[courseId] = totalAssignments;
-};
-
 const navigateToAssignment = (courseId) => {
     router.push({
-        name: 'assignment',
-        params: { id: courseId },
-        query: { userID: userID.value },
+        name: 'courseDetail',
+        params: { id: courseId }
     });
 };
 
 onMounted(async () => {
     await fetchStudentCourses();
     await fetchCourses();
-    for (const studentCourse of student_courses.value) {
-        await fetchAssignmentsForCourse(studentCourse.idCourse);
-    }
 });
 </script>
 
