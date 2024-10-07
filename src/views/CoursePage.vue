@@ -1,20 +1,18 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4" v-for="(course, index) in courses" :key="index">
+    <div class="d-flex flex-wrap justify-content-center gap-4">
+      <div class="" v-for="(course, index) in courses" :key="index" style="width: 18rem">
         <div class="card shadow mx-2 d-flex flex-column" style="width: 100%">
-          <img :src="course.thumbnailUrl" class="card-img-top" alt="..." />
-          <div class="card-body d-flex flex-column flex-grow-1"
-            @click="navigateToAssignment(course.id)">
+          <img :src="course.thumbnailUrl" class="card-img-top" alt="Course thumbnail" />
+          <div class="card-body d-flex flex-column flex-grow-1" @click="navigateToAssignment(course.id)">
             <p class="card-name">{{ course.name }}</p>
             <p class="card-total-exercises">{{ course.totalExercises }}</p>
-            <p class="card-text flex-grow-1">{{ course.description }}</p>
+            <p class="card-text flex-grow-1">{{ truncatedDescriptions(course.description) }}</p>
           </div>
           <div class="c-footer pb-2" v-if="course.teacher.length > 1">
-            <img class="avatar" :src="avatar" alt="" />
-            <p class="my-auto">{{ course.teacher[0].name }}</p>
+            <img class="avatar" :src="avatar" alt="Teacher avatar" />
+            <p class="my-auto">{{ course?.teacher[0]?.name }}</p>
           </div>
-
           <div class="d-flex gap-2 justify-content-center pb-3 container">
             <button v-if="isTrial(course.id)" type="button" class="btn btn-primary btn-buy-only px-2">Mua</button>
             <button v-else-if="isPaid(course.id)" type="button" class="btn btn-primary btn-learn-only">Học</button>
@@ -65,11 +63,18 @@ const isPaid = (courseId) => {
 };
 
 const navigateToAssignment = (courseId) => {
-    router.push({
-        name: 'lesson',
-        params: { id: courseId }
-    });
+  router.push({
+    name: 'lesson',
+    params: { id: courseId }
+  });
 };
+
+const truncatedDescriptions = (description) => {
+  return description.length > 120 ?
+    description.substring(0, 120) + '...' :
+    description
+};
+
 
 onMounted(async () => {
   await fetchCourses();
