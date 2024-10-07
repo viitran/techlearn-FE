@@ -67,7 +67,7 @@ const fetchAssignmentsForCourse = async (courseId) => {
     const chapters = await axios.get(`${rootApi}/chapters?idCourse=${courseId}`);
     let totalAssignments = 0;
 
-    for (const chapter of chapters.data.result.items.data) {
+    for (const chapter of chapters.data.result.data) {
         const res = await axios.get(`${rootApi}/lessons?idChapter=${chapter.id}`);
         totalAssignments += res.data.result.data.items.length;
     }
@@ -76,9 +76,8 @@ const fetchAssignmentsForCourse = async (courseId) => {
 
 const navigateToAssignment = (courseId) => {
     router.push({
-        name: 'assignment',
-        params: { id: courseId },
-        query: { userID: userID.value },
+        name: 'lesson',
+        params: { id: courseId }
     });
 };
 

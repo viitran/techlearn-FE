@@ -4,7 +4,6 @@ import StudentUpdate from "@/components/student/StudentUpdate.vue";
 import NotFound from "@/components/NotFound/NotFound.vue";
 import StudentCreate from "@/components/student/StudentCreate.vue";
 
-import Assignment from "@/views/Assignment.vue";
 import ConfigPromptAIView from "@/views/teacherView/ConfigPromptAIView.vue";
 import SubmitAssignment from "@/views/SubmitAssignment.vue";
 import ListTemplatePromptView from "@/views/teacherView/listTemplatePromptView.vue";
@@ -16,6 +15,7 @@ import StudentCalendar from "@/components/student/StudentCalendar.vue";
 import CoursePage from "@/views/CoursePage.vue";
 import Login from "@/components/login/Login.vue";
 import MyCourse from "@/views/MyCourse.vue";
+import Lesson from "@/views/Lesson.vue";
 
 const routes = [
   {
@@ -97,9 +97,9 @@ const routes = [
     component: NotFound,
   },
   {
-    path: "/coursePage/:id",
-    name: "assignment",
-    component: Assignment,
+    path: "/courses/:id",
+    name: "lesson",
+    component: Lesson,
     props: true,
   },
   {

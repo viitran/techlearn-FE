@@ -5,13 +5,14 @@
         <div class="card shadow mx-2 d-flex flex-column" style="width: 100%">
           <img :src="course.thumbnailUrl" class="card-img-top" alt="..." />
           <div class="card-body d-flex flex-column flex-grow-1"
-            @click="router.push({ name: 'assignment', params: { id: course.id }, query: { userID: userID } })">
+            @click="navigateToAssignment(course.id)">
             <p class="card-name">{{ course.name }}</p>
             <p class="card-total-exercises">{{ course.totalExercises }}</p>
             <p class="card-text flex-grow-1">{{ course.description }}</p>
           </div>
           <div class="c-footer pb-2" v-if="course.teacher.length > 0">
             <img class="avatar" :src="course.teacher[0].avatar" alt="" />
+            <p class="my-auto">{{ course.teacher[0].name }}</p>
             <p class="my-auto">{{ course.teacher[0].name }}</p>
           </div>
 
@@ -31,8 +32,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted, computed } from "vue";
-import avatar from "../../public/avatar.jpg";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
@@ -62,6 +62,13 @@ const isTrial = (courseId) => {
 const isPaid = (courseId) => {
   const studentCourse = studentCourses.value?.find(sc => sc.idCourse === courseId);
   return studentCourse && studentCourse.status === "PAID";
+};
+
+const navigateToAssignment = (courseId) => {
+    router.push({
+        name: 'lesson',
+        params: { id: courseId }
+    });
 };
 
 onMounted(async () => {
