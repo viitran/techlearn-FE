@@ -33,7 +33,6 @@
                         </li>
 
                         <li v-else class="nav-item dropdown" v-if="user">
-                            <link class="name-color">{{ user.fullName }}</link>
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false">
                                 <img :src="user?.avatar" class="rounded-circle avatar" alt="User Avatar">
@@ -111,6 +110,7 @@ const handleLogout = async () => {
 <style scoped>
 .navbar {
     padding: 15px 10px;
+    height : 80px;
     background: #fff;
     border: none;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
@@ -141,7 +141,6 @@ const handleLogout = async () => {
     justify-content: space-evenly;
     height: 30px;
     width: 120px;
-    margin-top: 24px;
     border-radius: 20px;
     background-color: #d2d2d2;
     flex-shrink: 0;
