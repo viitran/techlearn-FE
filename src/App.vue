@@ -1,65 +1,104 @@
 <template>
-  <div class="home-page">
-    <Header class="header"></Header>
-    <Navbar class="navbar"></Navbar>
-    <div class="content">
+  <div class="wrapper">
+    <div class="d-flex" v-if="!isLoginPage">
+      <Sidebar />
+      <div class="flex-grow-1">
+        <Header />
+        <div class="content p-4">
+          <RouterView />
+        </div>
+        <!-- <Footer /> -->
+      </div>
+    </div>
+    <div v-else>
       <RouterView />
     </div>
   </div>
-  <Footer class="footer"></Footer>
 </template>
+
 <script setup>
 import Header from './components/Header/Header.vue';
-import Navbar from './components/Navbar/Navbar.vue';
-import 'vue3-toastify/dist/index.css';
-import { RouterView } from 'vue-router';
+import Sidebar from './components/Navbar/Navbar.vue';
 import Footer from './components/Footer/Footer.vue';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+
+import { RouterView, useRoute } from 'vue-router';
+import { ref, provide, computed, onMounted } from 'vue';
+import router from './router';
+import { useStore } from 'vuex';
+import axios from 'axios';
+const rootApi = process.env.VUE_APP_ROOT_API;
+const isSidebarCollapsed = ref(false);
+
+const toggleSidebar = () => {
+  isSidebarCollapsed.value = !isSidebarCollapsed.value;
+};
+
+provide('isSidebarCollapsed', isSidebarCollapsed);
+provide('toggleSidebar', toggleSidebar);
+
+const route = useRoute();
+const isLoginPage = computed(() => route.path === "/login");
+
+const isLogin = localStorage.getItem("accessToken");
+const isValidToken = ref(false);
+const checkIsValidToken = async() =>{
+  try {
+      const res = await axios.post(`${rootApi}/auth/introspect?token=${isLogin}`,{
+        headers:{
+           'Authorization': `Bearer ${isLogin}`
+        }
+      });
+      if(res.data.status === 200) {
+        isValidToken.value = true;
+      }
+  }catch(err){
+    console.log(err);
+    
+  }
+}
+onMounted(() => {
+  checkIsValidToken();
+  if (isLogin === null || !isValidToken) {
+    router.push("/login");
+  }
+  // if (isSuppoter === false && window.location.href.includes("/teacher")) {
+  //   router.push("/404")
+  // }
+});
 </script>
-<style>
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2C3E50;
-}
-
-.home-page {
-  display: grid;
-  grid-template-areas:
-    "header header header header"
-    "navbar content content content"
-    "navbar content content content"
-    ". footer footer footer";
-  grid-template-columns: 250px 1fr 1fr 1fr;
-  grid-template-rows: auto 1fr auto;
+<style scoped>
+.wrapper {
   min-height: 100vh;
+  /* display: flex; */
+  flex-direction: row;
 }
 
-.header {
-  grid-area: header;
-}
-
-.navbar {
-  grid-area: navbar;
+.d-flex {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: row;
 }
 
 .content {
-  grid-area: content;
-  margin: 10px 20px;
-  width: calc(100% - 40px);
+  flex-grow: 1;
+  background-color: #f8f9fa;
 }
 
-.footer {
-  grid-area: footer;
-  padding: 20px;
-  background-color: #f8f9fa;
-  text-align: center;
+.sidebar {
+  width: 250px;
+  min-width: 250px;
+}
+
+@media (max-width: 768px) {
+  .content {
+    margin-left: 0;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+  }
 }
 </style>
