@@ -13,6 +13,7 @@
           <div class="c-footer pb-2" v-if="course.teacher.length > 0">
             <img class="avatar" :src="course.teacher[0].avatar" alt="" />
             <p class="my-auto">{{ course.teacher[0].name }}</p>
+            <p class="my-auto">{{ course.teacher[0].name }}</p>
           </div>
 
           <div class="d-flex gap-2 justify-content-center pb-3 container">
@@ -49,8 +50,9 @@ const fetchCourses = async () => {
 };
 
 const fetchStudentCourses = async () => {
-  //const response = await axios.get(`${rootApi}/student-courses?id=${userID.value.id}`);
-}
+  const response = await axios.get(`${rootApi}/student-courses?id=${userID.value.id}`);
+  studentCourses.value = response.result
+};
 
 const isTrial = (courseId) => {
   const studentCourse = studentCourses.value?.find(sc => sc.idCourse === courseId);
@@ -200,7 +202,8 @@ onMounted(async () => {
 }
 
 
-.btn-buy:hover , .btn-buy-only:hover {
+.btn-buy:hover,
+.btn-buy-only:hover {
   background-color: rgba(190, 47, 47, 0.651);
   color: rgba(0, 0, 0, 1);
 }
