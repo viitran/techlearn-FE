@@ -27,8 +27,8 @@
                                                         {{
                                                                 formatCurrency(
                                                                         dataCourse.course.price,
-                                                        dataCourse.course.currencyUnit
-                                                        )
+                                                                        dataCourse.course.currencyUnit
+                                                                )
                                                         }} {{ dataCourse.course.currencyUnit }}
                                                 </p>
                                                 <div class="d-grid gap-2 d-md-block">
@@ -42,8 +42,8 @@
                                                         {{
                                                                 formatCurrency(
                                                                         dataCourse.course.price,
-                                                        dataCourse.course.currencyUnit
-                                                        )
+                                                                        dataCourse.course.currencyUnit
+                                                                )
                                                         }} {{ dataCourse.course.currencyUnit }}
                                                 </p>
                                                 <div class="d-grid gap-2 d-md-block">
@@ -60,7 +60,7 @@
                         <div class="content-header">
                                 <h3 class="content-title">Nội dung khóa học</h3>
                                 <p class="courseData-time">
-                                        {{ filteredChapters.length }} chương • {{ lessons?.length }} bài giảng
+                                        • {{ filteredChapters.length }} chương
                                 </p>
                         </div>
                         <div class="content-body mt-3">
@@ -79,7 +79,7 @@
                                                                                                 class="fas fa-angle-down"></i>&nbsp;
                                                                                         <strong> {{ index + 1
                                                                                                 }}.</strong> {{
-                                                                                        chapter.name }}
+                                                                                                        chapter.name }}
                                                                                 </span>
                                                                         </button>
                                                                 </h5>
@@ -121,7 +121,7 @@
                                                                                                         class="fas fa-angle-down"></i>&nbsp;
                                                                                                 <strong> {{ index + 1
                                                                                                         }}.</strong> {{
-                                                                                                chapter.name }}
+                                                                                                                chapter.name }}
                                                                                         </span>
                                                                                         <i class="fa fa-lock"
                                                                                                 aria-hidden="true"></i>
@@ -160,7 +160,7 @@
                                                                                                         class="fas fa-angle-down"></i>&nbsp;
                                                                                                 <strong> {{ index + 1
                                                                                                         }}.</strong> {{
-                                                                                                chapter.name }}
+                                                                                                                chapter.name }}
                                                                                         </span>
                                                                                 </button>
                                                                         </h5>

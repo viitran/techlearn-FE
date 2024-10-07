@@ -16,6 +16,7 @@ import CoursePage from "@/views/CoursePage.vue";
 import Login from "@/components/login/Login.vue";
 import MyCourse from "@/views/MyCourse.vue";
 import Lesson from "@/views/Lesson.vue";
+import CourseDetailPage from "@/views/CourseDetailPage.vue";
 
 const routes = [
   {
@@ -100,6 +101,12 @@ const routes = [
     path: "/courses/:id",
     name: "lesson",
     component: Lesson,
+    props: true,
+  },
+  {
+    path: "/courseDetail/:id",
+    name: "courseDetail",
+    component: CourseDetailPage,
     props: true,
   },
   {

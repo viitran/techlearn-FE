@@ -6,13 +6,9 @@
                 style="width: 18rem">
                 <template v-if="getCourseDetails(studentCourse.idCourse)">
                     <p class="trying p-1" v-if="studentCourse.status === 'TRIAL'">Đang học thử</p>
-                    <img :src="getCourseDetails(studentCourse.idCourse).thumbnailUrl" class="card-img-top " alt="..." />
+                    <img :src="getCourseDetails(studentCourse.idCourse).thumbnailUrl" class="card-img-top" alt="..." />
                     <div class="card-body p-3" @click="navigateToAssignment(studentCourse.idCourse)">
                         <h5>{{ getCourseDetails(studentCourse.idCourse).name }}</h5>
-                        <p class="lesson-number mb-1">
-                            {{ assignmentCounts[studentCourse.idCourse] || 0 }}
-                            bài tập
-                        </p>
                         <p class="course-des card-text">
                             {{ getCourseDetails(studentCourse.idCourse).description }}
                         </p>
@@ -63,20 +59,9 @@ const getCourseDetails = (idCourse) => {
     return courses.value.find(course => course.id === idCourse);
 };
 
-const fetchAssignmentsForCourse = async (courseId) => {
-    const chapters = await axios.get(`${rootApi}/chapters?idCourse=${courseId}`);
-    let totalAssignments = 0;
-
-    for (const chapter of chapters.data.result.data) {
-        const res = await axios.get(`${rootApi}/lessons?idChapter=${chapter.id}`);
-        totalAssignments += res.data.result.data.items.length;
-    }
-    assignmentCounts.value[courseId] = totalAssignments;
-};
-
 const navigateToAssignment = (courseId) => {
     router.push({
-        name: 'lesson',
+        name: 'courseDetail',
         params: { id: courseId }
     });
 };
@@ -84,9 +69,6 @@ const navigateToAssignment = (courseId) => {
 onMounted(async () => {
     await fetchStudentCourses();
     await fetchCourses();
-    for (const studentCourse of student_courses.value) {
-        await fetchAssignmentsForCourse(studentCourse.idCourse);
-    }
 });
 </script>
 
@@ -198,7 +180,7 @@ onMounted(async () => {
 }
 
 .course-des {
-    font-size: 13px;
+    font-size: 14px;
     color: #333;
     line-height: 1.2rem;
     overflow: hidden;
