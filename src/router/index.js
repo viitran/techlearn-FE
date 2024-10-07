@@ -86,6 +86,12 @@ const routes = [
     props: true,
   },
   {
+    path: "/myCourse",
+    name: "myCourse",
+    component: MyCourse,
+    props: true,
+  },
+  {
     path: "/:catchAll(.*)",
     name: "NotFound",
     component: NotFound,
