@@ -17,7 +17,7 @@
           <h5 class="card-title mb-4">Tìm kiếm lịch</h5>
           <form @submit.prevent="searchCalendar" class="calendar-search-form">
             <div class="row g-3 align-items-end">
-              <div class="col-md-3">
+              <!-- <div class="col-md-4">
                 <label class="form-label" for="course">Khóa học</label>
                 <select class="form-select" name="course" v-model="course" @change="onCourseChange">
                   <option :value="null" disabled selected hidden>Chọn Khóa học</option>
@@ -26,8 +26,8 @@
                   </option>
                 </select>
                 <small class="text-danger">{{ courseError }}</small>
-              </div>
-              <div class="col-md-3">
+              </div> -->
+              <div class="col-md-4">
                 <label class="form-label" for="chapter">Chương</label>
                 <select class="form-select" id="chapter" v-model="chapter" @change="onChuongChange">
                   <option :value="null" disabled selected hidden>Chọn chương</option>
@@ -37,7 +37,7 @@
                 </select>
                 <small class="text-danger">{{ chapterError }}</small>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <label class="form-label" for="teacher">Giảng viên</label>
                 <select class="form-select" id="teacher" v-model="teacher">
                   <option :value="null" selected>Chọn giảng viên</option>
@@ -46,7 +46,7 @@
                   </option>
                 </select>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <button type="submit" class="btn btn-primary w-100">
                   <i class="fas fa-filter"></i> &nbsp; Lọc
                 </button>
@@ -74,7 +74,7 @@ import { toast } from 'vue3-toastify';
 import * as yup from 'yup';
 import Calendar from '../Calendar/Calendar.vue';
 import { useStore } from 'vuex';
-
+import { useRoute } from 'vue-router';
 const rootApi = process.env.VUE_APP_ROOT_API;
 const store = useStore();
 
@@ -108,6 +108,8 @@ const listCourse = ref([]);
 const listChapters = ref([]);
 const user = computed(() => store.getters.user);
 const isFilterApplied = ref(false);
+const route = useRoute();
+const courseId = route.params.courseId;
 
 const toggleCalendarForm = () => {
     stateButtonFormStudent.value = !stateButtonFormStudent.value;
@@ -124,7 +126,7 @@ const onCourseChange = async () => {
 
 const getChapters = async () => {
     try {
-        const res = await axios.get(`${rootApi}/chapters?idCourse=${course._value.id}`, {
+        const res = await axios.get(`${rootApi}/chapters?idCourse=${courseId}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -137,7 +139,7 @@ const getChapters = async () => {
 
 const getTeachers = async () => {
     try {
-        const res = await axios.get(`${rootApi}/teachers/course/${course.value.id}`, {
+        const res = await axios.get(`${rootApi}/teachers/course/${courseId}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -156,7 +158,7 @@ const searchCalendar = handleSubmit(async (formData) => {
         const { course, chapter, teacher } = formData;
 
         if (teacher === null) {
-            url.value = `${rootApi}/teacher/calendar/${course.id}/chapter/${chapter.id}/`;
+            url.value = `${rootApi}/teacher/calendar/${courseId}/chapter/${chapter.id}/`;
         } else {
             url.value = `${rootApi}/teacher/${teacher.Id}/calendar`;
             ownerId.value = teacher.Id;
@@ -217,7 +219,8 @@ watch(course, (newCourse) => {
 
 watch(user, (newUser) => {
     if (newUser) {
-        fetchCoursesByUser();
+       getChapters();
+       getTeachers();
     }
 }, { immediate: true });
 
