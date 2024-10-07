@@ -65,7 +65,7 @@ const routes = [
     props: true
   },
   {
-    path: "/student",
+    path: "/studentCalendar/:courseId",
     name: "studentCalendar",
     component: StudentCalendar,
     props: true
