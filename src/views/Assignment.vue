@@ -32,7 +32,7 @@
               }} {{ dataCourse.course.currencyUnit }}
             </p>
             <div class="d-grid gap-2 d-md-block">
-              <button class="btn btn-primary custom-button" type="button">Mua</button>
+              <button class="btn btn-primary custom-button btn-buy w-40" type="button">Mua</button>
             </div>
           </div>
           <div v-if="isOtherStatus">
@@ -46,8 +46,8 @@
               }} {{ dataCourse.course.currencyUnit }}
             </p>
             <div class="d-grid gap-2 d-md-block">
-              <button class="btn btn-primary custom-button" type="button">Mua</button>
-              <button class="btn btn-primary custom-button" type="button">Đăng ký học thử</button>
+              <button class="btn btn-primary custom-button btn-buy w-40" type="button">Mua</button>
+              <button class="btn btn-primary custom-button btn-try w-40" type="button">Đăng ký học thử</button>
             </div>
           </div>
         </div>
@@ -75,24 +75,58 @@
                   </button>
                 </h5>
               </div>
+              <div :id="'collapse' + index" :class="index === 0 ? 'collapse show' : 'collapse'"
+                :aria-labelledby="'heading' + index">
+                <div v-for="(item, itemIndex) in lessons" :key="itemIndex">
+                  <div class="card-body assignment-card border-bottom"
+                    v-if="Number(item?.chapter) === Number(chapter?.id)" @click="
+                      router.push({
+                        name: 'submitAssignment',
+                        params: { id: item.id },
+                        query: { userID: userId },
+                      })
+                      ">
+                    <div class="assignment">
+                      <p class="assignment-title">
+                        {{ item.title }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div v-else>
               <div v-if="chapter.isPublic === false">
                 <div class="card-header bg-col" :id="'heading' + index">
                   <h5 class="mb-0">
-                    <button class="btn chapter-title d-flex justify-content-between align-items-center w-100"
-                      style="cursor: default;">
-                      <span style="color: #a0a0a0;">
+                    <button class="btn chapter-title w-100 d-flex justify-content-between align-items-center"
+                      type="button" data-toggle="collapse" :data-target="'#collapse' + index"
+                      :aria-controls="'collapse' + index">
+                      <span>
                         <i class="fas fa-angle-down"></i>&nbsp;
-                        <strong>{{ index + 1 }}.</strong> {{ chapter.name }}
+                        <strong> {{ index + 1 }}.</strong> {{ chapter.name }}
                       </span>
                       <i class="fa fa-lock" aria-hidden="true"></i>
                     </button>
                   </h5>
                 </div>
+                <div :id="'collapse' + index" :class="index === 0 ? 'collapse show' : 'collapse'"
+                  :aria-labelledby="'heading' + index">
+                  <div v-for="(item, itemIndex) in lessons" :key="itemIndex">
+                    <div class="card-body" v-if="Number(item?.chapter) === Number(chapter?.id)">
+                      <div class="assignment d-flex justify-content-between align-items-center w-100"
+                        style="cursor: context-menu">
+                        <p>
+                          {{ item.title }}
+                        </p>
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <div v-else>
-                <div class="card-header" :id="'heading' + index">
+                <div class="card-header bg-col" :id="'heading' + index">
                   <h5 class="mb-0">
                     <button class="btn chapter-title w-100 d-flex justify-content-left" type="button"
                       data-toggle="collapse" :data-target="'#collapse' + index" :aria-controls="'collapse' + index">
@@ -103,23 +137,23 @@
                     </button>
                   </h5>
                 </div>
-              </div>
-            </div>
-            <div :id="'collapse' + index" :class="collapseStates[index] ? 'collapse show' : 'collapse'"
-              :aria-labelledby="'heading' + index">
-              <div v-for="(item, itemIndex) in lessons" :key="itemIndex">
-                <div class="card-body assignment-card border-bottom"
-                  v-if="Number(item?.chapter) === Number(chapter?.id)" @click="
-                    router.push({
-                      name: 'submitAssignment',
-                      params: { id: item.id },
-                      query: { userID: userId },
-                    })
-                    ">
-                  <div class="assignment">
-                    <p class="assignment-title">
-                      {{ item.title }}
-                    </p>
+                <div :id="'collapse' + index" :class="index === 0 ? 'collapse show' : 'collapse'"
+                  :aria-labelledby="'heading' + index">
+                  <div v-for="(item, itemIndex) in lessons" :key="itemIndex">
+                    <div class="card-body assignment-card border-bottom"
+                      v-if="Number(item?.chapter) === Number(chapter?.id)" @click="
+                        router.push({
+                          name: 'submitAssignment',
+                          params: { id: item.id },
+                          query: { userID: userId },
+                        })
+                        ">
+                      <div class="assignment">
+                        <p class="assignment-title">
+                          {{ item.title }}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -171,7 +205,7 @@ const fetchCourseData = async () => {
 
 const fetchLessons = async () => {
   try {
-    const response = await axios.get(
+    const response = await axios.get( 
       `${rootApi}/lessons`
     );
     lessons.value = response.data.result.data.items.map((item) => {
@@ -240,8 +274,8 @@ const techStackNames = computed(() => {
     : null;
 });
 
-const isTrial = computed(() => studentCourse.status === "TRIALs");
-const isOtherStatus = computed(() => studentCourse.value?.status !== 'TRIAL' && studentCourse.value?.status !== 'PAID');
+const isTrial = computed(() => studentCourse.status === 'TRIAL');
+const isOtherStatus = computed(() => studentCourse.status !== 'TRIAL' && studentCourse.status !== 'PAID');
 
 onMounted(async () => {
   await Promise.all([

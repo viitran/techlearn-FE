@@ -12,7 +12,7 @@
           </div>
           <div class="c-footer pb-2" v-if="course.teacher.length > 0">
             <img class="avatar" :src="course.teacher[0].avatar" alt="" />
-            <p class="my-auto">{{ course.teachers[0].name }}</p>
+            <p class="my-auto">{{ course.teacher[0].name }}</p>
           </div>
 
           <div class="d-flex gap-2 justify-content-center pb-3 container">
@@ -31,8 +31,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted, computed } from "vue";
-import avatar from "../../public/avatar.jpg";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
@@ -42,17 +41,16 @@ const store = useStore();
 const rootApi = process.env.VUE_APP_ROOT_API;
 const courses = ref([]);
 const studentCourses = ref([]);
-const userID = ref(store.getters.user?.id);
+const userID = ref(store.getters.user);
 
 const fetchCourses = async () => {
-  const response = await axios.get(`${rootApi}/courses/user?id=${userID.value}`);
+  const response = await axios.get(`${rootApi}/courses`);
   courses.value = response?.data?.result?.data?.items;
 };
 
 const fetchStudentCourses = async () => {
-  const response = await axios.get(`${rootApi}/student-courses?id=${userID.value}`);
-  studentCourses.value = response.result
-};
+  //const response = await axios.get(`${rootApi}/student-courses?id=${userID.value.id}`);
+}
 
 const isTrial = (courseId) => {
   const studentCourse = studentCourses.value?.find(sc => sc.idCourse === courseId);
