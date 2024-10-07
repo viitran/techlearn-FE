@@ -94,8 +94,7 @@
                                                                                 @click="
                                                                                         router.push({
                                                                                                 name: 'submitAssignment',
-                                                                                                params: { id: item.id },
-                                                                                                query: { userID: userId },
+                                                                                                params: { id: item.id }
                                                                                         })
                                                                                         ">
                                                                                 <div class="assignment">
@@ -175,8 +174,7 @@
                                                                                         @click="
                                                                                                 router.push({
                                                                                                         name: 'submitAssignment',
-                                                                                                        params: { id: item.id },
-                                                                                                        query: { userID: userId },
+                                                                                                        params: { id: item.id }
                                                                                                 })
                                                                                                 ">
                                                                                         <div class="assignment">

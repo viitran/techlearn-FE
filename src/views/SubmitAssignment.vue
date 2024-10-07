@@ -1,10 +1,6 @@
 <template>
   <div class="container-fluid ">
-    <!-- Nội dung bài tập -->
     <div class="assignment-container" v-if="assignmentDescription">
-      <div class="title-container">
-        <button @click="viewSolution">Xem cách giải</button>
-      </div>
       <div class="assignment-description">
         <div ref="description" class="description-text" v-html="format(assignmentDescription.content)"></div>
       </div>
@@ -12,70 +8,76 @@
     <div v-else>
       <p>Đang tải dữ liệu...</p>
     </div>
-
-    <!-- Form nộp bài tập -->
-    <div class="submit-container">
-      <p>Nộp bài tập:</p>
-      <div class="input-container">
-        <input type="text" placeholder="Thêm link github tại đây" v-model="githubLink" />
-        <button @click="submitAssignment" :disabled="isLoading || isPassed" :class="{ 'button-disabled': isPassed }">
-          <span v-if="isLoading">
-            <div class="spinner"></div>
-          </span>
-          <span v-else>Nộp bài</span>
-        </button>
+    <div v-if="assignmentDescription?.type === 'EXERCISES'">
+      <div class="d-flex justify-content-end">
+        <button class="btn btn-outline-primary" type="button" @click="viewSolution">{{ active ? 'Đóng tham khảo': 'Tham khảo' }}</button>
       </div>
-    </div>
-
-    <div class="result-container">
-      <div class="result-header">
-        <p>Kết quả:</p>
-        <button @click="openModal">Xem lịch sử nộp bài</button>
-      </div>
-
-      <div v-if="lastResult" class="result-AI-container">
-        <div class="time-container">
-          <p>Nộp bài {{ formatDateString(lastResult.createdDate) }}</p>
+      <div v-if="active">
+        <div class="assignment-description">
+          <div ref="description" class="description-text" v-html="format(assignmentDescription?.contentRefer)"></div>
         </div>
-        <div class="response-AI-text" v-html="format(lastResult.review)"></div>
       </div>
-    </div>
-
-    <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-xl">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="historyModalLabel" style="font-weight: 600; font-size: 25px">
-              Lịch sử nộp bài
-            </h5>
+      <div class="submit-container">
+        <p>Nộp bài tập:</p>
+        <div class="input-container mt-3">
+          <input type="text" placeholder="Thêm link github tại đây" v-model="githubLink" />
+          <button @click="submitAssignment" :disabled="isLoading || isPassed" :class="{ 'button-disabled': isPassed }">
+            <span v-if="isLoading">
+              <div class="spinner"></div>
+            </span>
+            <span v-else>Nộp bài</span>
+          </button>
+        </div>
+      </div>
+      <div class="result-container mt-3">
+        <div class="result-header">
+          <p>Kết quả:</p>
+          <button @click="openModal">Xem lịch sử nộp bài</button>
+        </div>
+        <div v-if="lastResult" class="result-AI-container">
+          <div class="time-container">
+            <p>Nộp bài {{ formatDateString(lastResult.createdDate) }}</p>
           </div>
-          <div class="modal-body">
-            <div v-if="result.length > 0">
-              <div class="accordion" id="accordionExample">
-                <div class="accordion-item" v-for="(res, index) in result" :key="index">
-                  <h2 class="accordion-header">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                      :data-bs-target="'#collapse' + res.id" aria-expanded="true" :aria-controls="'#collapse' + res.id">
-                      <p style="font-size: 18px; font-weight: 550; margin-bottom: 15px">
-                        Lần nộp thứ {{ index + 1 }}
-                      </p>
-                      <p class="ms-3">Thời gian nộp: {{ formatDateString(res.createdDate) }}</p>
-                    </button>
-                  </h2>
-                  <div :id="'collapse' + res.id" class="accordion-collapse collapse "
-                    data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                      <div class="response-AI-text" v-html="format(res.review)"></div>
+          <div class="response-AI-text" v-html="format(lastResult.review)"></div>
+        </div>
+      </div>
+      <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="historyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="historyModalLabel" style="font-weight: 600; font-size: 25px">
+                Lịch sử nộp bài
+              </h5>
+            </div>
+            <div class="modal-body">
+              <div v-if="result.length > 0">
+                <div class="accordion" id="accordionExample">
+                  <div class="accordion-item" v-for="(res, index) in result" :key="index">
+                    <h2 class="accordion-header">
+                      <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                        :data-bs-target="'#collapse' + res.id" aria-expanded="true"
+                        :aria-controls="'#collapse' + res.id">
+                        <p style="font-size: 18px; font-weight: 550; margin-bottom: 15px">
+                          Lần nộp thứ {{ index + 1 }}
+                        </p>
+                        <p class="ms-3">Thời gian nộp: {{ formatDateString(res.createdDate) }}</p>
+                      </button>
+                    </h2>
+                    <div :id="'collapse' + res.id" class="accordion-collapse collapse "
+                      data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        <div class="response-AI-text" v-html="format(res.review)"></div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <div v-else>
+                <p>Chưa có lịch sử nộp bài.</p>
+              </div>
             </div>
-            <div v-else>
-              <p>Chưa có lịch sử nộp bài.</p>
-            </div>
+            <div class="modal-footer"></div>
           </div>
-          <div class="modal-footer"></div>
         </div>
       </div>
     </div>
@@ -87,9 +89,12 @@ import axios from "axios";
 import { ref, onMounted } from "vue";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 const route = useRoute();
+const router = useRouter();
+const store = useStore();
 
 const assignmentDescription = ref(null);
 const githubLink = ref("");
@@ -98,9 +103,10 @@ const isLoading = ref(false);
 const rootApi = process.env.VUE_APP_ROOT_API;
 const description = ref(null);
 const lastResult = ref();
-const id = route.query.userID;
+const userID = ref(store.getters.user.id);
 const assignmentId = route.params.id;
 const isPassed = ref(false);
+const active = ref(false);
 
 const openModal = async () => {
   const modal = new bootstrap.Modal(document.getElementById("historyModal"));
@@ -108,10 +114,8 @@ const openModal = async () => {
   result.value.splice(0, result.value.length);
   try {
     const response = await axios.get(
-      `${rootApi}/reviews?id=${id}&assignment=${assignmentId}&pageSize=30`
+      `${rootApi}/reviews?id=${userID.value}&assignment=${assignmentId}&pageSize=30`
     );
-    console.log(id + " " + assignmentId);
-
     response.data.result.items.map((rev, index) => {
 
       result.value.push(rev);
@@ -122,7 +126,7 @@ const openModal = async () => {
 const fetchLastResult = async () => {
   try {
     const response = await axios.get(
-      `${rootApi}/reviews/${assignmentId}?id=${id}`
+      `${rootApi}/reviews/${assignmentId}?id=${userID.value}`
     );
     lastResult.value = response.data.result;
     isPassed.value = response.data.result.status === "Pass" ? true : false;
@@ -132,7 +136,7 @@ const fetchLastResult = async () => {
 const fetchAssignments = async () => {
   try {
     const response = await axios.get(
-      `${rootApi}/assignments/${assignmentId}`
+      `${rootApi}/lessons/${assignmentId}`
     );
     assignmentDescription.value = response.data.result.data;
   } catch (error) {
@@ -148,7 +152,7 @@ const submitAssignment = async () => {
       {
         github_link: githubLink.value,
         exerciseTitle: assignmentDescription.value.content,
-        idUser: id,
+        idUser: userID.value,
         idAssignment: assignmentId
       }
     );
@@ -179,6 +183,14 @@ const formatDateString = (dateString) => {
   });
 };
 
+const goBack = () => {
+  router.go(-1);
+};
+
+const viewSolution = () => {
+  active.value = !active.value;
+};
+
 onMounted(async () => {
   await fetchAssignments();
   await fetchLastResult();
@@ -195,27 +207,6 @@ onMounted(async () => {
   color: #999999;
   cursor: not-allowed;
   border: 1px solid #d3d3d3;
-}
-
-.title-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.title-container p {
-  font-size: 30px;
-  font-weight: 700;
-}
-
-.title-container button {
-  padding: 10px;
-  border-radius: 8px;
-  background-color: #1872db;
-  color: white;
-  outline: none;
-  border: none;
-  margin-right: 30px;
 }
 
 .description-text {
