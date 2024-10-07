@@ -10,9 +10,8 @@
             <p class="card-total-exercises">{{ course.totalExercises }}</p>
             <p class="card-text flex-grow-1">{{ course.description }}</p>
           </div>
-          <div class="c-footer pb-2" v-if="course.teacher.length > 0">
-            <img class="avatar" :src="course.teacher[0].avatar" alt="" />
-            <p class="my-auto">{{ course.teacher[0].name }}</p>
+          <div class="c-footer pb-2" v-if="course.teacher.length > 1">
+            <img class="avatar" :src="avatar" alt="" />
             <p class="my-auto">{{ course.teacher[0].name }}</p>
           </div>
 
@@ -33,6 +32,7 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted } from "vue";
+import avatar from "../../public/avatar.jpg";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
@@ -42,16 +42,16 @@ const store = useStore();
 const rootApi = process.env.VUE_APP_ROOT_API;
 const courses = ref([]);
 const studentCourses = ref([]);
-const userID = ref(store.getters.user);
+const userID = ref(store.getters.user.id);
 
 const fetchCourses = async () => {
-  const response = await axios.get(`${rootApi}/courses`);
-  courses.value = response?.data?.result?.data?.items;
+  const response = await axios.get(`${rootApi}/courses?id=${userID.value}`);
+  courses.value = response.data.result.data.items;
 };
 
 const fetchStudentCourses = async () => {
-  const response = await axios.get(`${rootApi}/student-courses?id=${userID.value.id}`);
-  studentCourses.value = response.result
+  const response = await axios.get(`${rootApi}/student-courses?id=${userID.value}`);
+  studentCourses.value = response.data.result;
 };
 
 const isTrial = (courseId) => {
@@ -96,7 +96,7 @@ onMounted(async () => {
 
 .card-img-top {
   width: 100%;
-  height: 150px;
+  height: 190px;
   object-fit: cover;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -117,7 +117,7 @@ onMounted(async () => {
   border-radius: 15px;
   display: flex;
   flex-direction: column;
-  height: 300px;
+  height: 370px;
 }
 
 .quantity-exercise {
