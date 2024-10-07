@@ -60,7 +60,7 @@
                         <div class="content-header">
                                 <h3 class="content-title">Nội dung khóa học</h3>
                                 <p class="courseData-time">
-                                        • {{ filteredChapters.length }} chương
+                                        • {{ filteredChapters.length }} chương • {{ lessons?.length }} bài học
                                 </p>
                         </div>
                         <div class="content-body mt-3">
@@ -94,7 +94,8 @@
                                                                                 @click="
                                                                                         router.push({
                                                                                                 name: 'submitAssignment',
-                                                                                                params: { id: item.id }
+                                                                                                params: { id: item.id },
+                                                                                                query: { courseId: dataCourse.course.id }
                                                                                         })
                                                                                         ">
                                                                                 <div class="assignment">
@@ -174,7 +175,8 @@
                                                                                         @click="
                                                                                                 router.push({
                                                                                                         name: 'submitAssignment',
-                                                                                                        params: { id: item.id }
+                                                                                                        params: { id: item.id },
+                                                                                                        query: { courseId: dataCourse.course.id }
                                                                                                 })
                                                                                                 ">
                                                                                         <div class="assignment">
