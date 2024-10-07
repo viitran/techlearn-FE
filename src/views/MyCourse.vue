@@ -19,7 +19,9 @@
                     </div>
                     <div class="c-footer py-1">
                         <img class="avatar" :src="avatar" alt="" />
-                        <p class="my-auto">Nguyễn Ngọc Quang</p>
+                        <p class="my-auto">{{ getCourseDetails(studentCourse.idCourse).teacher.length > 1 ?
+                            getCourseDetails(studentCourse.idCourse).teacher[0].name + '...' :
+                            getCourseDetails(studentCourse.idCourse).teacher[0].name }}</p>
                     </div>
                     <button class="btn btn-primary mx-3 my-2 btn-buy">
                         {{ studentCourse.status === 'PAID' ? 'Học' : 'Mua' }}
@@ -166,12 +168,12 @@ onMounted(async () => {
     border-top-left-radius: 4px;
     border-bottom-left-radius: 4px;
     clip-path: polygon(20px 0px, 100% 0px, 100% 100%, 0% 100%, 0% 20px);
-    background: #007AFF6B;
+    background: yellow;
     padding: 16px 40px;
     margin: 0 8px;
     font-weight: 600;
     font-size: 13px;
-    color: #333;
+    color: red;
     top: 10px;
     right: 0;
     width: 105px;
@@ -185,7 +187,7 @@ onMounted(async () => {
     left: 0;
     width: 20px;
     height: 20px;
-    background: #007AFF6B;
+    background: rgb(211, 211, 0);
     box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
     border-radius: 0 0 6px 0;
     transition: transform 500ms;
