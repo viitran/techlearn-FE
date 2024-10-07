@@ -49,7 +49,7 @@
         </nav>
     </header>
     <div>
-        <PointPurchaseModal :show="showPointModal" @close="closePointModal" />
+        <PointPurchaseModal v-if="isLoggedIn && isUser" :show="showPointModal" @close="closePointModal" />
     </div>
 </template>
 
@@ -113,7 +113,6 @@ const handleLogout = async () => {
 
 const toggleShowModal = () => {
     showPointModal.value = !showPointModal.value;
-    console.log(showPointModal.value);
 };
 
 const closePointModal = () => {
