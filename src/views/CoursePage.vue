@@ -5,7 +5,7 @@
         <div class="card shadow mx-2 d-flex flex-column" style="width: 100%">
           <img :src="course.thumbnailUrl" class="card-img-top" alt="..." />
           <div class="card-body d-flex flex-column flex-grow-1"
-            @click="router.push({ name: 'assignment', params: { id: course.id }, query: { userID: userID } })">
+            @click="navigateToAssignment(course.id)">
             <p class="card-name">{{ course.name }}</p>
             <p class="card-total-exercises">{{ course.totalExercises }}</p>
             <p class="card-text flex-grow-1">{{ course.description }}</p>
@@ -62,6 +62,13 @@ const isTrial = (courseId) => {
 const isPaid = (courseId) => {
   const studentCourse = studentCourses.value?.find(sc => sc.idCourse === courseId);
   return studentCourse && studentCourse.status === "PAID";
+};
+
+const navigateToAssignment = (courseId) => {
+    router.push({
+        name: 'lesson',
+        params: { id: courseId }
+    });
 };
 
 onMounted(async () => {
