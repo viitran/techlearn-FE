@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
-    <div class="d-flex flex-wrap justify-content-center gap-4">
-      <div class="" v-for="(course, index) in courses" :key="index" style="width: 18rem">
-        <div class="card shadow mx-2 d-flex flex-column" style="width: 100%">
+  <div class="container ">
+    <div class="row">
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4" v-for="(course, index) in courses" :key="index">
+        <div class="card shadow mx-2 d-flex flex-column" style="width: 100%;">
           <img :src="course.thumbnailUrl" class="card-img-top" alt="Course thumbnail" />
           <div class="card-body d-flex flex-column flex-grow-1" @click="navigateToAssignment(course.id)">
             <p class="card-name">{{ course.name }}</p>
@@ -84,8 +84,8 @@ onMounted(async () => {
 
 <style scoped>
 .container {
-  display: flex;
-  justify-content: center;
+  /* display: flex;
+  justify-content: center; */
 }
 
 .card-container {
