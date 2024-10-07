@@ -6,7 +6,7 @@
                 style="width: 18rem">
                 <template v-if="getCourseDetails(studentCourse.idCourse)">
                     <p class="trying p-1" v-if="studentCourse.status === 'TRIAL'">Đang học thử</p>
-                    <img :src="getCourseDetails(studentCourse.idCourse).thumbnailUrl" class="card-img-top " alt="..." />
+                    <img :src="getCourseDetails(studentCourse.idCourse).thumbnailUrl" class="card-img-top" alt="..." />
                     <div class="card-body p-3" @click="navigateToAssignment(studentCourse.idCourse)">
                         <h5>{{ getCourseDetails(studentCourse.idCourse).name }}</h5>
                         <p class="lesson-number mb-1">
@@ -199,7 +199,7 @@ onMounted(async () => {
 }
 
 .course-des {
-    font-size: 13px;
+    font-size: 14px;
     color: #333;
     line-height: 1.2rem;
     overflow: hidden;
