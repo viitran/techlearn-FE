@@ -60,7 +60,7 @@
       <div class="loader"></div>
     </div>
   </div>
-  <loading :active="isLoading" :is-full-page="true" />
+  <loading :active.sync="isLoading" :can-cancel="false" :is-full-page="false" loader="bars"></loading>
 </template>
 
 <script setup>
@@ -83,7 +83,7 @@ import frtimeZoneData from '@syncfusion/ej2-cldr-data/main/vi/timeZoneNames.json
 import frGregorian from '@syncfusion/ej2-cldr-data/main/vi/ca-gregorian.json';
 import frNumberingSystem from '@syncfusion/ej2-cldr-data/supplemental/numberingSystems.json';
 import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/css/index.css';
+import 'vue-loading-overlay/dist/vue-loading.css';
 import { useStore } from "vuex";
 import { computed } from "vue";
 
