@@ -1,21 +1,18 @@
 <template>
-  <div class="container">
+  <div class="container ">
     <div class="row">
-      <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4" v-for="(course, index) in courses" :key="index">
-        <div class="card shadow mx-2 d-flex flex-column" style="width: 100%">
-          <img :src="course.thumbnailUrl" class="card-img-top" alt="..." />
-          <div class="card-body d-flex flex-column flex-grow-1"
-            @click="navigateToAssignment(course.id)">
+      <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4" v-for="(course, index) in courses" :key="index">
+        <div class="card shadow mx-2 d-flex flex-column" style="width: 100%;">
+          <img :src="course.thumbnailUrl" class="card-img-top" alt="Course thumbnail" />
+          <div class="card-body d-flex flex-column flex-grow-1" @click="navigateToAssignment(course.id)">
             <p class="card-name">{{ course.name }}</p>
             <p class="card-total-exercises">{{ course.totalExercises }}</p>
-            <p class="card-text flex-grow-1">{{ course.description }}</p>
+            <p class="card-text flex-grow-1">{{ truncatedDescriptions(course.description) }}</p>
           </div>
-          <div class="c-footer pb-2" v-if="course.teacher.length > 0">
-            <img class="avatar" :src="course.teacher[0].avatar" alt="" />
-            <p class="my-auto">{{ course.teacher[0].name }}</p>
-            <p class="my-auto">{{ course.teacher[0].name }}</p>
+          <div class="c-footer pb-2" v-if="course.teacher.length > 1">
+            <img class="avatar" :src="avatar" alt="Teacher avatar" />
+            <p class="my-auto">{{ course?.teacher[0]?.name }}</p>
           </div>
-
           <div class="d-flex gap-2 justify-content-center pb-3 container">
             <button v-if="isTrial(course.id)" type="button" class="btn btn-primary btn-buy-only px-2">Mua</button>
             <button v-else-if="isPaid(course.id)" type="button" class="btn btn-primary btn-learn-only">Học</button>
@@ -33,6 +30,7 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted, computed } from "vue";
+import avatar from "../../public/avatar.jpg";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
@@ -45,13 +43,13 @@ const studentCourses = ref([]);
 const userID = computed(() => store.getters.user);
 
 const fetchCourses = async () => {
-  const response = await axios.get(`${rootApi}/courses`);
-  courses.value = response?.data?.result?.data?.items;
+  const response = await axios.get(`${rootApi}/courses?id=${userID.value.id}`);
+  courses.value = response.data.result.data.items;
 };
 
 const fetchStudentCourses = async () => {
   const response = await axios.get(`${rootApi}/student-courses?id=${userID.value.id}`);
-  studentCourses.value = response.result
+  studentCourses.value = response.data.result;
 };
 
 const isTrial = (courseId) => {
@@ -65,11 +63,18 @@ const isPaid = (courseId) => {
 };
 
 const navigateToAssignment = (courseId) => {
-    router.push({
-        name: 'lesson',
-        params: { id: courseId }
-    });
+  router.push({
+    name: 'lesson',
+    params: { id: courseId }
+  });
 };
+
+const truncatedDescriptions = (description) => {
+  return description.length > 120 ?
+    description.substring(0, 120) + '...' :
+    description
+};
+
 
 onMounted(async () => {
   await fetchCourses();
@@ -79,8 +84,8 @@ onMounted(async () => {
 
 <style scoped>
 .container {
-  display: flex;
-  justify-content: center;
+  /* display: flex;
+  justify-content: center; */
 }
 
 .card-container {
@@ -96,7 +101,7 @@ onMounted(async () => {
 
 .card-img-top {
   width: 100%;
-  height: 150px;
+  height: 190px;
   object-fit: cover;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -117,7 +122,7 @@ onMounted(async () => {
   border-radius: 15px;
   display: flex;
   flex-direction: column;
-  height: 300px;
+  height: 370px;
 }
 
 .quantity-exercise {
