@@ -21,6 +21,13 @@
                                                 </span>
                                                 <span v-else>N/A</span>
                                         </p>
+                                        <p class="title">       
+                                                <span class="fw-bold">Giảng viên: </span>
+                                                <span v-if="teachers">
+                                                        {{ teachers }}
+                                                </span>
+                                                <span v-else>N/A</span>
+                                        </p>
                                         <div v-if="isTrial">
                                                 <p class="title">
                                                         <span class="fw-bold">Giá khoá học:</span>
@@ -207,7 +214,7 @@ const router = useRouter();
 const route = useRoute();
 const store = useStore();
 const rootApi = process.env.VUE_APP_ROOT_API;
-const userID = ref(store.getters.user.id);
+const userID = computed(() => store.getters.user);
 const courseId = route.params.id;
 
 const courseData = ref();
@@ -279,7 +286,7 @@ const fetchStudentCourses = async () => {
                         `${rootApi}/student-courses/user`, {
                         params: {
                                 idCourse: courseId,
-                                idUser: userID.value
+                                idUser: userID.value.id
                         }
                 }
                 );
@@ -305,6 +312,12 @@ const formatCurrency = (value, unit) => {
 const techStackNames = computed(() => {
         return dataCourse.course?.techStack?.length
                 ? dataCourse.course.techStack.map(stack => stack.name).join(", ")
+                : null;
+});
+
+const teachers = computed(() => {
+        return dataCourse.course?.teacher?.length
+                ? dataCourse.course.teacher.map(teacher => teacher.name).join(", ")
                 : null;
 });
 
