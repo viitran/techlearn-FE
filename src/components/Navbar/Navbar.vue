@@ -15,7 +15,10 @@
           <router-link to="/listPrompt">Cấu hình AI</router-link>
         </li>
         <li v-if="isUser">
-          <router-link to="/coursePage">Khóa học của tôi</router-link>
+          <router-link to="/coursePage">Khóa học</router-link>
+        </li>
+        <li v-if="isUser">
+          <router-link to="/myCoursePage">Khóa học của tôi</router-link>
         </li>
       </ul>
     </nav>
