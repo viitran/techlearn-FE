@@ -30,7 +30,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import avatar from "../../public/avatar.jpg";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -42,16 +42,16 @@ const rootApi = process.env.VUE_APP_ROOT_API;
 const courses = ref([]);
 const student_courses = ref([]);
 const assignmentCounts = ref({});
-const userID = ref(store.getters.user.id);
+const userID = computed(() => store.getters.user);
 
 
 const fetchStudentCourses = async () => {
-    const res = await axios.get(`${rootApi}/student-courses?id=${userID.value}`);
+    const res = await axios.get(`${rootApi}/student-courses?id=${userID.value.id}`);
     student_courses.value = res.data.result;
 };
 
 const fetchCourses = async () => {
-    const response = await axios.get(`${rootApi}/courses?id=${userID.value}`);
+    const response = await axios.get(`${rootApi}/courses?id=${userID.value.id}`);
     courses.value = response.data.result.data.items;
 };
 

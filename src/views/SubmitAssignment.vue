@@ -22,7 +22,7 @@
         <div class="submit-container">
           <p>Nộp bài tập:</p>
           <div class="input-container mt-3">
-            <input type="text" placeholder="Thêm link github tại đây" v-model="githubLink" />
+            <input type="text" placeholder="Thêm link github tại đây" v-model="githubLink" required/>
             <button @click="submitAssignment" :disabled="isLoading || isPassed"
               :class="{ 'button-disabled': isPassed }">
               <span v-if="isLoading">
@@ -107,7 +107,7 @@ const isLoading = ref(false);
 const rootApi = process.env.VUE_APP_ROOT_API;
 const description = ref(null);
 const lastResult = ref();
-const userID = ref(store.getters.user.id);
+const userID = computed(() => store.getters.user);
 const assignmentId = route.params.id;
 const courseId = route.query.courseId;
 const isPassed = ref(false);
@@ -132,7 +132,7 @@ const openModal = async () => {
 const fetchLastResult = async () => {
   try {
     const response = await axios.get(
-      `${rootApi}/reviews/${assignmentId}?id=${userID.value}`
+      `${rootApi}/reviews/${assignmentId}?id=${userID.value.id}`
     );
     lastResult.value = response.data.result;
     isPassed.value = response.data.result.status === "Pass" ? true : false;
@@ -158,7 +158,7 @@ const submitAssignment = async () => {
       {
         github_link: githubLink.value,
         exerciseTitle: assignmentDescription.value.content,
-        idUser: userID.value,
+        idUser: userID.value.id,
         idAssignment: assignmentId
       }
     );
@@ -205,7 +205,7 @@ const fetchStudentCourses = async () => {
       `${rootApi}/student-courses/user`, {
       params: {
         idCourse: courseId,
-        idUser: userID.value
+        idUser: userID.value.id
       }
     }
     );

@@ -32,7 +32,7 @@
 
 <script setup>
 import axios from "axios";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
@@ -42,7 +42,7 @@ const store = useStore();
 const rootApi = process.env.VUE_APP_ROOT_API;
 const courses = ref([]);
 const studentCourses = ref([]);
-const userID = ref(store.getters.user);
+const userID = computed(() => store.getters.user);
 
 const fetchCourses = async () => {
   const response = await axios.get(`${rootApi}/courses`);
