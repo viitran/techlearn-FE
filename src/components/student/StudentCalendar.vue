@@ -109,7 +109,7 @@ const listChapters = ref([]);
 const user = computed(() => store.getters.user);
 const isFilterApplied = ref(false);
 const route = useRoute();
-const courseId = route.params.courseId;
+const courseId = route.params?.courseId;
 
 const toggleCalendarForm = () => {
   stateButtonFormStudent.value = !stateButtonFormStudent.value;
@@ -126,7 +126,7 @@ const onCourseChange = async () => {
 
 const getChapters = async () => {
   try {
-    const res = await axios.get(`${rootApi}/chapters?idCourse=${course._value.id}`, {
+    const res = await axios.get(`${rootApi}/chapters?idCourse=${courseId}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -139,7 +139,7 @@ const getChapters = async () => {
 
 const getTeachers = async () => {
   try {
-    const res = await axios.get(`${rootApi}/teachers/course/${course.value.id}`, {
+    const res = await axios.get(`${rootApi}/teachers/course/${courseId}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
       }
@@ -158,7 +158,7 @@ const searchCalendar = handleSubmit(async (formData) => {
     const { course, chapter, teacher } = formData;
 
     if (teacher === null) {
-      url.value = `${rootApi}/teacher/calendar/${course.id}/chapter/${chapter.id}/`;
+      url.value = `${rootApi}/teacher/calendar/${courseId}/chapter/${chapter.id}/`;
     } else {
       url.value = `${rootApi}/teacher/${teacher.Id}/calendar`;
       ownerId.value = teacher.Id;
@@ -197,7 +197,7 @@ const fetchChaptersByCourseId = async (courseId) => {
     });
 
     if (res.status === 200) {
-      listChapters.value = res.data.result.items.data;
+      listChapters.value = res.data.result.data.items;
     } else {
       console.error("Error fetching chapters");
       toast.error("Không thể lấy danh sách chương");
@@ -221,7 +221,6 @@ watch(user, (newUser) => {
     if (newUser) {
        getChapters();
        getTeachers();
-       fetchCoursesByUser();
     }
 }, { immediate: true });
 
