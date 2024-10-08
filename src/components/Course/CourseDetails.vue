@@ -60,7 +60,7 @@
                         <div class="content-header">
                                 <h3 class="content-title">Nội dung khóa học</h3>
                                 <p class="courseData-time">
-                                        • {{ filteredChapters.length }} chương
+                                        • {{ filteredChapters.length }} chương • {{ lessons?.length }} bài học
                                 </p>
                         </div>
                         <div class="content-body mt-3">
@@ -95,7 +95,7 @@
                                                                                         router.push({
                                                                                                 name: 'submitAssignment',
                                                                                                 params: { id: item.id },
-                                                                                                query: { userID: userId },
+                                                                                                query: { courseId: dataCourse.course.id }
                                                                                         })
                                                                                         ">
                                                                                 <div class="assignment">
@@ -176,7 +176,7 @@
                                                                                                 router.push({
                                                                                                         name: 'submitAssignment',
                                                                                                         params: { id: item.id },
-                                                                                                        query: { userID: userId },
+                                                                                                        query: { courseId: dataCourse.course.id }
                                                                                                 })
                                                                                                 ">
                                                                                         <div class="assignment">
